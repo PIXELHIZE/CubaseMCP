@@ -13,6 +13,9 @@ describe("Cubase MIDI Remote script contract", () => {
       expect(source).toContain("'hello'");
       expect(source).toMatch(/send(?:Protocol|WithType)\('hello'/);
       expect(source).toMatch(/MALFORMED_REQUEST|BRIDGE_EXCEPTION/);
+      expect(source).toContain("version: 2");
+      expect(source).toContain("releaseProfile:");
+      expect(source).toContain("scriptBuild: '2.0.0-safe14'");
     }
   });
 

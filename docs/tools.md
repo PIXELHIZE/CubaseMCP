@@ -1,89 +1,35 @@
-# MCP Tool Contract
+# v2 tools
 
-The executable catalog is generated from `src/tools/*Tools.ts`. The current
-registry contains every tool listed in the project objective plus explicit
-DirectAccess and command-binding diagnostics. `tests/fixtures/required-tools.json`
-is the required-name contract; `tests/unit/toolCoverage.test.ts` prevents drift.
+Each MCP tool takes one discriminated `action`. Action schemas remain small and explicit even though actions are grouped by domain.
 
-## Common input
+| Tool | Actions |
+|---|---|
+| `cubase.system` | `status`, `capabilities`, `diagnose` |
+| `cubase.project` | `get`, `create`, `open`, `save`, `save_as`, `close`, `backup`, `apply_template`, `configure` |
+| `cubase.song` | `plan`, `create`, `validate`, `repair`, `describe` |
+| `cubase.track` | list/get, default typed creation, template/parameterized creation, rename/color/select/delete/duplicate/reorder/folder/visibility/freeze |
+| `cubase.transport` | state, playback, location, locators, cycle, metronome, punch, count-in, pre/post-roll |
+| `cubase.mixer_channel` | values, meters, EQ, strip, VCA |
+| `cubase.mixer_routing` | output, group, sidechain, send |
+| `cubase.plugin` | slots, parameters, presets, sidechain, outputs, window |
+| `cubase.midi_part` | create/get/delete/copy/move/import/generate |
+| `cubase.midi_edit` | notes, controller, pitch bend |
+| `cubase.midi_transform` | quantize, humanize, transpose, legato, fixed length, drum map, scale |
+| `cubase.audio_event` | import/create/get/update/delete/split/copy/move/fade/crossfade |
+| `cubase.audio_process` | normalize/reverse/render/bounce/stretch/pitch/quantize/silence/warp/hitpoints/comp |
+| `cubase.tempo` | tempo events, time signature, key, scale, map |
+| `cubase.chord` | get/create/update/delete/progression |
+| `cubase.arrangement` | markers, arranger events/chains, sections, analysis |
+| `cubase.automation` | lanes, points, curves, read/write, series, smooth, trim |
+| `cubase.media` | pool, video/sample import, cleanup, relink, search |
+| `cubase.export_config` | one explicit setting per action |
+| `cubase.export_run` | current settings, explicit mixdown, stems, selected, batch |
+| `cubase.job` | list/get/cancel |
+| `cubase.history` | undo/redo/snapshot |
+| `cubase.batch` | preview/validate/execute |
+| `cubase.debug.command` | Command Binding diagnostics |
+| `cubase.debug.direct_access` | DirectAccess diagnostics |
 
-```json
-{
-  "dryRun": false,
-  "confirm": false,
-  "timeoutMs": 5000,
-  "correlationId": "client-operation-id",
-  "requestId": "optional-request-id"
-}
-```
+Before any action, query `cubase.system` action `capabilities`. A blocked action returns its `blockerReason` and is never forwarded to Cubase.
 
-Destructive or overwrite operations do not execute without `confirm: true`.
-With `dryRun: true`, the server returns the route, capability, input, affected
-objects, confirmation requirement, and screen-automation flag without opening
-Cubase transports.
-
-## Common result
-
-```json
-{
-  "ok": true,
-  "tool": "cubase.transport_stop",
-  "status": "unknown_not_tested",
-  "adapter": "MIDI Remote Adapter",
-  "dryRun": false,
-  "changed": true,
-  "correlationId": "client-operation-id",
-  "data": {},
-  "evidence": {
-    "requestId": "request-id",
-    "stateBefore": {},
-    "stateAfter": {},
-    "stateDiff": {}
-  }
-}
-```
-
-Errors use `{ code, message, details, recoverable }`. Typical codes are
-`CUBASE_NOT_CONNECTED`, `ADAPTER_TIMEOUT`, `REQUIRES_EXISTING_SELECTION`,
-`CONFIRMATION_REQUIRED`, `NEEDS_USER_SETUP`,
-`NEEDS_CUBASE_SIDE_BRIDGE`, `BLOCKED_BY_CUBASE_API`, and
-`BLOCKED_BY_NO_HEADLESS_API`.
-
-## Capability meaning
-
-- `real`: produced operation-level evidence against a connected Cubase host.
-- `partial_direct_access`: exposed by the current DirectAccess tree only.
-- `partial_command_binding`: command works but has no arbitrary parameters.
-- `partial_current_setting_only`: uses existing Cubase settings.
-- `partial_selection_dependent`: operates on current selection/focus.
-- `partial_bridge_required`: protocol and routing exist; companion support is required.
-- `unknown_not_tested`: candidate path exists without real evidence.
-- `blocked_*`: a connected-host audit supplied the stated blocker evidence.
-- `mock_only`: test adapter only.
-
-Static `CapabilityMatrix` entries never set `testedWithRealCubase: true`.
-Timestamped reports under `reports/real-cubase` are the evidence authority.
-Static entries also keep `supportsUndo: false`: the server's pre-state snapshot
-is recovery evidence, not a Cubase-native undo guarantee. Native Undo/Redo is
-promoted only when a real command-binding audit observes and restores a state
-change.
-
-## Domain files
-
-| Domain | Tool definitions | Schemas |
-|---|---|---|
-| Project | `src/tools/projectTools.ts` | `src/schemas/projectSchemas.ts` |
-| Track | `src/tools/trackTools.ts` | `src/schemas/trackSchemas.ts` |
-| Transport | `src/tools/transportTools.ts` | `src/schemas/transportSchemas.ts` |
-| Audio | `src/tools/audioTools.ts` | `src/schemas/audioSchemas.ts` |
-| MIDI | `src/tools/midiTools.ts` | `src/schemas/midiSchemas.ts` |
-| Mixer | `src/tools/mixerTools.ts` | `src/schemas/mixerSchemas.ts` |
-| Plugin | `src/tools/pluginTools.ts` | `src/schemas/pluginSchemas.ts` |
-| Automation | `src/tools/automationTools.ts` | `src/schemas/automationSchemas.ts` |
-| Tempo/chord | `src/tools/tempoTools.ts` | `src/schemas/tempoSchemas.ts` |
-| Marker/arrangement | `src/tools/markerTools.ts` | `src/schemas/markerSchemas.ts` |
-| Media | `src/tools/mediaTools.ts` | `src/schemas/mediaSchemas.ts` |
-| Export/render | `src/tools/exportTools.ts` | `src/schemas/exportSchemas.ts` |
-| Safety/diagnostics | `src/tools/safetyTools.ts` | common schemas |
-
-Generate the complete per-tool table with `npm run cubase:audit`.
+The `cubase://v2/actions` resource exposes all 198 action summaries, schema-validated examples, and capability claims for the active host. `cubase://v2/capabilities` provides the compact capability-only view.

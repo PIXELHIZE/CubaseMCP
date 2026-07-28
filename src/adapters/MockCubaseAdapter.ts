@@ -39,6 +39,9 @@ export class MockCubaseAdapter implements CubaseAdapter {
       connected: false,
       version: "Mock Cubase 15.0",
       midiRemoteApiVersion: "mock-1.3",
+      mcpProtocolVersion: 2,
+      hostProfile: "mock",
+      scriptBuild: "mock",
       directAccessAvailable: false,
       projectOpen: false,
       projectPath: undefined

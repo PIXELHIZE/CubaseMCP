@@ -1,0 +1,28 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package
+    Name="Cubase MCP"
+    Manufacturer="Cubase MCP contributors"
+    Version="$(Version)"
+    UpgradeCode="8B77899C-EA33-4CFA-90F8-C267BD1DBCCB"
+    Scope="perUser">
+    <MajorUpgrade DowngradeErrorMessage="A newer version of Cubase MCP is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+    <Feature Id="MainFeature" Title="Cubase MCP" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+    </Feature>
+  </Package>
+
+  <Fragment>
+    <StandardDirectory Id="LocalAppDataFolder">
+      <Directory Id="USERPROGRAMSFOLDER" Name="Programs">
+        <Directory Id="INSTALLFOLDER" Name="Cubase MCP" />
+      </Directory>
+    </StandardDirectory>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Files Include="$(StageDir)\**" />
+    </ComponentGroup>
+  </Fragment>
+</Wix>

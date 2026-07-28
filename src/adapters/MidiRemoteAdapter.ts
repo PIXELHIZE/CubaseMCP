@@ -6,6 +6,7 @@ import { defaultCommandMappings, quickControlMapping } from "../config/commandMa
 import { MidiPortManager } from "../bridge/midi/MidiPortManager.js";
 import { RequestResponseRouter } from "../bridge/midi/RequestResponseRouter.js";
 import { CubaseMcpError, ErrorCode } from "../safety/ErrorCodes.js";
+import { parseHostHandshake } from "../v2/HostHandshake.js";
 
 function dbToMidiValue(db: number): number {
   const normalized = (Math.max(-60, Math.min(12, db)) + 60) / 72;
@@ -49,6 +50,10 @@ export class MidiRemoteAdapter implements CubaseAdapter {
     this.stateStore.markConnected("Cubase via MIDI Remote");
     try {
       const response = await this.router.request("ping", { client: "cubase-mcp" }, this.config.timeoutMs);
+      const handshake = parseHostHandshake(response.payload);
+      if (!handshake) {
+        throw new Error("Cubase MIDI Remote script did not provide the required MCP v2 host handshake.");
+      }
       this.applyBridgeState(response.payload);
       this.startPolling();
     } catch (error) {
@@ -291,6 +296,7 @@ export class MidiRemoteAdapter implements CubaseAdapter {
       appVersion?: string;
       midiRemoteApiVersion?: string;
       directAccess?: { makeDirectAccess?: boolean; active?: boolean };
+      mcpProtocol?: { version?: number; releaseProfile?: string; scriptBuild?: string };
       transport?: Partial<CubaseState["transport"]>;
       project?: Partial<CubaseState["project"]>;
       projectOpen?: boolean;
@@ -317,6 +323,9 @@ export class MidiRemoteAdapter implements CubaseAdapter {
         connected: true,
         version: state.appVersion ?? this.stateStore.snapshot().cubase.version,
         midiRemoteApiVersion: state.midiRemoteApiVersion ?? this.stateStore.snapshot().cubase.midiRemoteApiVersion,
+        mcpProtocolVersion: state.mcpProtocol?.version ?? this.stateStore.snapshot().cubase.mcpProtocolVersion,
+        hostProfile: state.mcpProtocol?.releaseProfile ?? this.stateStore.snapshot().cubase.hostProfile,
+        scriptBuild: state.mcpProtocol?.scriptBuild ?? this.stateStore.snapshot().cubase.scriptBuild,
         directAccessAvailable: state.directAccess?.makeDirectAccess ?? this.stateStore.snapshot().cubase.directAccessAvailable,
         projectOpen: state.projectOpen ?? true
       };

@@ -29,6 +29,15 @@ var bridgeState = {
     focusedQuickControls: []
 }
 
+function getHostProfile() {
+    var version = midiremote_api.mDefaults.mAppVersion.getVersionString()
+    var majorMatch = String(version).match(/\d+/)
+    var major = majorMatch ? Number(majorMatch[0]) : 0
+    if (major === 14) return 'safe14'
+    if (major === 15) return 'safe15'
+    return 'unsupported-' + String(major || 'unknown')
+}
+
 var commands = [
     { key: 'track.add.audio', category: 'AddTrack', name: 'Audio', cc: 80 },
     { key: 'track.add.midi', category: 'AddTrack', name: 'MIDI', cc: 81 },
@@ -273,7 +282,13 @@ midiInput.mOnSysex = function(activeDevice, message) {
     if (!request) return
     if (request.command === 'ping' || request.command === 'get_state') {
         bridgeState.appVersion = midiremote_api.mDefaults.mAppVersion.getVersionString()
-        send(request.id, request.command, { appVersion: bridgeState.appVersion, midiRemoteApiVersion: bridgeState.midiRemoteApiVersion, state: bridgeState, directAccess: { active: false, makeDirectAccess: false } })
+        send(request.id, request.command, {
+            appVersion: bridgeState.appVersion,
+            midiRemoteApiVersion: bridgeState.midiRemoteApiVersion,
+            state: bridgeState,
+            directAccess: { active: false, makeDirectAccess: false },
+            mcpProtocol: { version: 2, transportVersion: 1, releaseProfile: getHostProfile(), scriptBuild: '2.0.0-safe14' }
+        })
         return
     }
     if (request.command === 'command_binding') {

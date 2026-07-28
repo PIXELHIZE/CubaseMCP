@@ -4,13 +4,15 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { MockCubaseAdapter } from "./adapters/MockCubaseAdapter.js";
 import type { CubaseAdapter } from "./adapters/CubaseAdapter.js";
 import { CompositeCubaseAdapter } from "./adapters/CompositeCubaseAdapter.js";
-import { SafetyController } from "./safety/SafetyController.js";
-import { registerCubaseTools } from "./tools/registerTools.js";
-import { registerCubaseResources } from "./resources.js";
-import { registerCubasePrompts } from "./prompts.js";
 import { loadCubaseConfig } from "./config/cubaseConfig.js";
 import { pathToFileURL } from "node:url";
 import { resolve } from "node:path";
+import { CapabilityRegistry } from "./v2/CapabilityRegistry.js";
+import { detectHostProfile } from "./v2/HostProfile.js";
+import { V2Controller } from "./v2/V2Controller.js";
+import { registerV2Tools } from "./v2/registerV2Tools.js";
+import { registerV2Resources } from "./v2/resources.js";
+import { registerV2Prompts } from "./v2/prompts.js";
 
 export function createAdapterFromEnv(env: NodeJS.ProcessEnv = process.env): CubaseAdapter {
   const config = loadCubaseConfig(env);
@@ -31,16 +33,29 @@ export function createAdapterFromEnv(env: NodeJS.ProcessEnv = process.env): Cuba
 export interface CubaseMcpRuntime {
   server: McpServer;
   adapter: CubaseAdapter;
+  controller: V2Controller;
   close(): Promise<void>;
 }
 
-export async function createCubaseMcpRuntime(adapter: CubaseAdapter): Promise<CubaseMcpRuntime> {
+export interface CubaseMcpRuntimeOptions {
+  capabilityManifestPath?: string;
+}
+
+export async function createCubaseMcpRuntime(
+  adapter: CubaseAdapter,
+  options: CubaseMcpRuntimeOptions = {}
+): Promise<CubaseMcpRuntime> {
   await adapter.connect();
+  const host = await detectHostProfile(adapter);
+  const capabilities = new CapabilityRegistry();
+  const manifestPath = options.capabilityManifestPath ?? process.env.CUBASE_V2_CAPABILITY_MANIFEST;
+  if (manifestPath) await capabilities.loadManifest(manifestPath);
+  const controller = new V2Controller(adapter, host, capabilities);
 
   const server = new McpServer(
     {
       name: "cubase-mcp",
-      version: "0.1.0"
+      version: "2.0.0"
     },
     {
       capabilities: {
@@ -49,14 +64,14 @@ export async function createCubaseMcpRuntime(adapter: CubaseAdapter): Promise<Cu
     }
   );
 
-  const controller = new SafetyController(adapter);
-  registerCubaseTools(server, controller);
-  registerCubaseResources(server, adapter);
-  registerCubasePrompts(server);
+  registerV2Tools(server, controller);
+  registerV2Resources(server, adapter, controller);
+  registerV2Prompts(server);
 
   return {
     server,
     adapter,
+    controller,
     async close(): Promise<void> {
       await server.close().catch(() => undefined);
       await adapter.disconnect();

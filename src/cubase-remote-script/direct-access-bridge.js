@@ -226,6 +226,15 @@ function getApiVersion() {
     }
 }
 
+function getHostProfile() {
+    var version = getApiVersion()
+    var majorMatch = String(version).match(/\d+/)
+    var major = majorMatch ? Number(majorMatch[0]) : 0
+    if (major === 14) return 'safe14'
+    if (major === 15) return 'safe15'
+    return 'unsupported-' + String(major || 'unknown')
+}
+
 function inferMidiRemoteApiVersion() {
     if (!page.mHostAccess || !page.mHostAccess.makeDirectAccess) return '1.0_or_1.1_feature_detected'
     var da = findDAForObject(0)
@@ -783,6 +792,12 @@ midiInput.mOnSysex = function(activeDevice, message) {
                     makeDirectAccess: !!(page.mHostAccess && page.mHostAccess.makeDirectAccess)
                 },
                 commandBindings: inspectCommands(),
+                mcpProtocol: {
+                    version: 2,
+                    transportVersion: 1,
+                    releaseProfile: getHostProfile(),
+                    scriptBuild: '2.0.0-safe14'
+                },
                 protocol: {
                     framing: ['AIMCP1', 'AIMCP1C'],
                     maximumFrameBytes: MAX_SYSEX_FRAME_BYTES,
