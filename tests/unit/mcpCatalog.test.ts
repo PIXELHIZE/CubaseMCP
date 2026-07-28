@@ -33,7 +33,7 @@ describe("MCP catalog", () => {
   it("publishes required resources and prompts", async () => {
     const resources = await client.listResources();
     const resourceUris = new Set(resources.resources.map((resource) => resource.uri));
-    for (const uri of ["cubase://v2/status", "cubase://v2/state", "cubase://v2/project", "cubase://v2/tracks", "cubase://v2/capabilities", "cubase://v2/song-policy"]) {
+    for (const uri of ["cubase://v2/status", "cubase://v2/state", "cubase://v2/project", "cubase://v2/tracks", "cubase://v2/capabilities", "cubase://v2/actions", "cubase://v2/song-policy"]) {
       expect(resourceUris.has(uri), uri).toBe(true);
     }
 
@@ -56,5 +56,16 @@ describe("MCP catalog", () => {
 
     const resource = await client.readResource({ uri: "cubase://v2/status" });
     expect(resource.contents[0]).toMatchObject({ mimeType: "application/json" });
+    const actions = await client.readResource({ uri: "cubase://v2/actions" });
+    const actionContent = actions.contents[0];
+    expect(actionContent && "text" in actionContent).toBe(true);
+    const catalog = JSON.parse(actionContent && "text" in actionContent ? actionContent.text : "{}");
+    expect(catalog.count).toBe(198);
+    expect(catalog.actions[0]).toMatchObject({
+      key: expect.any(String),
+      inputSchema: expect.any(Object),
+      example: expect.any(Object),
+      capability: { constraints: { testOnly: true } }
+    });
   });
 });

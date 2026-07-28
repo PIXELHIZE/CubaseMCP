@@ -184,15 +184,7 @@ export class ActionRouter {
     const input = omitControlFields(raw);
     const result: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(input)) {
-      if (isTargetRef(value)) {
-        result[key] = await this.referenceValue(value);
-      } else if (Array.isArray(value) && value.every(isTargetRef)) {
-        result[key] = await Promise.all(value.map((target) => this.referenceValue(target)));
-      } else if (typeof value === "object" && value !== null && "format" in value) {
-        result[key] = positionToCubaseString(value as Parameters<typeof positionToCubaseString>[0]);
-      } else {
-        result[key] = value;
-      }
+      result[key] = await this.transformValue(value);
     }
 
     const target = input.target && isTargetRef(input.target) ? await this.referenceValue(input.target) : undefined;
@@ -315,6 +307,22 @@ export class ActionRouter {
       else result.value = input.value;
     }
     return result;
+  }
+
+  private async transformValue(value: unknown): Promise<unknown> {
+    if (isTargetRef(value)) return this.referenceValue(value);
+    if (Array.isArray(value)) return Promise.all(value.map((item) => this.transformValue(item)));
+    if (typeof value === "object" && value !== null && "format" in value) {
+      return positionToCubaseString(value as Parameters<typeof positionToCubaseString>[0]);
+    }
+    if (typeof value === "object" && value !== null) {
+      const transformed: Record<string, unknown> = {};
+      for (const [key, child] of Object.entries(value)) {
+        transformed[key] = await this.transformValue(child);
+      }
+      return transformed;
+    }
+    return value;
   }
 
   private async referenceValue(target: TargetRef): Promise<string | number> {

@@ -23,6 +23,7 @@ export interface ActionDocumentation {
   tool: V2ToolName;
   action: string;
   summary: string;
+  inputSchema: Record<string, unknown>;
   example: Record<string, unknown>;
 }
 
@@ -35,6 +36,7 @@ function exampleString(propertyName: string, schema: JsonSchema): string {
   if (propertyName === "length") return "1.0.0.0";
   if (propertyName === "prompt") return "Create a four-bar house demo";
   if (propertyName === "action") return "status";
+  if (propertyName === "createdAt") return "2026-01-01T00:00:00.000Z";
   return "value";
 }
 
@@ -83,6 +85,11 @@ function buildDocumentation(): ActionDocumentation[] {
       const action = variant.properties?.action?.const;
       if (typeof action !== "string") throw new Error(`Missing action discriminator in ${tool}.`);
       const example = generateExample(variant) as Record<string, unknown>;
+      if (tool === "cubase.song" && action === "create") example.planId = "example-plan-id";
+      if (tool === "cubase.midi_edit" && action === "update_notes") {
+        const edits = example.edits as Array<Record<string, unknown>>;
+        edits[0].pitch = 60;
+      }
       const parsed = zodSchema.safeParse(example);
       if (!parsed.success) {
         throw new Error(`Generated example for ${tool}.${action} is invalid: ${z.prettifyError(parsed.error)}`);
@@ -94,6 +101,7 @@ function buildDocumentation(): ActionDocumentation[] {
         tool,
         action,
         summary: summarize(tool, action),
+        inputSchema: variant as Record<string, unknown>,
         example: parsed.data as Record<string, unknown>
       });
     }

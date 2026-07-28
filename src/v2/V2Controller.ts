@@ -67,6 +67,20 @@ export class V2Controller {
     const correlationId = String(input.correlationId ?? requestId);
     const dryRun = Boolean(input.dryRun);
     const confirmed = Boolean(input.confirm);
+    const staleTargets = this.staleTargetPaths(input);
+
+    if (staleTargets.length > 0) {
+      return this.failure(
+        tool,
+        action,
+        requestId,
+        correlationId,
+        capability,
+        "STALE_TARGET",
+        "One or more DirectAccess object IDs belong to a different host session.",
+        { expectedSessionId: this.host.sessionId, paths: staleTargets }
+      );
+    }
 
     if (capability.status !== "real") {
       return this.failure(
@@ -263,6 +277,24 @@ export class V2Controller {
       if (typeof value === "string" && value.length > 0) return value;
     }
     return randomUUID();
+  }
+
+  private staleTargetPaths(value: unknown, path = "$"): string[] {
+    if (Array.isArray(value)) {
+      return value.flatMap((item, index) => this.staleTargetPaths(item, `${path}[${index}]`));
+    }
+    if (typeof value !== "object" || value === null) return [];
+    const record = value as Record<string, unknown>;
+    if (
+      record.kind === "objectId" &&
+      typeof record.sessionId === "string" &&
+      record.sessionId !== this.host.sessionId
+    ) {
+      return [path];
+    }
+    return Object.entries(record).flatMap(([key, child]) =>
+      this.staleTargetPaths(child, `${path}.${key}`)
+    );
   }
 
   private async withTimeout<T>(promise: Promise<T>, timeoutMs: number, key: string): Promise<T> {

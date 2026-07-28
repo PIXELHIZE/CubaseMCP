@@ -78,6 +78,66 @@ const SongTrackIntentSchema = z.object({
   noteDensity: z.enum(["sparse", "medium", "dense"]).default("medium").optional(),
   routeToRole: SongRoleSchema.optional()
 });
+const SongPlanTrackSchema = SongTrackIntentSchema.extend({
+  id: z.string().min(1),
+  name: z.string().min(1),
+  sourceKind: SongSourceKindSchema,
+  trackType: TrackTypeSchema,
+  required: z.boolean(),
+  noteDensity: z.enum(["sparse", "medium", "dense"]),
+  contentIntent: z.enum(["generated_midi", "recording_placeholder", "audio_file", "routing", "chord_events", "markers"])
+});
+const SongPlanSchema = z.object({
+  id: z.string().min(1),
+  songId: z.string().min(1),
+  prompt: z.string().min(1),
+  genre: z.string().min(1),
+  tempo: z.number().min(20).max(400),
+  timeSignature: z.string().regex(/^\d+\/\d+$/),
+  key: z.string().min(1),
+  bars: z.number().int().min(1).max(512),
+  sections: z.array(z.object({
+    id: z.string().min(1),
+    name: z.string().min(1),
+    startBar: z.number().int().min(1),
+    bars: z.number().int().min(1)
+  })).min(1),
+  tracks: z.array(SongPlanTrackSchema).min(1).max(128),
+  createdAt: z.string().datetime(),
+  policyVersion: z.literal(2),
+  warnings: z.array(z.string())
+}).strict();
+const MidiNoteEditSchema = z.object({
+  noteId: z.string().min(1),
+  pitch: z.number().int().min(0).max(127).optional(),
+  start: PositionSchema.optional(),
+  length: z.string().min(1).optional(),
+  velocity: z.number().int().min(1).max(127).optional(),
+  channel: z.number().int().min(1).max(16).optional()
+}).strict().refine(
+  (edit) => ["pitch", "start", "length", "velocity", "channel"].some((key) => key in edit),
+  { message: "A MIDI note edit requires at least one changed field." }
+);
+const ChordEventSchema = z.object({
+  position: PositionSchema,
+  root: z.string().min(1),
+  quality: z.string().min(1),
+  length: z.string().min(1)
+}).strict();
+const AutomationPointSchema = z.object({
+  position: PositionSchema,
+  value: z.number(),
+  curve: z.enum(["linear", "jump", "spline"]).optional()
+}).strict();
+const AutomationPointEditSchema = AutomationPointSchema.partial().extend({
+  pointId: z.string().min(1)
+}).strict();
+const ExportBatchJobSchema = z.object({
+  name: z.string().min(1).optional(),
+  source: z.enum(["mixdown", "stems", "selected_tracks", "selected_events", "selected_event"]),
+  destination: z.string().min(1),
+  format: z.enum(["wav", "aiff", "flac", "mp3"]).optional()
+}).strict();
 const BatchStepSchema = z.object({
   tool: z.enum([
     "cubase.system", "cubase.project", "cubase.song", "cubase.track", "cubase.transport",
@@ -124,7 +184,7 @@ export const v2ActionSchemas = {
     },
     create: {
       planId: z.string().min(1).optional(),
-      plan: z.record(z.string(), z.unknown()).optional(),
+      plan: SongPlanSchema.optional(),
       rollbackOnFailure: z.boolean().default(true).optional()
     },
     validate: {
@@ -136,6 +196,15 @@ export const v2ActionSchemas = {
       issueIds: z.array(z.string().min(1)).optional()
     },
     describe: { songId: z.string().min(1).optional() }
+  }).superRefine((value, context) => {
+    const input = value as { action?: string; planId?: string; plan?: unknown };
+    if (input.action === "create" && !input.planId && !input.plan) {
+      context.addIssue({
+        code: "custom",
+        path: ["planId"],
+        message: "Song creation requires planId or plan."
+      });
+    }
   }),
   "cubase.track": actionUnion({
     list: { type: TrackTypeSchema.optional(), includeHidden: z.boolean().default(false).optional() },
@@ -255,14 +324,20 @@ export const v2ActionSchemas = {
   "cubase.midi_edit": actionUnion({
     list_notes: Target,
     add_notes: { part: TargetRefSchema, notes: z.array(MidiNoteSchema).min(1) },
-    update_notes: { part: TargetRefSchema, edits: z.array(z.record(z.string(), z.unknown())).min(1) },
+    update_notes: { part: TargetRefSchema, edits: z.array(MidiNoteEditSchema).min(1) },
     delete_notes: { part: TargetRefSchema, noteIds: z.array(z.string().min(1)).min(1) },
     edit_controller: {
       part: TargetRefSchema,
       controller: z.number().int().min(0).max(127),
       points: z.array(z.object({ position: PositionSchema, value: z.number().int().min(0).max(127) })).min(1)
     },
-    edit_pitch_bend: { part: TargetRefSchema, points: z.array(z.record(z.string(), z.unknown())).min(1) }
+    edit_pitch_bend: {
+      part: TargetRefSchema,
+      points: z.array(z.object({
+        position: PositionSchema,
+        value: z.number().int().min(-8192).max(8191)
+      }).strict()).min(1)
+    }
   }),
   "cubase.midi_transform": actionUnion({
     quantize: { target: TargetRefSchema, grid: z.string().min(1), strength: z.number().min(0).max(100).default(100).optional() },
@@ -314,7 +389,7 @@ export const v2ActionSchemas = {
     create: { position: PositionSchema, root: z.string().min(1), quality: z.string().min(1), length: z.string().min(1) },
     update: { chordId: z.string().min(1), root: z.string().optional(), quality: z.string().optional(), position: PositionSchema.optional() },
     delete: { chordId: z.string().min(1) },
-    create_progression: { chords: z.array(z.record(z.string(), z.unknown())).min(1) }
+    create_progression: { chords: z.array(ChordEventSchema).min(1) }
   }),
   "cubase.arrangement": actionUnion({
     add_marker: { position: PositionSchema, name: z.string().optional() },
@@ -329,13 +404,13 @@ export const v2ActionSchemas = {
   }),
   "cubase.automation": actionUnion({
     create_lane: { target: TargetRefSchema, parameter: z.string().min(1) },
-    add_points: { lane: TargetRefSchema, points: z.array(z.record(z.string(), z.unknown())).min(1) },
-    update_points: { lane: TargetRefSchema, points: z.array(z.record(z.string(), z.unknown())).min(1) },
+    add_points: { lane: TargetRefSchema, points: z.array(AutomationPointSchema).min(1) },
+    update_points: { lane: TargetRefSchema, points: z.array(AutomationPointEditSchema).min(1) },
     delete_points: { lane: TargetRefSchema, pointIds: z.array(z.string().min(1)).min(1) },
     set_curve: { lane: TargetRefSchema, curve: z.enum(["linear", "jump", "spline"]) },
     set_read: { target: TargetRefSchema, enabled: z.boolean() },
     set_write: { target: TargetRefSchema, enabled: z.boolean() },
-    write_series: { target: TargetRefSchema, parameter: z.string().min(1), points: z.array(z.record(z.string(), z.unknown())).min(1) },
+    write_series: { target: TargetRefSchema, parameter: z.string().min(1), points: z.array(AutomationPointSchema).min(1) },
     smooth: { lane: TargetRefSchema, amount: z.number().min(0).max(1) },
     trim: { lane: TargetRefSchema, amount: z.number() }
   }),
@@ -370,7 +445,7 @@ export const v2ActionSchemas = {
     selected_tracks: { directory: z.string().min(1) },
     selected_events: { directory: z.string().min(1) },
     selected_event: { path: z.string().min(1) },
-    batch: { jobs: z.array(z.record(z.string(), z.unknown())).min(1) }
+    batch: { jobs: z.array(ExportBatchJobSchema).min(1) }
   }),
   "cubase.job": actionUnion({
     list: { type: z.string().optional(), status: z.string().optional() },

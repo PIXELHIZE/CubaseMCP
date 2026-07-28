@@ -42,6 +42,39 @@ describe("v2 contracts", () => {
     expect(new Set(legacyToolMappings.map((mapping) => mapping.legacyTool)).size).toBe(238);
   });
 
+  it("recursively converts nested musical positions before adapter dispatch", async () => {
+    const adapter = new MockCubaseAdapter();
+    await adapter.connect();
+    const context = { requestId: "nested-position", toolName: "test", dryRun: false };
+    await adapter.execute("createProject", { name: "Nested positions" }, context);
+    const track = await adapter.execute<{ tracks: Array<{ id: string }> }>(
+      "createTrack",
+      { type: "instrument", name: "Lead", instrumentName: "HALion Sonic" },
+      context
+    );
+    const trackId = String(track.data?.tracks[0]?.id);
+    const part = await adapter.execute<{ part: { id: string } }>(
+      "createMidiPart",
+      { trackId, start: "1.1.1.0", length: "1.0.0.0" },
+      context
+    );
+    const partId = String(part.data?.part.id);
+    await new ActionRouter(adapter).execute("cubase.midi_edit", "add_notes", {
+      action: "add_notes",
+      part: { kind: "uniqueId", uniqueId: partId },
+      notes: [{
+        pitch: 60,
+        start: { format: "musical", bar: 1, beat: 2, sixteenth: 1, tick: 0 },
+        length: "0.1.0.0",
+        velocity: 100,
+        channel: 1
+      }]
+    }, context);
+    const state = await adapter.getState();
+    expect(state.tracks[0]?.parts[0]?.notes[0]?.start).toBe("1.2.1.0");
+    await adapter.disconnect();
+  });
+
   it("preflights nested batch steps against their actual action schemas", async () => {
     const adapter = new MockCubaseAdapter();
     await adapter.connect();
@@ -59,6 +92,22 @@ describe("v2 contracts", () => {
         { valid: true, tool: "cubase.system", action: "status" },
         { valid: false, tool: "cubase.track", action: "rename" }
       ]
+    });
+    await adapter.disconnect();
+  });
+
+  it("rejects DirectAccess object IDs from another host session", async () => {
+    const adapter = new MockCubaseAdapter();
+    await adapter.connect();
+    const host = await detectHostProfile(adapter, "active-session");
+    const controller = new V2Controller(adapter, host);
+    const result = await controller.invoke("cubase.plugin", {
+      action: "list_parameters",
+      plugin: { kind: "objectId", sessionId: "stale-session", objectId: 42 }
+    });
+    expect(result).toMatchObject({
+      ok: false,
+      error: { code: "STALE_TARGET" }
     });
     await adapter.disconnect();
   });
