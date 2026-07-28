@@ -1,5 +1,5 @@
 import { readFile } from "node:fs/promises";
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
 import { CapabilityRegistry, type CapabilityManifest } from "../src/v2/CapabilityRegistry.js";
 import { EvidenceMatrix } from "../src/v2/EvidenceMatrix.js";
 
@@ -17,13 +17,14 @@ const matrix = new EvidenceMatrix();
 await matrix.load(resolve(evidencePath));
 const capabilityAudit = registry.releaseAudit(manifest.profile);
 const evidenceAudit = matrix.audit(manifest);
+const artifactAudit = await matrix.verifyArtifacts(dirname(resolve(evidencePath)), manifest.profile);
 const report = {
-  ok: capabilityAudit.releasable && evidenceAudit.releasable,
+  ok: capabilityAudit.releasable && evidenceAudit.releasable && artifactAudit.valid,
   manifest: resolve(manifestPath),
   evidence: resolve(evidencePath),
   capabilityAudit,
-  evidenceAudit
+  evidenceAudit,
+  artifactAudit
 };
 console.log(JSON.stringify(report, null, 2));
 if (!report.ok) process.exitCode = 1;
-

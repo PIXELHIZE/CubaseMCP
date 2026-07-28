@@ -296,7 +296,7 @@ export class MidiRemoteAdapter implements CubaseAdapter {
       appVersion?: string;
       midiRemoteApiVersion?: string;
       directAccess?: { makeDirectAccess?: boolean; active?: boolean };
-      mcpProtocol?: { version?: number; releaseProfile?: string; scriptBuild?: string };
+      mcpProtocol?: { version?: number; transportVersion?: number; releaseProfile?: string; scriptBuild?: string };
       transport?: Partial<CubaseState["transport"]>;
       project?: Partial<CubaseState["project"]>;
       projectOpen?: boolean;
@@ -324,6 +324,7 @@ export class MidiRemoteAdapter implements CubaseAdapter {
         version: state.appVersion ?? this.stateStore.snapshot().cubase.version,
         midiRemoteApiVersion: state.midiRemoteApiVersion ?? this.stateStore.snapshot().cubase.midiRemoteApiVersion,
         mcpProtocolVersion: state.mcpProtocol?.version ?? this.stateStore.snapshot().cubase.mcpProtocolVersion,
+        mcpTransportVersion: state.mcpProtocol?.transportVersion ?? this.stateStore.snapshot().cubase.mcpTransportVersion,
         hostProfile: state.mcpProtocol?.releaseProfile ?? this.stateStore.snapshot().cubase.hostProfile,
         scriptBuild: state.mcpProtocol?.scriptBuild ?? this.stateStore.snapshot().cubase.scriptBuild,
         directAccessAvailable: state.directAccess?.makeDirectAccess ?? this.stateStore.snapshot().cubase.directAccessAvailable,

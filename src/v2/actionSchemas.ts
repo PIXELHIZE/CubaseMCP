@@ -78,6 +78,18 @@ const SongTrackIntentSchema = z.object({
   noteDensity: z.enum(["sparse", "medium", "dense"]).default("medium").optional(),
   routeToRole: SongRoleSchema.optional()
 });
+const BatchStepSchema = z.object({
+  tool: z.enum([
+    "cubase.system", "cubase.project", "cubase.song", "cubase.track", "cubase.transport",
+    "cubase.mixer_channel", "cubase.mixer_routing", "cubase.plugin", "cubase.midi_part",
+    "cubase.midi_edit", "cubase.midi_transform", "cubase.audio_event", "cubase.audio_process",
+    "cubase.tempo", "cubase.chord", "cubase.arrangement", "cubase.automation", "cubase.media",
+    "cubase.export_config", "cubase.export_run", "cubase.job", "cubase.history", "cubase.batch",
+    "cubase.debug.command", "cubase.debug.direct_access"
+  ]),
+  action: z.string().min(1),
+  input: z.record(z.string(), z.unknown()).default({}).optional()
+}).strict();
 
 export const v2ActionSchemas = {
   "cubase.system": actionUnion({
@@ -371,10 +383,10 @@ export const v2ActionSchemas = {
     snapshot: { label: z.string().min(1) }
   }),
   "cubase.batch": actionUnion({
-    preview: { steps: z.array(z.record(z.string(), z.unknown())).min(1) },
-    validate: { steps: z.array(z.record(z.string(), z.unknown())).min(1) },
+    preview: { steps: z.array(BatchStepSchema).min(1) },
+    validate: { steps: z.array(BatchStepSchema).min(1) },
     execute: {
-      steps: z.array(z.record(z.string(), z.unknown())).min(1),
+      steps: z.array(BatchStepSchema).min(1),
       stopOnError: z.boolean().default(true).optional()
     }
   }),
@@ -401,4 +413,3 @@ export const v2ActionSchemas = {
 export type V2ToolName = keyof typeof v2ActionSchemas;
 
 export const v2ToolNames = Object.keys(v2ActionSchemas) as V2ToolName[];
-

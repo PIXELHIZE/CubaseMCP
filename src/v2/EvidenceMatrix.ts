@@ -1,7 +1,14 @@
-import { readFile } from "node:fs/promises";
+import { readFile, stat } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { isAbsolute, resolve } from "node:path";
 import { z } from "zod/v4";
 import { v2Actions } from "./actionManifest.js";
 import type { CapabilityManifest } from "./CapabilityRegistry.js";
+import {
+  requiresOutputArtifact,
+  requiresRestoreEvidence,
+  unitEligibleRealActionKeys
+} from "./ActionSemantics.js";
 
 export const EvidenceRecordSchema = z.object({
   id: z.string().min(1),
@@ -9,6 +16,9 @@ export const EvidenceRecordSchema = z.object({
   hostProfile: z.string().min(1),
   hostProduct: z.string().min(1),
   hostVersion: z.string().min(1),
+  scriptBuild: z.string().min(1),
+  mcpProtocolVersion: z.literal(2),
+  transportVersion: z.literal(1),
   outcome: z.enum(["real", "blocked_by_cubase_api", "blocked_by_no_headless_api"]),
   method: z.enum(["unit", "protocol", "real_hardware", "static_api_analysis"]),
   capturedAt: z.string().datetime(),
@@ -17,8 +27,14 @@ export const EvidenceRecordSchema = z.object({
   stateBefore: z.unknown().optional(),
   stateAfter: z.unknown().optional(),
   stateDiff: z.unknown().optional(),
+  stateAfterRestore: z.unknown().optional(),
   restored: z.boolean().optional(),
   crashDumpChecked: z.boolean().optional(),
+  audibility: z.object({
+    method: z.enum(["meter", "render"]),
+    observed: z.literal(true),
+    peakDb: z.number().max(0).optional()
+  }).optional(),
   artifacts: z.array(z.object({
     path: z.string().min(1),
     sha256: z.string().regex(/^[a-f0-9]{64}$/i).optional(),
@@ -41,14 +57,17 @@ export interface EvidenceAudit {
   insufficientRealEvidence: string[];
   unrestoredMutations: string[];
   uncheckedCrashDumps: string[];
+  hostMismatches: string[];
+  incompleteMutationEvidence: string[];
+  missingOutputArtifacts: string[];
+  missingAudibilityEvidence: string[];
 }
 
-const serverSideReal = new Set([
-  "cubase.system.status",
-  "cubase.system.capabilities",
-  "cubase.system.diagnose",
-  "cubase.song.plan"
-]);
+export interface ArtifactAudit {
+  valid: boolean;
+  checked: number;
+  invalidArtifacts: string[];
+}
 
 export class EvidenceMatrix {
   private readonly evidence = new Map<string, EvidenceRecord>();
@@ -75,6 +94,36 @@ export class EvidenceMatrix {
       .map((record) => structuredClone(record));
   }
 
+  async verifyArtifacts(baseDirectory: string, profile?: string): Promise<ArtifactAudit> {
+    const invalidArtifacts: string[] = [];
+    let checked = 0;
+    for (const evidence of this.list(profile)) {
+      for (const artifact of evidence.artifacts) {
+        checked += 1;
+        const path = isAbsolute(artifact.path) ? artifact.path : resolve(baseDirectory, artifact.path);
+        try {
+          const info = await stat(path);
+          if (!info.isFile()) {
+            invalidArtifacts.push(`${evidence.id}:${artifact.path}:not-a-file`);
+            continue;
+          }
+          if (artifact.bytes !== undefined && info.size !== artifact.bytes) {
+            invalidArtifacts.push(`${evidence.id}:${artifact.path}:size`);
+          }
+          if (artifact.sha256 !== undefined) {
+            const digest = createHash("sha256").update(await readFile(path)).digest("hex");
+            if (digest.toLowerCase() !== artifact.sha256.toLowerCase()) {
+              invalidArtifacts.push(`${evidence.id}:${artifact.path}:sha256`);
+            }
+          }
+        } catch {
+          invalidArtifacts.push(`${evidence.id}:${artifact.path}:missing`);
+        }
+      }
+    }
+    return { valid: invalidArtifacts.length === 0, checked, invalidArtifacts };
+  }
+
   audit(manifest: CapabilityManifest): EvidenceAudit {
     const expected = new Set(v2Actions.map((action) => action.key));
     const capabilities = new Map(manifest.actions.map((capability) => [capability.key, capability]));
@@ -84,6 +133,10 @@ export class EvidenceMatrix {
     const insufficientRealEvidence: string[] = [];
     const unrestoredMutations: string[] = [];
     const uncheckedCrashDumps: string[] = [];
+    const hostMismatches: string[] = [];
+    const incompleteMutationEvidence: string[] = [];
+    const missingOutputArtifacts: string[] = [];
+    const missingAudibilityEvidence: string[] = [];
 
     for (const capability of manifest.actions) {
       if (capability.status === "unsupported_release_profile") {
@@ -103,17 +156,48 @@ export class EvidenceMatrix {
         mismatchedEvidence.push(capability.key);
       }
       if (
+        evidence.hostProduct !== manifest.hostProduct ||
+        evidence.hostVersion !== manifest.hostVersion ||
+        evidence.scriptBuild !== manifest.scriptBuild ||
+        evidence.mcpProtocolVersion !== manifest.protocolVersion ||
+        evidence.transportVersion !== manifest.transportVersion
+      ) {
+        hostMismatches.push(capability.key);
+      }
+      if (
         capability.status === "real" &&
-        !serverSideReal.has(capability.key) &&
+        !unitEligibleRealActionKeys.has(capability.key) &&
         evidence.method !== "real_hardware"
       ) {
         insufficientRealEvidence.push(capability.key);
       }
-      if (capability.status === "real" && evidence.stateDiff !== undefined && evidence.restored !== true) {
-        unrestoredMutations.push(capability.key);
+      if (capability.status === "real" && requiresRestoreEvidence(capability.key)) {
+        if (
+          evidence.stateBefore === undefined ||
+          evidence.stateAfter === undefined ||
+          evidence.stateDiff === undefined ||
+          evidence.stateAfterRestore === undefined
+        ) {
+          incompleteMutationEvidence.push(capability.key);
+        }
+        if (evidence.restored !== true) unrestoredMutations.push(capability.key);
       }
       if (evidence.method === "real_hardware" && evidence.crashDumpChecked !== true) {
         uncheckedCrashDumps.push(capability.key);
+      }
+      if (
+        capability.status === "real" &&
+        requiresOutputArtifact(capability.key) &&
+        !evidence.artifacts.some((artifact) => artifact.bytes !== undefined && artifact.sha256 !== undefined)
+      ) {
+        missingOutputArtifacts.push(capability.key);
+      }
+      if (
+        capability.key === "cubase.song.create" &&
+        capability.status === "real" &&
+        evidence.audibility?.observed !== true
+      ) {
+        missingAudibilityEvidence.push(capability.key);
       }
     }
 
@@ -124,7 +208,11 @@ export class EvidenceMatrix {
       mismatchedEvidence.length === 0 &&
       insufficientRealEvidence.length === 0 &&
       unrestoredMutations.length === 0 &&
-      uncheckedCrashDumps.length === 0;
+      uncheckedCrashDumps.length === 0 &&
+      hostMismatches.length === 0 &&
+      incompleteMutationEvidence.length === 0 &&
+      missingOutputArtifacts.length === 0 &&
+      missingAudibilityEvidence.length === 0;
     return {
       releasable,
       profile: manifest.profile,
@@ -136,7 +224,11 @@ export class EvidenceMatrix {
       mismatchedEvidence,
       insufficientRealEvidence,
       unrestoredMutations,
-      uncheckedCrashDumps
+      uncheckedCrashDumps,
+      hostMismatches,
+      incompleteMutationEvidence,
+      missingOutputArtifacts,
+      missingAudibilityEvidence
     };
   }
 }

@@ -82,6 +82,8 @@ export const HostDescriptorSchema = z.object({
   edition: z.string().optional(),
   version: z.string(),
   midiRemoteApiVersion: z.string().optional(),
+  mcpProtocolVersion: z.number().int().optional(),
+  mcpTransportVersion: z.number().int().optional(),
   scriptBuild: z.string().optional(),
   sessionId: z.string(),
   supportStatus: HostSupportStatusSchema,
@@ -98,6 +100,21 @@ export const ActionCapabilitySchema = z.object({
   constraints: z.record(z.string(), z.unknown()).default({}),
   evidenceId: z.string().optional(),
   verifiedAt: z.string().datetime().optional()
+}).superRefine((capability, context) => {
+  if (capability.status === "real" && capability.blockerReason !== undefined) {
+    context.addIssue({
+      code: "custom",
+      path: ["blockerReason"],
+      message: "A real capability cannot declare a blockerReason."
+    });
+  }
+  if (capability.status !== "real" && capability.blockerReason === undefined) {
+    context.addIssue({
+      code: "custom",
+      path: ["blockerReason"],
+      message: "A non-real capability must declare a blockerReason."
+    });
+  }
 });
 
 export type ActionCapability = z.infer<typeof ActionCapabilitySchema>;

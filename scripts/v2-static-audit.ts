@@ -6,6 +6,7 @@ import { v2Actions } from "../src/v2/actionManifest.js";
 import { v2ToolNames } from "../src/v2/actionSchemas.js";
 import { auditLegacyMapping } from "../src/v2/legacyMapping.js";
 import { v2ActionDocumentation } from "../src/v2/ActionDocumentation.js";
+import { readOnlyActionKeys, unitEligibleRealActionKeys } from "../src/v2/ActionSemantics.js";
 
 const forbidden = [
   "SendKeys",
@@ -38,6 +39,8 @@ const serverActions = v2Actions.filter((item) =>
 const legacy = auditLegacyMapping();
 const actionKeys = v2Actions.map((action) => action.key);
 const duplicateActions = actionKeys.filter((key, index) => actionKeys.indexOf(key) !== index);
+const invalidSemanticKeys = [...readOnlyActionKeys, ...unitEligibleRealActionKeys]
+  .filter((key) => !actionKeys.includes(key));
 const automationMatches: Array<{ file: string; term: string }> = [];
 for (const file of await sourceFiles(resolve("src"))) {
   const content = await readFile(file, "utf8");
@@ -46,16 +49,37 @@ for (const file of await sourceFiles(resolve("src"))) {
 const packageJson = JSON.parse(await readFile(resolve("package.json"), "utf8")) as {
   version?: string;
   license?: string;
+  dependencies?: Record<string, string>;
+  devDependencies?: Record<string, string>;
 };
+const dependencyNames = [
+  ...Object.keys(packageJson.dependencies ?? {}),
+  ...Object.keys(packageJson.devDependencies ?? {})
+];
+const forbiddenDependencies = dependencyNames.filter((name) => /vst3|steinberg|loopmidi/i.test(name));
+const requiredDistributionFiles = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md"];
+const missingDistributionFiles: string[] = [];
+for (const file of requiredDistributionFiles) {
+  try {
+    if (!(await stat(resolve(file))).isFile()) missingDistributionFiles.push(file);
+  } catch {
+    missingDistributionFiles.push(file);
+  }
+}
+const buildConfig = await readFile(resolve("tsconfig.build.json"), "utf8");
 const checks = {
   toolCount: v2ToolNames.length === 25,
   uniqueActions: duplicateActions.length === 0,
   actionDocumentation: v2ActionDocumentation.length === v2Actions.length &&
     new Set(v2ActionDocumentation.map((document) => document.key)).size === v2Actions.length,
+  actionSemantics: invalidSemanticKeys.length === 0,
   routeCoverage: router.routeCount() === v2Actions.length - serverActions,
   legacyCoverage: legacy.total === 238 && legacy.mapped === 238 && legacy.removed === 0 && legacy.missing.length === 0,
   noScreenAutomation: automationMatches.length === 0,
+  noForbiddenRuntimeDependency: forbiddenDependencies.length === 0,
+  experimentalExcluded: buildConfig.includes("\"experimental\""),
   apacheLicense: packageJson.license === "Apache-2.0",
+  distributionNotices: missingDistributionFiles.length === 0,
   version: packageJson.version === "2.0.0"
 };
 const report = {
@@ -70,7 +94,10 @@ const report = {
     legacyTools: legacy.total
   },
   duplicateActions,
-  automationMatches
+  invalidSemanticKeys,
+  automationMatches,
+  forbiddenDependencies,
+  missingDistributionFiles
 };
 console.log(JSON.stringify(report, null, 2));
 await adapter.disconnect();

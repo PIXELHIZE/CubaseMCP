@@ -4,6 +4,7 @@ import type { CubaseState, Track } from "../schemas/state.js";
 import { positionToCubaseString } from "../v2/contracts.js";
 import { MidiPatternGenerator } from "./MidiPatternGenerator.js";
 import type {
+  AudibleEvidence,
   SongCreateResult,
   SongManifest,
   SongPlan,
@@ -34,6 +35,22 @@ function projectFingerprint(state: CubaseState): string {
   ].join(":");
 }
 
+function meterPeaks(value: unknown, peaks: number[] = []): number[] {
+  if (Array.isArray(value)) {
+    for (const item of value) meterPeaks(item, peaks);
+    return peaks;
+  }
+  if (typeof value !== "object" || value === null) return peaks;
+  for (const [key, child] of Object.entries(value)) {
+    if (/^(?:peak|rms)Db$/i.test(key) && typeof child === "number" && Number.isFinite(child)) {
+      peaks.push(child);
+    } else {
+      meterPeaks(child, peaks);
+    }
+  }
+  return peaks;
+}
+
 export class SongProjectExecutor {
   constructor(
     private readonly adapter: CubaseAdapter,
@@ -52,6 +69,9 @@ export class SongProjectExecutor {
     const before = await this.adapter.getState();
     if (!before.cubase.projectOpen) {
       throw new Error("Song creation requires an open Cubase project.");
+    }
+    if (before.transport.state === "recording") {
+      throw new Error("Song creation is blocked while Cubase is recording.");
     }
 
     const undoSnapshotId = options.dryRun ? undefined : await this.adapter.createUndoSnapshot(`cubase.song.create:${plan.songId}`);
@@ -139,6 +159,15 @@ export class SongProjectExecutor {
         binding.routeValid = true;
       }
 
+      const audibleEvidence = options.dryRun
+        ? undefined
+        : await this.verifyAudibility(
+            bindings
+              .filter((binding) => ["instrument", "midi", "audio"].includes(binding.expectedType))
+              .flatMap((binding) => binding.target.kind === "uniqueId" ? [binding.target.uniqueId] : []),
+            before,
+            context
+          );
       const after = options.dryRun ? before : await this.adapter.getState();
       const hostSessionId = `${after.cubase.version}:${projectFingerprint(after)}`;
       const now = new Date().toISOString();
@@ -150,9 +179,7 @@ export class SongProjectExecutor {
         createdAt: now,
         updatedAt: now,
         trackBindings: bindings,
-        audibleEvidence: this.adapter.mode === "mock"
-          ? { verified: true, method: "mock", details: { deterministicMock: true } }
-          : undefined,
+        audibleEvidence,
         evidence: [{
           requestId,
           actionKey: "cubase.song.create",
@@ -194,6 +221,46 @@ export class SongProjectExecutor {
         };
       }
       throw error;
+    }
+  }
+
+  private async verifyAudibility(
+    trackIds: string[],
+    before: CubaseState,
+    context: OperationContext
+  ): Promise<AudibleEvidence | undefined> {
+    if (this.adapter.mode === "mock") {
+      const meters = await this.adapter.execute("getMeterLevels", { trackIds }, context);
+      return {
+        verified: true,
+        method: "mock",
+        details: { deterministicMock: true, meters: meters.data }
+      };
+    }
+    const originalPosition = before.transport.position.barsBeats;
+    const wasPlaying = before.transport.state === "playing";
+    try {
+      await this.adapter.execute("locate", { position: "1.1.1.0" }, context);
+      await this.adapter.execute("transportPlay", {}, context);
+      await new Promise<void>((resolve) => setTimeout(resolve, 750));
+      const result = await this.adapter.execute("getMeterLevels", { trackIds }, context);
+      const peaks = meterPeaks(result.data);
+      if (peaks.some((peak) => peak > -144)) {
+        return {
+          verified: true,
+          method: "meter",
+          details: { trackIds, peaks, source: result.adapter ?? "adapter" }
+        };
+      }
+      return undefined;
+    } catch {
+      return undefined;
+    } finally {
+      await this.adapter.execute("transportStop", {}, context).catch(() => undefined);
+      await this.adapter.execute("locate", { position: originalPosition }, context).catch(() => undefined);
+      if (wasPlaying) {
+        await this.adapter.execute("transportPlay", {}, context).catch(() => undefined);
+      }
     }
   }
 

@@ -7,23 +7,10 @@ import { ActionRouter } from "./ActionRouter.js";
 import type { V2ToolName } from "./actionSchemas.js";
 import { v2ActionSchemas } from "./actionSchemas.js";
 import { actionKey } from "./actionManifest.js";
+import { hasV2Action } from "./actionManifest.js";
 import { CapabilityRegistry } from "./CapabilityRegistry.js";
 import type { HostDescriptor, V2Result } from "./contracts.js";
-
-const readActions = new Set([
-  "cubase.system.status", "cubase.system.capabilities", "cubase.system.diagnose",
-  "cubase.project.get", "cubase.song.plan", "cubase.song.validate", "cubase.song.describe",
-  "cubase.track.list", "cubase.track.get", "cubase.transport.get", "cubase.mixer_channel.get",
-  "cubase.mixer_channel.get_meters", "cubase.plugin.list", "cubase.plugin.list_parameters",
-  "cubase.plugin.get_parameter", "cubase.midi_part.get", "cubase.midi_edit.list_notes",
-  "cubase.audio_event.get", "cubase.tempo.get", "cubase.chord.get", "cubase.arrangement.analyze_structure",
-  "cubase.media.get_pool", "cubase.media.search", "cubase.export_config.get", "cubase.job.list",
-  "cubase.job.get", "cubase.batch.preview", "cubase.batch.validate",
-  "cubase.debug.command.get_registry", "cubase.debug.command.can_perform",
-  "cubase.debug.direct_access.get_capabilities", "cubase.debug.direct_access.discover_tree",
-  "cubase.debug.direct_access.get_object", "cubase.debug.direct_access.get_parameters",
-  "cubase.debug.direct_access.get_parameter"
-]);
+import { readOnlyActionKeys } from "./ActionSemantics.js";
 
 const destructiveActions = new Set([
   "cubase.project.close", "cubase.track.delete", "cubase.plugin.assign", "cubase.plugin.remove",
@@ -148,7 +135,7 @@ export class V2Controller {
       }
     };
 
-    if (readActions.has(key) || dryRun) return execute();
+    if (readOnlyActionKeys.has(key) || dryRun) return execute();
     const queued = this.writeQueue.then(execute, execute);
     this.writeQueue = queued.catch(() => undefined);
     return queued;
@@ -240,18 +227,28 @@ export class V2Controller {
   }
 
   private async executeBatch(action: string, input: Record<string, unknown>): Promise<OperationResult> {
-    const steps = input.steps as Array<Record<string, unknown>>;
+    const steps = input.steps as Array<{ tool: V2ToolName; action: string; input?: Record<string, unknown> }>;
     const validation = steps.map((step, index) => {
       const tool = step.tool;
       const nestedAction = step.action;
-      const validTool = typeof tool === "string" && tool in v2ActionSchemas;
-      const validAction = validTool && typeof nestedAction === "string";
+      const validAction = hasV2Action(tool, nestedAction) && tool !== "cubase.batch";
+      const nestedInput = { ...(step.input ?? {}), action: nestedAction };
+      const parsed = validAction ? v2ActionSchemas[tool].safeParse(nestedInput) : undefined;
+      const capability = validAction
+        ? this.capabilities.resolve(this.host, actionKey(tool, nestedAction))
+        : undefined;
       return {
         index,
-        valid: Boolean(validAction),
+        valid: Boolean(validAction && parsed?.success),
         tool,
         action: nestedAction,
-        error: validAction ? undefined : "Each step requires a valid tool and action."
+        capabilityStatus: capability?.status,
+        executable: capability?.status === "real",
+        error: !validAction
+          ? "Each step requires a known non-batch tool and action."
+          : parsed?.success
+            ? undefined
+            : z.prettifyError(parsed?.error as z.ZodError)
       };
     });
     if (action === "preview") return { changed: false, preview: { steps, validation } };

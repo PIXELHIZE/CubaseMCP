@@ -48,5 +48,4 @@ Song creation is failed when any required condition is missing, including:
 - invalid required routing;
 - no meter or render evidence that the result is audible.
 
-The mock adapter supplies only explicitly marked test evidence. Real release validation requires meter or render evidence from Cubase.
-
+The mock adapter supplies only explicitly marked test evidence. On a real host, creation briefly locates to the first bar, starts transport, reads official meter state, and restores the previous position and play state. It accepts only observed non-silent meter values. If the host cannot expose that evidence, creation fails and planner-owned tracks are rolled back instead of returning a false success.

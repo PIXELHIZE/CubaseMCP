@@ -1,24 +1,23 @@
 import { readFile } from "node:fs/promises";
+import { z } from "zod/v4";
 import type { ActionCapability, BlockerReason, CapabilityStatus, HostDescriptor } from "./contracts.js";
 import { ActionCapabilitySchema } from "./contracts.js";
 import { v2Actions } from "./actionManifest.js";
+import { unitEligibleRealActionKeys } from "./ActionSemantics.js";
 
-export interface CapabilityManifest {
-  protocolVersion: 2;
-  profile: string;
-  hostProduct: string;
-  hostVersion: string;
-  generatedAt: string;
-  releaseCertified: boolean;
-  actions: ActionCapability[];
-}
+export const CapabilityManifestSchema = z.object({
+  protocolVersion: z.literal(2),
+  transportVersion: z.literal(1),
+  profile: z.string().min(1),
+  hostProduct: z.string().min(1),
+  hostVersion: z.string().regex(/^\d+\.\d+\.\d+$/),
+  scriptBuild: z.string().min(1),
+  generatedAt: z.string().datetime(),
+  releaseCertified: z.boolean(),
+  actions: z.array(ActionCapabilitySchema)
+});
 
-const serverOnlyActions = new Set([
-  "cubase.system.status",
-  "cubase.system.capabilities",
-  "cubase.system.diagnose",
-  "cubase.song.plan"
-]);
+export type CapabilityManifest = z.infer<typeof CapabilityManifestSchema>;
 
 function blockerFor(key: string): BlockerReason {
   if (key === "cubase.song.create" || key === "cubase.song.repair" || key.includes("create_from_template")) {
@@ -40,7 +39,7 @@ function blockerFor(key: string): BlockerReason {
 }
 
 function pendingSafe14Capability(key: string): ActionCapability {
-  if (serverOnlyActions.has(key)) {
+  if (unitEligibleRealActionKeys.has(key)) {
     return {
       key,
       profile: "safe14",
@@ -66,9 +65,11 @@ function pendingSafe14Capability(key: string): ActionCapability {
 export function makePendingSafe14Manifest(): CapabilityManifest {
   return {
     protocolVersion: 2,
+    transportVersion: 1,
     profile: "safe14",
     hostProduct: "Cubase Pro",
     hostVersion: "14.0.41",
+    scriptBuild: "2.0.0-safe14",
     generatedAt: new Date(0).toISOString(),
     releaseCertified: false,
     actions: v2Actions.map((action) => pendingSafe14Capability(action.key))
@@ -83,10 +84,10 @@ export class CapabilityRegistry {
   }
 
   addManifest(manifest: CapabilityManifest): void {
-    if (manifest.protocolVersion !== 2) throw new Error("Capability manifest protocolVersion must be 2.");
+    const parsed = CapabilityManifestSchema.parse(manifest);
     const expected = new Set(v2Actions.map((action) => action.key));
-    const keys = new Set(manifest.actions.map((action) => action.key));
-    if (keys.size !== manifest.actions.length) {
+    const keys = new Set(parsed.actions.map((action) => action.key));
+    if (keys.size !== parsed.actions.length) {
       throw new Error("Capability manifest contains duplicate action keys.");
     }
     const missing = [...expected].filter((key) => !keys.has(key));
@@ -94,8 +95,11 @@ export class CapabilityRegistry {
     if (missing.length > 0 || extra.length > 0) {
       throw new Error(`Capability manifest action mismatch. Missing=${missing.join(",")} Extra=${extra.join(",")}`);
     }
-    for (const capability of manifest.actions) ActionCapabilitySchema.parse(capability);
-    this.manifests.set(manifest.profile, manifest);
+    const wrongProfiles = parsed.actions.filter((capability) => capability.profile !== parsed.profile);
+    if (wrongProfiles.length > 0) {
+      throw new Error(`Capability profile mismatch: ${wrongProfiles.map((item) => item.key).join(",")}`);
+    }
+    this.manifests.set(parsed.profile, parsed);
   }
 
   async loadManifest(path: string): Promise<void> {
@@ -150,7 +154,14 @@ export class CapabilityRegistry {
 
   isCertifiedHost(host: HostDescriptor): boolean {
     const manifest = this.manifests.get(host.profile);
-    if (!manifest?.releaseCertified || manifest.hostVersion !== host.version) return false;
+    if (
+      !manifest?.releaseCertified ||
+      manifest.hostVersion !== host.version ||
+      manifest.scriptBuild !== host.scriptBuild ||
+      host.mcpProtocolVersion !== 2 ||
+      host.mcpTransportVersion !== 1 ||
+      host.supportStatus === "unsupported_host_version"
+    ) return false;
     const actualProduct = `${host.product} ${host.edition ?? ""}`.trim().toLowerCase();
     return actualProduct === manifest.hostProduct.trim().toLowerCase();
   }

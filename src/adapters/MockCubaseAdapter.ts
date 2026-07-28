@@ -261,6 +261,7 @@ export class MockCubaseAdapter implements CubaseAdapter {
       case "setRouting":
         return this.setRouting(input) as OperationResult<T>;
       case "getMeters":
+      case "getMeterLevels":
         return this.getMeters(input) as OperationResult<T>;
       case "createMidiPart":
         return this.createMidiPart(input) as OperationResult<T>;
@@ -724,7 +725,7 @@ export class MockCubaseAdapter implements CubaseAdapter {
   }
 
   private setTempo(input: Record<string, unknown>): OperationResult {
-    this.state.project.tempo = Number(input.bpm);
+    this.state.project.tempo = Number(input.tempo ?? input.bpm);
     return { changed: true, data: { tempo: this.state.project.tempo, mode: input.mode ?? "fixed", position: input.position } };
   }
 

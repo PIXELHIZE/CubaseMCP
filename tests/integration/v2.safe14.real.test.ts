@@ -27,7 +27,10 @@ describeReal.sequential("v2 safe14 host contract", () => {
       product: "Cubase",
       edition: "Pro",
       version: "14.0.41",
-      profile: "safe14"
+      profile: "safe14",
+      mcpProtocolVersion: 2,
+      mcpTransportVersion: 1,
+      scriptBuild: "2.0.0-safe14"
     });
     expect(host.supportStatus).toBe("unverified_host_profile");
   });
@@ -37,9 +40,9 @@ describeReal.sequential("v2 safe14 host contract", () => {
     expect(state.cubase).toMatchObject({
       connected: true,
       mcpProtocolVersion: 2,
+      mcpTransportVersion: 1,
       hostProfile: "safe14",
       scriptBuild: "2.0.0-safe14"
     });
   });
 });
-

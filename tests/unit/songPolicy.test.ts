@@ -45,6 +45,8 @@ describe("Song Creation Policy", () => {
     expect(created.validation.summary.notes).toBeGreaterThan(0);
     expect(created.validation.summary.audible).toBe(true);
     const state = await adapter.getState();
+    expect(state.project.tempo).toBe(124);
+    expect(state.project.timeSignature).toBe("4/4");
     expect(state.tracks.filter((track) => ["Drums", "Bass", "Chords", "Lead"].includes(track.name))
       .every((track) => track.type === "instrument" && track.parts.length > 0)).toBe(true);
   });

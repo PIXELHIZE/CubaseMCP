@@ -34,6 +34,7 @@ function exampleString(propertyName: string, schema: JsonSchema): string {
   if (/id$/i.test(propertyName)) return "example-id";
   if (propertyName === "length") return "1.0.0.0";
   if (propertyName === "prompt") return "Create a four-bar house demo";
+  if (propertyName === "action") return "status";
   return "value";
 }
 

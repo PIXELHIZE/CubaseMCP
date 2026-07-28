@@ -128,6 +128,7 @@ export const CubaseStateSchema = z.object({
     version: z.string(),
     midiRemoteApiVersion: z.string().default("unknown"),
     mcpProtocolVersion: z.number().int().optional(),
+    mcpTransportVersion: z.number().int().optional(),
     hostProfile: z.string().optional(),
     scriptBuild: z.string().optional(),
     directAccessAvailable: z.boolean().default(false),
