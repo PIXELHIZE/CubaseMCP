@@ -1,0 +1,20 @@
+{
+  "user": "Bring the vocal forward in the mix.",
+  "policy": "Inspect first, return dry-run evidence, and apply only after user approval.",
+  "toolCalls": [
+    { "tool": "cubase.list_tracks", "arguments": { "includeHidden": true } },
+    { "tool": "cubase.get_track", "arguments": { "trackId": "$identifiedVocalTrackId" } },
+    { "tool": "cubase.get_plugin_parameters", "arguments": { "trackId": "$identifiedVocalTrackId", "focused": true } },
+    {
+      "tool": "cubase.preview_operation",
+      "arguments": {
+        "toolName": "cubase.set_track_volume",
+        "arguments": { "trackId": "$identifiedVocalTrackId", "volumeDb": 1.5 }
+      }
+    },
+    { "tool": "cubase.set_track_volume", "arguments": { "trackId": "$identifiedVocalTrackId", "volumeDb": 1.5, "dryRun": true } },
+    { "tool": "cubase.set_eq_band", "arguments": { "trackId": "$identifiedVocalTrackId", "band": 3, "frequencyHz": 3500, "gainDb": 1.8, "q": 1.1, "type": "peak", "dryRun": true } },
+    { "tool": "cubase.set_plugin_parameter", "arguments": { "trackId": "$identifiedVocalTrackId", "parameterId": "focusedQuickControl:0", "value": 0.62, "dryRun": true } },
+    { "tool": "cubase.set_send_level", "arguments": { "trackId": "$identifiedVocalTrackId", "sendIndex": 0, "levelDb": -18, "dryRun": true } }
+  ]
+}

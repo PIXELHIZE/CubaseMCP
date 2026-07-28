@@ -1,0 +1,43 @@
+{
+  "name": "cubase-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Headless Cubase MCP bridge with real-PC capability discovery and evidence reports.",
+  "main": "dist/server.js",
+  "bin": {
+    "cubase-mcp": "dist/server.js"
+  },
+  "scripts": {
+    "build": "npm run clean && tsc -p tsconfig.build.json",
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
+    "cubase:discover": "tsx scripts/cubase-discover.ts",
+    "cubase:smoke": "tsx scripts/cubase-smoke.ts",
+    "cubase:commands": "tsx scripts/cubase-command-audit.ts",
+    "cubase:direct-access": "tsx scripts/cubase-direct-access-audit.ts",
+    "cubase:audit": "tsx scripts/cubase-static-audit.ts",
+    "cubase:implementation-audit": "tsx scripts/cubase-implementation-audit.ts",
+    "cubase:call": "tsx scripts/cubase-call.ts",
+    "cubase:project-test": "tsx scripts/cubase-project-create-test.ts",
+    "cubase:project-report": "tsx scripts/cubase-project-report-finalize.ts",
+    "dev": "tsx src/server.ts",
+    "test": "vitest run",
+    "test:real": "vitest run tests/integration --run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@julusian/midi": "^3.6.1",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.14",
+    "cross-env": "^7.0.3",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.8"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

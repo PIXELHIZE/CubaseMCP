@@ -1,0 +1,4 @@
+{
+  "aliasOf": "create-house-beat.json",
+  "note": "Use the generated-MIDI and DirectAccess plugin-manager workflow in create-house-beat.json; no mock IDs are assumed."
+}

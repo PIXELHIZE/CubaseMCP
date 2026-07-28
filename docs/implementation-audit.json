@@ -1,0 +1,3134 @@
+{
+  "generatedAt": "2026-07-10T07:58:53.944Z",
+  "fileRows": [
+    {
+      "category": "MCP server",
+      "path": "src/server.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Adapter",
+      "path": "src/adapters/CubaseAdapter.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Adapter",
+      "path": "src/adapters/CompositeCubaseAdapter.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Adapter",
+      "path": "src/adapters/MockCubaseAdapter.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Adapter",
+      "path": "src/adapters/MidiRemoteAdapter.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Adapter",
+      "path": "src/adapters/DirectAccessAdapter.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Adapter",
+      "path": "src/adapters/MidiCommandSurfaceAdapter.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Adapter",
+      "path": "src/adapters/PluginBridgeAdapter.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Adapter",
+      "path": "src/adapters/OscAdapter.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Adapter",
+      "path": "src/adapters/EuConOrMackieAdapter.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Adapter",
+      "path": "src/adapters/ProjectStateAdapter.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "MIDI bridge",
+      "path": "src/bridge/midi/MidiPortManager.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "MIDI bridge",
+      "path": "src/bridge/midi/CubaseMidiProtocol.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "MIDI bridge",
+      "path": "src/bridge/midi/DirectAccessProtocol.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "MIDI bridge",
+      "path": "src/bridge/midi/MessageEncoder.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "MIDI bridge",
+      "path": "src/bridge/midi/MessageDecoder.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "MIDI bridge",
+      "path": "src/bridge/midi/RequestResponseRouter.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "MIDI bridge",
+      "path": "src/bridge/midi/ChunkedSysexTransport.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Plugin bridge",
+      "path": "src/bridge/plugin/PluginBridgeProtocol.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Plugin bridge",
+      "path": "src/bridge/plugin/PluginBridgeClient.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Plugin bridge",
+      "path": "src/bridge/plugin/PluginParameterMapper.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "OSC bridge",
+      "path": "src/bridge/osc/OscClient.ts",
+      "status": "PRESENT_PARTIAL",
+      "limitation": "Requires a configured Cubase-side OSC endpoint."
+    },
+    {
+      "category": "Cubase MIDI Remote script",
+      "path": "src/cubase-remote-script/ai-mcp-remote.js",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Cubase MIDI Remote script",
+      "path": "src/cubase-remote-script/direct-access-bridge.js",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Cubase MIDI Remote script",
+      "path": "src/cubase-remote-script/command-surface-bridge.js",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Cubase MIDI Remote script",
+      "path": "src/cubase-remote-script/README.md",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Tool layer",
+      "path": "src/tools/projectTools.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Tool layer",
+      "path": "src/tools/trackTools.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Tool layer",
+      "path": "src/tools/transportTools.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Tool layer",
+      "path": "src/tools/audioTools.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Tool layer",
+      "path": "src/tools/midiTools.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Tool layer",
+      "path": "src/tools/mixerTools.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Tool layer",
+      "path": "src/tools/pluginTools.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Tool layer",
+      "path": "src/tools/automationTools.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Tool layer",
+      "path": "src/tools/tempoTools.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Tool layer",
+      "path": "src/tools/markerTools.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Tool layer",
+      "path": "src/tools/mediaTools.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Tool layer",
+      "path": "src/tools/exportTools.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Tool layer",
+      "path": "src/tools/directAccessTools.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Tool layer",
+      "path": "src/tools/safetyTools.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Tool layer",
+      "path": "src/tools/index.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Tool layer",
+      "path": "src/tools/registerTools.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Tool layer",
+      "path": "src/tools/toolTypes.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Schema",
+      "path": "src/schemas/commonSchemas.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Schema",
+      "path": "src/schemas/projectSchemas.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Schema",
+      "path": "src/schemas/trackSchemas.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Schema",
+      "path": "src/schemas/transportSchemas.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Schema",
+      "path": "src/schemas/audioSchemas.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Schema",
+      "path": "src/schemas/midiSchemas.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Schema",
+      "path": "src/schemas/mixerSchemas.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Schema",
+      "path": "src/schemas/pluginSchemas.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Schema",
+      "path": "src/schemas/automationSchemas.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Schema",
+      "path": "src/schemas/tempoSchemas.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Schema",
+      "path": "src/schemas/markerSchemas.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Schema",
+      "path": "src/schemas/mediaSchemas.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Schema",
+      "path": "src/schemas/exportSchemas.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Schema",
+      "path": "src/schemas/state.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Safety",
+      "path": "src/safety/SafetyController.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Safety",
+      "path": "src/safety/PermissionModel.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Safety",
+      "path": "src/safety/Permissions.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Safety",
+      "path": "src/safety/DryRunPlanner.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Safety",
+      "path": "src/safety/UndoManager.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Safety",
+      "path": "src/safety/DestructiveActionGuard.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Safety",
+      "path": "src/safety/ErrorCodes.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "State",
+      "path": "src/state/CubaseStateStore.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "State",
+      "path": "src/state/TrackRegistry.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "State",
+      "path": "src/state/EventRegistry.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "State",
+      "path": "src/state/PluginRegistry.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "State",
+      "path": "src/state/MarkerRegistry.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "State",
+      "path": "src/state/CapabilityMatrix.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Diagnostics",
+      "path": "src/diagnostics/CubaseConnectionDoctor.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Diagnostics",
+      "path": "src/diagnostics/MidiPortDoctor.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Diagnostics",
+      "path": "src/diagnostics/DirectAccessDoctor.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Diagnostics",
+      "path": "src/diagnostics/CommandBindingDoctor.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Diagnostics",
+      "path": "src/diagnostics/PluginManagerDoctor.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Diagnostics",
+      "path": "src/diagnostics/ReportWriter.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Jobs",
+      "path": "src/jobs/JobManager.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Jobs",
+      "path": "src/jobs/RenderJob.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Jobs",
+      "path": "src/jobs/ExportJob.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Jobs",
+      "path": "src/jobs/ScanJob.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Script",
+      "path": "scripts/cubase-discover.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Script",
+      "path": "scripts/cubase-smoke.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Script",
+      "path": "scripts/cubase-command-audit.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Script",
+      "path": "scripts/cubase-direct-access-audit.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Script",
+      "path": "scripts/cubase-report.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Script",
+      "path": "scripts/cubase-static-audit.ts",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Example",
+      "path": "examples/create-house-beat.json",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Example",
+      "path": "examples/vocal-forward-mix.json",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Example",
+      "path": "examples/export-stems.json",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Example",
+      "path": "examples/full-project-create.json",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Tests",
+      "path": "tests/unit",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Tests",
+      "path": "tests/integration",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Tests",
+      "path": "tests/fixtures/required-tools.json",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Docs",
+      "path": "docs/README.md",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Docs",
+      "path": "docs/architecture.md",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Docs",
+      "path": "docs/tools.md",
+      "status": "PRESENT"
+    },
+    {
+      "category": "Docs",
+      "path": "docs/real-test-guide.md",
+      "status": "PRESENT"
+    },
+    {
+      "category": "VST3 companion",
+      "path": "src/vst3-companion-bridge/protocol.md",
+      "status": "PRESENT"
+    },
+    {
+      "category": "VST3 companion",
+      "path": "src/vst3-companion-bridge/README.md",
+      "status": "PRESENT"
+    },
+    {
+      "category": "VST3 companion binary",
+      "path": "src/vst3-companion-bridge/stub/named-pipe-server.ts",
+      "status": "PLACEHOLDER_ONLY",
+      "limitation": "Protocol simulator only; no production C++/VST3 Cubase-side binary is present."
+    },
+    {
+      "category": "VST3 companion binary",
+      "path": "src/vst3-companion-bridge/stub/PluginBridgeStub.md",
+      "status": "PLACEHOLDER_ONLY",
+      "limitation": "Implementation plan/documentation only."
+    }
+  ],
+  "toolRows": [
+    {
+      "tool": "cubase.get_status",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiRemoteAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "unknown_not_tested"
+    },
+    {
+      "tool": "cubase.get_project",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "ProjectStateAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "unknown_not_tested"
+    },
+    {
+      "tool": "cubase.get_project_path",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "ProjectStateAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "unknown_not_tested"
+    },
+    {
+      "tool": "cubase.get_project_metadata",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "ProjectStateAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "unknown_not_tested"
+    },
+    {
+      "tool": "cubase.create_project",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.open_project",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.save_project",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.save_project_as",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.close_project",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.create_backup",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.create_project_backup",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.apply_project_template",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_sample_rate",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_bit_depth",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_frame_rate",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.list_tracks",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "ProjectStateAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_selection_dependent"
+    },
+    {
+      "tool": "cubase.get_track",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "ProjectStateAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_selection_dependent"
+    },
+    {
+      "tool": "cubase.create_track",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.create_audio_track",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_command_binding"
+    },
+    {
+      "tool": "cubase.create_midi_track",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_command_binding"
+    },
+    {
+      "tool": "cubase.create_instrument_track",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_command_binding"
+    },
+    {
+      "tool": "cubase.create_group_track",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_command_binding"
+    },
+    {
+      "tool": "cubase.create_fx_track",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_command_binding"
+    },
+    {
+      "tool": "cubase.create_folder_track",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_command_binding"
+    },
+    {
+      "tool": "cubase.create_marker_track",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_command_binding"
+    },
+    {
+      "tool": "cubase.create_tempo_track",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_command_binding"
+    },
+    {
+      "tool": "cubase.create_chord_track",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_command_binding"
+    },
+    {
+      "tool": "cubase.delete_track",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_selection_dependent"
+    },
+    {
+      "tool": "cubase.rename_track",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_track_color",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.select_tracks",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_track_mute",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiRemoteAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_selection_dependent"
+    },
+    {
+      "tool": "cubase.set_track_solo",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiRemoteAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_selection_dependent"
+    },
+    {
+      "tool": "cubase.set_track_record_enable",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiRemoteAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_selection_dependent"
+    },
+    {
+      "tool": "cubase.set_track_monitor",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiRemoteAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_selection_dependent"
+    },
+    {
+      "tool": "cubase.duplicate_track",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_selection_dependent"
+    },
+    {
+      "tool": "cubase.reorder_track",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.move_track_to_folder",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_track_visibility",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.freeze_track",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.unfreeze_track",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.create_track_default_audio",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_command_binding"
+    },
+    {
+      "tool": "cubase.create_track_default_midi",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_command_binding"
+    },
+    {
+      "tool": "cubase.create_track_default_instrument",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_command_binding"
+    },
+    {
+      "tool": "cubase.create_track_default_group",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_command_binding"
+    },
+    {
+      "tool": "cubase.create_track_default_fx",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_command_binding"
+    },
+    {
+      "tool": "cubase.create_track_default_folder",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_command_binding"
+    },
+    {
+      "tool": "cubase.create_track_default_marker",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_command_binding"
+    },
+    {
+      "tool": "cubase.create_track_default_tempo",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_command_binding"
+    },
+    {
+      "tool": "cubase.create_track_default_chord",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_command_binding"
+    },
+    {
+      "tool": "cubase.create_track_from_preset",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "PluginBridgeAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.create_track_parameterized",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.transport_play",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiRemoteAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "unknown_not_tested"
+    },
+    {
+      "tool": "cubase.transport_stop",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiRemoteAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "unknown_not_tested"
+    },
+    {
+      "tool": "cubase.transport_pause",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiRemoteAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "unknown_not_tested"
+    },
+    {
+      "tool": "cubase.transport_record",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiRemoteAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "unknown_not_tested"
+    },
+    {
+      "tool": "cubase.transport_rewind",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiRemoteAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "unknown_not_tested"
+    },
+    {
+      "tool": "cubase.transport_forward",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiRemoteAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "unknown_not_tested"
+    },
+    {
+      "tool": "cubase.set_position",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.get_position",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "ProjectStateAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "unknown_not_tested"
+    },
+    {
+      "tool": "cubase.nudge_position",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_locators",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_cycle",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiRemoteAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "unknown_not_tested"
+    },
+    {
+      "tool": "cubase.set_metronome",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiRemoteAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "unknown_not_tested"
+    },
+    {
+      "tool": "cubase.set_punch_in_out",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_count_in",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_preroll",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_postroll",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_track_volume",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiRemoteAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_selection_dependent"
+    },
+    {
+      "tool": "cubase.set_track_pan",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiRemoteAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_selection_dependent"
+    },
+    {
+      "tool": "cubase.set_input_gain",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiRemoteAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_selection_dependent"
+    },
+    {
+      "tool": "cubase.set_phase_invert",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiRemoteAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_selection_dependent"
+    },
+    {
+      "tool": "cubase.set_send_level",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.set_send_enable",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.add_send",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.remove_send",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_routing",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_group_routing",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_sidechain_routing",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "PluginBridgeAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_eq_band",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.set_channel_strip",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiRemoteAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_selection_dependent"
+    },
+    {
+      "tool": "cubase.set_vca",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.bypass_insert_plugin",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiRemoteAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_selection_dependent"
+    },
+    {
+      "tool": "cubase.get_meter_levels",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiRemoteAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_selection_dependent"
+    },
+    {
+      "tool": "cubase.list_plugins",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "PluginBridgeAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.load_instrument",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.load_effect",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.add_insert_plugin",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.remove_insert_plugin",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.bypass_plugin",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiRemoteAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_selection_dependent"
+    },
+    {
+      "tool": "cubase.get_plugin_parameters",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.get_plugin_parameter",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.set_plugin_parameter",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.load_plugin_preset",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "PluginBridgeAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.enable_plugin",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiRemoteAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_selection_dependent"
+    },
+    {
+      "tool": "cubase.disable_plugin",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiRemoteAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_selection_dependent"
+    },
+    {
+      "tool": "cubase.enable_sidechain",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "PluginBridgeAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.open_plugin_window",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.close_plugin_window",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.enable_instrument_output",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "PluginBridgeAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_multi_output_routing",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "PluginBridgeAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.create_midi_part",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.delete_midi_part",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.copy_midi_part",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.move_midi_part",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.add_midi_note",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.delete_midi_note",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.edit_midi_note",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.edit_midi_notes",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.delete_midi_notes",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_midi_velocity",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.edit_midi_controller",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.edit_pitch_bend",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.edit_modulation",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.edit_sustain_pedal",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.quantize_midi",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_selection_dependent"
+    },
+    {
+      "tool": "cubase.humanize_midi",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.transpose_midi",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.apply_legato",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_selection_dependent"
+    },
+    {
+      "tool": "cubase.apply_fixed_length",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_selection_dependent"
+    },
+    {
+      "tool": "cubase.apply_drum_map",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.apply_scale_assistant",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.create_chord",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.create_chord_progression",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.import_midi_file",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.create_midi_part_from_generated_file",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.import_audio",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.create_audio_event",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.edit_audio_event",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.split_audio_event",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.move_audio_event",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.copy_audio_event",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.delete_audio_event",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_fade",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_audio_fade_in",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_selection_dependent"
+    },
+    {
+      "tool": "cubase.set_audio_fade_out",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_selection_dependent"
+    },
+    {
+      "tool": "cubase.create_crossfade",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_selection_dependent"
+    },
+    {
+      "tool": "cubase.normalize_audio",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.reverse_audio",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_audio_event_gain",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.render_in_place",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.bounce_selection",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_selection_dependent"
+    },
+    {
+      "tool": "cubase.time_stretch_audio",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.pitch_shift_audio",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.quantize_audio",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.detect_silence",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "PluginBridgeAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_audio_warp",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.analyze_hitpoints",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "PluginBridgeAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.comp_audio",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.get_tempo",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "ProjectStateAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "unknown_not_tested"
+    },
+    {
+      "tool": "cubase.set_tempo",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.add_tempo_event",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_time_signature",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.add_marker",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_selection_dependent"
+    },
+    {
+      "tool": "cubase.delete_marker",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.update_marker",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.move_marker",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.rename_marker",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.add_cycle_marker",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_selection_dependent"
+    },
+    {
+      "tool": "cubase.create_arranger_event",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.create_arranger_chain",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.reorder_arranger_chain",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.duplicate_section",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.reorder_section",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.analyze_song_structure",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.create_automation_lane",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.add_automation_point",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.delete_automation_point",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.edit_automation_point",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_automation_curve",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_automation_read",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.set_automation_write",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.write_volume_automation",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.write_pan_automation",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.write_plugin_parameter_automation",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "PluginBridgeAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.write_send_automation",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.write_tempo_automation",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.smooth_automation",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.trim_automation",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.create_tempo_map",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.delete_tempo_event",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_key_signature",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.get_chord_track",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "ProjectStateAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.update_chord_track",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_scale",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.control_arranger_track",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.import_audio_file",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.import_video_file",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.import_sample",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.get_pool",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.clean_unused_media",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.relink_missing_files",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.search_media_bay",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.export_selected_event",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.export_full_mix",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.export_mixdown",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.export_stems",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.export_selected_tracks",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.export_selected_events",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.batch_export",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "PluginBridgeAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_export_settings",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "PluginBridgeAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_export_filename_pattern",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "PluginBridgeAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_export_loudness_target",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "PluginBridgeAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_export_format",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "PluginBridgeAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_export_sample_rate",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "PluginBridgeAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_export_bit_depth",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "PluginBridgeAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_export_range",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "PluginBridgeAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.set_export_realtime",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "PluginBridgeAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.get_export_jobs",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "ProjectStateAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "unknown_not_tested"
+    },
+    {
+      "tool": "cubase.cancel_export_job",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "ProjectStateAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "unknown_not_tested"
+    },
+    {
+      "tool": "cubase.perform_current_audio_export",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_current_setting_only"
+    },
+    {
+      "tool": "cubase.undo",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_command_binding"
+    },
+    {
+      "tool": "cubase.redo",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_command_binding"
+    },
+    {
+      "tool": "cubase.create_undo_snapshot",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.preview_operation",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.validate_operation",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.trigger_command",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_command_binding"
+    },
+    {
+      "tool": "cubase.execute_macro",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_command_binding"
+    },
+    {
+      "tool": "cubase.get_capabilities",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "unknown_not_tested"
+    },
+    {
+      "tool": "cubase.run_diagnostics",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "CompositeCubaseAdapter -> production Cubase-side bridge required",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_bridge_required"
+    },
+    {
+      "tool": "cubase.discover_direct_access",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.audit_command_bindings",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_command_binding"
+    },
+    {
+      "tool": "cubase.command_binding_get_registry",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_command_binding"
+    },
+    {
+      "tool": "cubase.command_binding_can_perform",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "MidiCommandSurfaceAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_command_binding"
+    },
+    {
+      "tool": "cubase.direct_access_get_capabilities",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.direct_access_request",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.direct_access_discover_object_tree",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.direct_access_get_object_metadata",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.direct_access_get_child_objects",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.direct_access_get_parameters",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.direct_access_get_parameter",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.direct_access_set_parameter_process_value",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.direct_access_set_parameter_plain_value",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.direct_access_get_plugin_collections",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.direct_access_set_slot_plugin",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.direct_access_reset_slot_plugin",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.direct_access_subscribe_object_changes",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    },
+    {
+      "tool": "cubase.direct_access_subscribe_parameter_changes",
+      "registered": true,
+      "schema": true,
+      "handler": true,
+      "adapterPath": "DirectAccessAdapter",
+      "capabilityMatrix": true,
+      "test": true,
+      "safety": true,
+      "status": "partial_direct_access"
+    }
+  ],
+  "forbiddenFindings": []
+}

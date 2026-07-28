@@ -1,0 +1,61 @@
+import { Permission } from "../safety/PermissionModel.js";
+import {
+  CreateTrackInputShape,
+  CreateTypedTrackInputShape,
+  CreateTrackFromPresetInputShape,
+  DeleteTrackInputShape,
+  DuplicateTrackInputShape,
+  GetTrackInputShape,
+  ListTracksInputShape,
+  RenameTrackInputShape,
+  ReorderTrackInputShape,
+  SelectTracksInputShape,
+  SetTrackColorInputShape,
+  TrackBooleanInputShape,
+  TrackActionInputShape,
+  MoveTrackToFolderInputShape,
+  TrackVisibilityInputShape
+} from "../schemas/trackSchemas.js";
+import { readTool, writeTool, type ToolDefinition } from "./toolTypes.js";
+import { EmptyInputShape } from "../schemas/commonSchemas.js";
+
+export const trackTools: ToolDefinition[] = [
+  readTool("cubase.list_tracks", "List Tracks", "List cached tracks exposed by MIDI Remote state events.", "listTracks", ListTracksInputShape),
+  readTool("cubase.get_track", "Get Track", "Get one cached track by stable ID.", "getTrack", GetTrackInputShape),
+  writeTool("cubase.create_track", "Create Track", "Create track. Requires Cubase-side bridge; not available through MIDI Remote API alone.", "createTrack", CreateTrackInputShape, Permission.Track),
+  writeTool("cubase.create_audio_track", "Create Audio Track", "Create a default audio track by command binding, or use a bridge for name/routing parameters.", "createAudioTrack", CreateTypedTrackInputShape, Permission.Track),
+  writeTool("cubase.create_midi_track", "Create MIDI Track", "Create a default MIDI track by command binding, or use a bridge for parameters.", "createMidiTrack", CreateTypedTrackInputShape, Permission.Track),
+  writeTool("cubase.create_instrument_track", "Create Instrument Track", "Create an instrument track; default command binding is partial and instrument assignment requires DirectAccess/plugin bridge.", "createInstrumentTrack", CreateTypedTrackInputShape, Permission.Track),
+  writeTool("cubase.create_group_track", "Create Group Track", "Create a default group track through command binding or bridge.", "createGroupTrack", CreateTypedTrackInputShape, Permission.Track),
+  writeTool("cubase.create_fx_track", "Create FX Track", "Create an FX track; dialog-free behavior is capability-audited before execution.", "createFxTrack", CreateTypedTrackInputShape, Permission.Track),
+  writeTool("cubase.create_folder_track", "Create Folder Track", "Create a default folder track through command binding or bridge.", "createFolderTrack", CreateTypedTrackInputShape, Permission.Track),
+  writeTool("cubase.create_marker_track", "Create Marker Track", "Create a default marker track through command binding or bridge.", "createMarkerTrack", CreateTypedTrackInputShape, Permission.Track),
+  writeTool("cubase.create_tempo_track", "Create Tempo Track", "Create a default tempo track through command binding or bridge.", "createTempoTrack", CreateTypedTrackInputShape, Permission.Track),
+  writeTool("cubase.create_chord_track", "Create Chord Track", "Create a default chord track through command binding or bridge.", "createChordTrack", CreateTypedTrackInputShape, Permission.Track),
+  writeTool("cubase.delete_track", "Delete Track", "Delete tracks. Destructive; requires Cubase-side bridge and confirm:true.", "deleteTrack", DeleteTrackInputShape, Permission.Track, { destructive: true }),
+  writeTool("cubase.rename_track", "Rename Track", "Rename track through Cubase-side bridge.", "renameTrack", RenameTrackInputShape, Permission.Track),
+  writeTool("cubase.set_track_color", "Set Track Color", "Set track color through Cubase-side bridge.", "setTrackColor", SetTrackColorInputShape, Permission.Track),
+  writeTool("cubase.select_tracks", "Select Tracks", "Select tracks. Arbitrary selection requires Cubase-side bridge.", "selectTracks", SelectTracksInputShape, Permission.Track, { createsUndoSnapshot: false }),
+  writeTool("cubase.set_track_mute", "Set Track Mute", "Set selected track mute through MIDI Remote.", "setTrackMute", TrackBooleanInputShape, Permission.Mixer),
+  writeTool("cubase.set_track_solo", "Set Track Solo", "Set selected track solo through MIDI Remote.", "setTrackSolo", TrackBooleanInputShape, Permission.Mixer),
+  writeTool("cubase.set_track_record_enable", "Set Track Record Enable", "Set selected track record enable through MIDI Remote.", "setTrackRecordEnable", TrackBooleanInputShape, Permission.Track),
+  writeTool("cubase.set_track_monitor", "Set Track Monitor", "Set selected track monitor through MIDI Remote.", "setTrackMonitor", TrackBooleanInputShape, Permission.Track),
+  writeTool("cubase.duplicate_track", "Duplicate Track", "Duplicate track through Cubase-side bridge.", "duplicateTrack", DuplicateTrackInputShape, Permission.Track),
+  writeTool("cubase.reorder_track", "Reorder Track", "Reorder track through Cubase-side bridge.", "reorderTrack", ReorderTrackInputShape, Permission.Track),
+  writeTool("cubase.move_track_to_folder", "Move Track To Folder", "Move a track into or out of a folder through a Cubase-side bridge.", "moveTrackToFolder", MoveTrackToFolderInputShape, Permission.Track),
+  writeTool("cubase.set_track_visibility", "Set Track Visibility", "Set project/mix console visibility through DirectAccess where exposed or a bridge.", "setTrackVisibility", TrackVisibilityInputShape, Permission.Track),
+  writeTool("cubase.freeze_track", "Freeze Track", "Freeze track through Cubase-side bridge.", "freezeTrack", TrackActionInputShape, Permission.Track),
+  writeTool("cubase.unfreeze_track", "Unfreeze Track", "Unfreeze track through Cubase-side bridge.", "unfreezeTrack", TrackActionInputShape, Permission.Track)
+  ,
+  writeTool("cubase.create_track_default_audio", "Create Default Audio Track", "Run MIDI Remote command binding Add Track > Audio and verify with DirectAccess in real tests.", "createTrackDefaultAudio", EmptyInputShape, Permission.Track, { createsUndoSnapshot: false }),
+  writeTool("cubase.create_track_default_midi", "Create Default MIDI Track", "Run MIDI Remote command binding Add Track > MIDI and verify with DirectAccess in real tests.", "createTrackDefaultMidi", EmptyInputShape, Permission.Track, { createsUndoSnapshot: false }),
+  writeTool("cubase.create_track_default_instrument", "Create Default Instrument Track", "Run MIDI Remote command binding Add Track > Instrument. May require a Cubase dialog depending on preferences.", "createTrackDefaultInstrument", EmptyInputShape, Permission.Track, { createsUndoSnapshot: false }),
+  writeTool("cubase.create_track_default_group", "Create Default Group Track", "Run MIDI Remote command binding Add Track > Group.", "createTrackDefaultGroup", EmptyInputShape, Permission.Track, { createsUndoSnapshot: false }),
+  writeTool("cubase.create_track_default_fx", "Create Default FX Track", "Run MIDI Remote command binding Add Track > FX. May require a Cubase dialog depending on preferences.", "createTrackDefaultFx", EmptyInputShape, Permission.Track, { createsUndoSnapshot: false }),
+  writeTool("cubase.create_track_default_folder", "Create Default Folder Track", "Run MIDI Remote command binding Add Track > Folder.", "createTrackDefaultFolder", EmptyInputShape, Permission.Track, { createsUndoSnapshot: false }),
+  writeTool("cubase.create_track_default_marker", "Create Default Marker Track", "Run MIDI Remote command binding Add Track > Marker.", "createTrackDefaultMarker", EmptyInputShape, Permission.Track, { createsUndoSnapshot: false }),
+  writeTool("cubase.create_track_default_tempo", "Create Default Tempo Track", "Run MIDI Remote command binding Add Track > Tempo.", "createTrackDefaultTempo", EmptyInputShape, Permission.Track, { createsUndoSnapshot: false }),
+  writeTool("cubase.create_track_default_chord", "Create Default Chord Track", "Run MIDI Remote command binding Add Track > Chord.", "createTrackDefaultChord", EmptyInputShape, Permission.Track, { createsUndoSnapshot: false }),
+  writeTool("cubase.create_track_from_preset", "Create Track From Preset", "Create track from a user-prepared preset if a Cubase-side bridge or command binding exposes it.", "createTrackFromPreset", CreateTrackFromPresetInputShape, Permission.Track),
+  writeTool("cubase.create_track_parameterized", "Create Parameterized Track", "Fully parameterized track creation; requires verified Cubase API support.", "createTrackParameterized", CreateTrackInputShape, Permission.Track)
+];

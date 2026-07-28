@@ -1,0 +1,42 @@
+{
+  "user": "Export all stems as WAV 48 kHz 24-bit.",
+  "toolCalls": [
+    { "tool": "cubase.get_project", "arguments": {} },
+    { "tool": "cubase.set_export_format", "arguments": { "format": "wav", "dryRun": true } },
+    { "tool": "cubase.set_export_sample_rate", "arguments": { "sampleRate": 48000, "dryRun": true } },
+    { "tool": "cubase.set_export_bit_depth", "arguments": { "bitDepth": 24, "dryRun": true } },
+    {
+      "tool": "cubase.export_stems",
+      "arguments": {
+        "destinationDirectory": "E:/Exports/My Song/Stems",
+        "format": "wav",
+        "sampleRate": 48000,
+        "bitDepth": 24,
+        "filenamePattern": "{index}_{trackName}",
+        "overwrite": true,
+        "dryRun": true
+      }
+    },
+    {
+      "tool": "cubase.export_stems",
+      "arguments": {
+        "destinationDirectory": "E:/Exports/My Song/Stems",
+        "format": "wav",
+        "sampleRate": 48000,
+        "bitDepth": 24,
+        "filenamePattern": "{index}_{trackName}",
+        "overwrite": true,
+        "confirm": true
+      },
+      "fallback": {
+        "tool": "cubase.perform_current_audio_export",
+        "arguments": {
+          "expectedFiles": ["E:/Exports/My Song/current-mix.wav"],
+          "confirm": true
+        },
+        "limitation": "Uses existing Cubase export settings and does not imply stems, format, path, or range control."
+      }
+    },
+    { "tool": "cubase.get_export_jobs", "arguments": {} }
+  ]
+}

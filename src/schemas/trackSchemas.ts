@@ -1,0 +1,20 @@
+import { z } from "zod/v4";
+import { TrackTypeSchema } from "./state.js";
+import { BaseInputShape, DirectAccessParameterTargetSchema, EmptyInputShape, TrackIdField, EnabledField } from "./commonSchemas.js";
+
+export const ListTracksInputShape = { ...BaseInputShape, type: TrackTypeSchema.optional(), includeHidden: z.boolean().default(false).optional() };
+export const GetTrackInputShape = { ...BaseInputShape, trackId: z.string().min(1) };
+export const CreateTrackInputShape = { ...BaseInputShape, type: TrackTypeSchema, name: z.string().optional(), count: z.number().int().min(1).max(128).default(1).optional(), color: z.string().optional(), folderId: z.string().optional(), preset: z.string().optional(), instrumentName: z.string().optional(), inputBus: z.string().optional(), outputBus: z.string().optional() };
+export const CreateTypedTrackInputShape = { ...BaseInputShape, name: z.string().optional(), count: z.number().int().min(1).max(128).default(1).optional(), color: z.string().optional(), folderId: z.string().optional(), preset: z.string().optional(), instrumentName: z.string().optional(), inputBus: z.string().optional(), outputBus: z.string().optional() };
+export const CreateTrackFromPresetInputShape = { ...BaseInputShape, preset: z.string().min(1), type: TrackTypeSchema.optional(), name: z.string().optional(), count: z.number().int().min(1).max(128).default(1).optional(), folderId: z.string().optional(), inputBus: z.string().optional(), outputBus: z.string().optional() };
+export const DeleteTrackInputShape = { ...BaseInputShape, trackIds: z.array(z.string()).min(1) };
+export const RenameTrackInputShape = { ...BaseInputShape, ...TrackIdField, name: z.string().min(1) };
+export const SetTrackColorInputShape = { ...BaseInputShape, ...TrackIdField, color: z.string().min(1) };
+export const SelectTracksInputShape = { ...BaseInputShape, trackIds: z.array(z.string()).min(1), mode: z.enum(["replace", "add", "remove"]).default("replace").optional() };
+export const TrackBooleanInputShape = { ...BaseInputShape, ...TrackIdField, ...EnabledField, directAccess: DirectAccessParameterTargetSchema.optional() };
+export const TrackActionInputShape = { ...BaseInputShape, ...TrackIdField };
+export const DuplicateTrackInputShape = { ...BaseInputShape, ...TrackIdField, includeEvents: z.boolean().default(true).optional(), includePlugins: z.boolean().default(true).optional() };
+export const ReorderTrackInputShape = { ...BaseInputShape, ...TrackIdField, targetIndex: z.number().int().min(0) };
+export const MoveTrackToFolderInputShape = { ...BaseInputShape, ...TrackIdField, folderTrackId: z.string().min(1).nullable() };
+export const TrackVisibilityInputShape = { ...BaseInputShape, ...TrackIdField, visible: z.boolean() };
+export { EmptyInputShape };

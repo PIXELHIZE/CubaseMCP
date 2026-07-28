@@ -1,0 +1,4 @@
+{
+  "aliasOf": "vocal-forward-dry-run.json",
+  "applyRule": "Repeat only approved dry-run calls with dryRun:false. Keep selection-dependent and DirectAccess ObjectID limitations in the result."
+}

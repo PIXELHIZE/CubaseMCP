@@ -1,0 +1,74 @@
+{
+  "workflow": "Create a new project, configure it, add tracks, generate MIDI, and save",
+  "policy": {
+    "dryRunFirst": true,
+    "stopOnError": true,
+    "acceptStatuses": [
+      "real",
+      "partial_direct_access",
+      "partial_command_binding",
+      "partial_selection_dependent",
+      "partial_bridge_required"
+    ]
+  },
+  "calls": [
+    {
+      "tool": "cubase.get_capabilities",
+      "arguments": {}
+    },
+    {
+      "tool": "cubase.create_project",
+      "arguments": {
+        "name": "AI Session",
+        "directory": "E:/Cubase Projects/AI Session",
+        "sampleRate": 48000,
+        "bitDepth": 24,
+        "dryRun": true
+      }
+    },
+    {
+      "tool": "cubase.create_project",
+      "arguments": {
+        "name": "AI Session",
+        "directory": "E:/Cubase Projects/AI Session",
+        "sampleRate": 48000,
+        "bitDepth": 24,
+        "confirm": true
+      },
+      "fallback": "Return partial_bridge_required when no production Cubase-side project bridge is installed."
+    },
+    {
+      "tool": "cubase.set_tempo",
+      "arguments": {
+        "bpm": 124
+      }
+    },
+    {
+      "tool": "cubase.create_instrument_track",
+      "arguments": {
+        "name": "Drums",
+        "instrumentName": "Groove Agent"
+      },
+      "fallback": "Use the default command-created instrument track; arbitrary name/instrument remains partial."
+    },
+    {
+      "tool": "cubase.create_midi_part_from_generated_file",
+      "arguments": {
+        "trackId": "selected",
+        "name": "House Beat",
+        "tempo": 124,
+        "notes": [
+          { "pitch": 36, "start": "1.1.1.0", "length": "0.0.1.0", "velocity": 118 },
+          { "pitch": 36, "start": "1.2.1.0", "length": "0.0.1.0", "velocity": 115 },
+          { "pitch": 36, "start": "1.3.1.0", "length": "0.0.1.0", "velocity": 118 },
+          { "pitch": 36, "start": "1.4.1.0", "length": "0.0.1.0", "velocity": 115 }
+        ]
+      },
+      "fallback": "The server still generates a valid .mid file and returns NEEDS_CUBASE_SIDE_BRIDGE when headless import is unavailable."
+    },
+    {
+      "tool": "cubase.save_project",
+      "arguments": {}
+    }
+  ]
+}
