@@ -1,0 +1,40 @@
+# v2 completion audit
+
+This audit separates implementation readiness from release certification.
+
+| Requirement | Authoritative evidence | State |
+|---|---|---|
+| Preserve the former implementation | Git tag `v0.1.0-legacy` points to the 238-tool baseline | complete |
+| Action-based public MCP surface | MCP SDK integration test lists exactly 25 tools; `src/v2/actionManifest.ts` declares 198 unique actions | complete |
+| Action-specific contracts and examples | Every action has a strict Zod variant and a generated example that is parsed by the same schema; exposed at `cubase://v2/actions` | complete |
+| Legacy migration coverage | `auditLegacyMapping()` accounts for all 238 legacy tools with no missing or removed entry | complete |
+| Song planning policy | Resolver tests prove software roles use Instrument Tracks and hardware/rack roles use MIDI Tracks | complete |
+| Song execution and validation | Mock end-to-end test proves track creation, instruments, MIDI parts/notes, routing, tempo/signature, and explicitly test-only audibility | complete |
+| Real song audibility safety | Real path performs transport/meter observation, restores transport, and rolls back planner-owned tracks when audibility is not observable | implemented; safe14 evidence pending |
+| Capability status policy | v2 schema permits only `real`, two blocked statuses, or pre-release `unsupported_release_profile`; non-real claims require blocker reasons | complete |
+| Host binding | Certified claims require exact product, patch, script build, MCP v2, transport v1, and a supported live-host state | complete |
+| Evidence release gate | Audit checks all actions, exact host/build/protocol, outcome, real-hardware method, mutation before/after/diff/restore, crash dumps, song audibility, and export file size/SHA-256 | complete |
+| Cubase 15 wording | safe15 resolves to `unverified_host_profile` / `unsupported_release_profile`, not a technical unsupported-host claim | complete |
+| UI automation prohibition | Static audit and regression test scan runtime source for prohibited screen/keyboard/mouse automation | complete |
+| VST3/named-pipe exclusion | Experimental research is under `experimental/`, excluded from TypeScript and package files; static audit rejects forbidden runtime dependencies | complete |
+| Public CI | Windows workflow runs install, audit, typecheck, tests, build, package dry run, SBOM, ZIP, MSI, and checksums | complete |
+| Private Cubase gate | Self-hosted Windows workflow requires real tests and fail-closed capability/evidence audit before packaging | complete |
+| Windows distribution | Bundled Node runtime ZIP/MSI, CycloneDX SBOM, checksums, and MSI install/uninstall smoke are generated successfully | complete |
+| Licensing | Apache-2.0, NOTICE, third-party notices, SBOM, and packaging checks are present | complete |
+| Public GitHub repository | No accessible `origin` is configured and the proposed remote does not exist | blocked on repository destination |
+| Cubase Pro 14.0.41 release certification | Local host is not the exact target; no certified manifest/evidence is emitted | pending self-hosted real-hardware gate |
+
+## Reproducible local verification
+
+```powershell
+npm ci
+npm audit --omit=dev
+npm run typecheck
+npm test
+npm run v2:audit
+npm run build
+npm pack --dry-run
+```
+
+`npm run release:audit` intentionally fails unless both `CUBASE_V2_CAPABILITY_MANIFEST` and `CUBASE_V2_EVIDENCE` identify a complete certified evidence set.
+

@@ -7,6 +7,7 @@
 - [v0.1 to v2 migration](migration-v2.md)
 - [Windows and Cubase setup](setup-windows.md)
 - [Release gates](release-gates.md)
+- [Completion audit](completion-audit.md)
 - [Security and distribution policy](security.md)
 
 The `v0.1.0-legacy` Git tag preserves the former 238-tool implementation and its reports.
