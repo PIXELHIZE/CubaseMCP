@@ -15,7 +15,9 @@ describeReal.sequential("v2 safe14 host contract", () => {
 
   beforeAll(async () => {
     await adapter.connect();
-    host = await detectHostProfile(adapter, "v2-safe14-release-gate");
+    host = await detectHostProfile(adapter, "v2-safe14-release-gate", {
+      edition: process.env.CUBASE_HOST_EDITION
+    });
   }, 30_000);
 
   afterAll(async () => {

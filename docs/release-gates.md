@@ -16,6 +16,9 @@
 ## Private self-hosted Windows gate
 
 - Cubase Pro 14.0.41 `safe14`
+- non-mutating preflight proving MIDI port direction, bridge ping, Cubase
+  application name, operator-attested Pro edition, exact patch, v2/transport-v1
+  handshake, release profile, and script build before any real test
 - fresh fixture project for each mutating action
 - state before, action response, state after, diff, restore, and restore verification
 - crash dump check after each scenario

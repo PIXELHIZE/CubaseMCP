@@ -3,6 +3,7 @@ import { MidiPortManager } from "../bridge/midi/MidiPortManager.js";
 import { RequestResponseRouter } from "../bridge/midi/RequestResponseRouter.js";
 import type { MidiPortConfig } from "../config/midiPorts.js";
 import { MidiPortDoctor, type MidiPortAudit } from "./MidiPortDoctor.js";
+import { parseHostHandshake, type HostHandshake } from "../v2/HostHandshake.js";
 
 export interface CubaseHandshakeEvidence {
   connected: boolean;
@@ -12,11 +13,13 @@ export interface CubaseHandshakeEvidence {
   ports: MidiPortAudit;
   request?: { command: "ping"; timeoutMs: number; retries: number };
   response?: CubaseMidiProtocolMessage;
+  appName?: string;
   appVersion?: string;
   midiRemoteApiVersion?: string;
   directAccessAvailable?: boolean;
   bridgeActive?: boolean;
   protocol?: unknown;
+  mcpProtocol?: HostHandshake;
   routerDiagnostics: ReturnType<RequestResponseRouter["getDiagnostics"]>;
   error?: { code: string; message: string };
 }
@@ -55,6 +58,7 @@ export class CubaseConnectionDoctor {
       }
       const payload = objectValue(response.payload);
       const directAccess = objectValue(payload.directAccess);
+      const mcpProtocol = parseHostHandshake(payload);
       const completed = Date.now();
       return {
         connected: true,
@@ -64,11 +68,13 @@ export class CubaseConnectionDoctor {
         ports: portAudit,
         request: { command: "ping", timeoutMs: this.config.timeoutMs, retries: this.config.retries },
         response,
+        appName: typeof payload.appName === "string" ? payload.appName : undefined,
         appVersion: typeof payload.appVersion === "string" ? payload.appVersion : undefined,
         midiRemoteApiVersion: typeof payload.midiRemoteApiVersion === "string" ? payload.midiRemoteApiVersion : undefined,
         directAccessAvailable: directAccess.makeDirectAccess === true,
         bridgeActive: directAccess.active === true,
         protocol: payload.protocol,
+        mcpProtocol,
         routerDiagnostics: this.router.getDiagnostics()
       };
     } catch (error) {

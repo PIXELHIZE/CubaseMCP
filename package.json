@@ -31,6 +31,7 @@
     "package:checksums": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/package-checksums.ps1",
     "dev": "tsx src/server.ts",
     "test": "vitest run",
+    "test:real:preflight": "tsx scripts/v2-real-preflight.ts",
     "test:real": "vitest run tests/integration --run",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },

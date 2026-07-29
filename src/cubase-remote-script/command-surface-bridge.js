@@ -20,6 +20,7 @@ var CHUNK_FRAGMENT_CHARS = 640
 var MAX_LOGICAL_PAYLOAD_CHARS = 4 * 1024 * 1024
 var registry = {}
 var bridgeState = {
+    appName: midiremote_api.mDefaults.getAppName(),
     appVersion: 'unknown',
     midiRemoteApiVersion: '1.x_feature_detected',
     projectOpen: true,
@@ -283,6 +284,7 @@ midiInput.mOnSysex = function(activeDevice, message) {
     if (request.command === 'ping' || request.command === 'get_state') {
         bridgeState.appVersion = midiremote_api.mDefaults.mAppVersion.getVersionString()
         send(request.id, request.command, {
+            appName: bridgeState.appName,
             appVersion: bridgeState.appVersion,
             midiRemoteApiVersion: bridgeState.midiRemoteApiVersion,
             state: bridgeState,
@@ -313,7 +315,7 @@ midiInput.mOnSysex = function(activeDevice, message) {
 page.mOnActivate = function(activeDevice, activeMapping) {
     activeDeviceRef = activeDevice
     activeMappingRef = activeMapping
-    sendWithType('hello', undefined, 'hello', { appVersion: midiremote_api.mDefaults.mAppVersion.getVersionString(), commandBindings: inspect() })
+    sendWithType('hello', undefined, 'hello', { appName: bridgeState.appName, appVersion: midiremote_api.mDefaults.mAppVersion.getVersionString(), commandBindings: inspect() })
     sendState()
 }
 

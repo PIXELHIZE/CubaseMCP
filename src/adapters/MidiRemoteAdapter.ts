@@ -293,6 +293,7 @@ export class MidiRemoteAdapter implements CubaseAdapter {
     const envelope = payload as { state?: unknown };
     const nestedState = envelope.state && typeof envelope.state === "object" ? envelope.state as Record<string, unknown> : {};
     const state = { ...(payload as Record<string, unknown>), ...nestedState } as {
+      appName?: string;
       appVersion?: string;
       midiRemoteApiVersion?: string;
       directAccess?: { makeDirectAccess?: boolean; active?: boolean };
@@ -317,10 +318,11 @@ export class MidiRemoteAdapter implements CubaseAdapter {
       };
     };
     const partial: Partial<CubaseState> = {};
-    if (state.appVersion || state.midiRemoteApiVersion || state.directAccess) {
+    if (state.appName || state.appVersion || state.midiRemoteApiVersion || state.directAccess) {
       partial.cubase = {
         ...this.stateStore.snapshot().cubase,
         connected: true,
+        appName: state.appName ?? this.stateStore.snapshot().cubase.appName,
         version: state.appVersion ?? this.stateStore.snapshot().cubase.version,
         midiRemoteApiVersion: state.midiRemoteApiVersion ?? this.stateStore.snapshot().cubase.midiRemoteApiVersion,
         mcpProtocolVersion: state.mcpProtocol?.version ?? this.stateStore.snapshot().cubase.mcpProtocolVersion,

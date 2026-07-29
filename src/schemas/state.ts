@@ -125,6 +125,7 @@ export const JobSchema = z.object({
 export const CubaseStateSchema = z.object({
   cubase: z.object({
     connected: z.boolean(),
+    appName: z.string().optional(),
     version: z.string(),
     midiRemoteApiVersion: z.string().default("unknown"),
     mcpProtocolVersion: z.number().int().optional(),

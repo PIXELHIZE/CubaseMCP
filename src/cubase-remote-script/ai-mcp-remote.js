@@ -15,6 +15,7 @@ deviceDriver.makeDetectionUnit().detectPortPair(midiInput, midiOutput)
 var MAGIC = 'AIMCP1:'
 var MANUFACTURER = 0x7d
 var state = {
+    appName: midiremote_api.mDefaults.getAppName(),
     appVersion: midiremote_api.mDefaults.mAppVersion.getVersionString(),
     projectOpen: true,
     transport: {
@@ -85,6 +86,7 @@ midiInput.mOnSysex = function(activeDevice, message) {
         if (request.command === 'ping' || request.command === 'get_state') {
             sendProtocol(activeDevice, 'response', request.id, request.command, true, {
                 state: state,
+                appName: state.appName,
                 appVersion: state.appVersion,
                 mcpProtocol: { version: 2, transportVersion: 1, releaseProfile: getHostProfile(), scriptBuild: '2.0.0-safe14' }
             }, undefined)

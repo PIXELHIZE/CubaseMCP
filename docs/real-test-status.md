@@ -46,6 +46,47 @@ contain the v2 protocol/profile identifiers. The v2 DirectAccess and Remote
 scripts are disabled. Consequently, no v2 application handshake has been
 observed from this machine.
 
+## Automated safe14 preflight
+
+The non-mutating preflight was run with the observed Cubase Pro edition
+attested explicitly:
+
+```powershell
+$env:CUBASE_HOST_EDITION="Pro"
+npm run test:real:preflight
+```
+
+It failed closed. Of nine checks, the MIDI port check and explicit edition
+attestation passed. The following seven checks failed because no bridge response
+was received:
+
+- bridge ping
+- official host application name
+- exact host version
+- `safe14` release profile
+- `2.0.0-safe14` script build
+- MCP protocol v2
+- transport protocol v1
+
+The generated local report is
+`reports/v2/safe14-preflight-2026-07-29T05-22-52Z.json`. Runtime reports are
+gitignored; the self-hosted workflow uploads them as release-gate artifacts.
+
+## Historical legacy-host evidence
+
+Gitignored diagnostic bundles from 2026-07-10 prove that the former bridge did
+communicate with a real Cubase 14.0.32 process. The strongest smoke run,
+`reports/real-cubase/2026-07-10_17-20-31`, passed eight of twelve checks:
+transport stop/play, cycle and metronome toggles with restoration, selected
+volume and solo writes with restoration, and a DirectAccess parameter read.
+Pan, mute, focused Quick Control, and a verified DirectAccess parameter write
+did not pass.
+
+That handshake used the legacy transport envelope and did not contain
+`mcpProtocol`, `safe14`, or `2.0.0-safe14`. It therefore proves only that parts
+of the legacy bridge operated against Cubase 14.0.32; it is not v2 release
+evidence and does not prove song creation.
+
 ## Interpretation
 
 - No real Cubase v2 test has passed on this machine.
@@ -61,6 +102,7 @@ observed from this machine.
 3. Install and activate the v2 `2.0.0-safe14` MIDI Remote script.
 4. Restart Cubase after the ports and script are available.
 5. Open a disposable fixture project with a selected test track.
-6. Confirm a v2/transport-v1 handshake with the exact safe14 script build.
-7. Run the private release workflow and retain before/after/restore, crash-dump,
+6. Set the self-hosted `CUBASE_HOST_EDITION=Pro` operator attestation.
+7. Pass `npm run test:real:preflight`.
+8. Run the private release workflow and retain before/after/restore, crash-dump,
    audibility, and export-file evidence.

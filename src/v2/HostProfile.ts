@@ -20,7 +20,26 @@ function atLeast(version: string, target: [number, number, number]): boolean {
   return true;
 }
 
-export async function detectHostProfile(adapter: CubaseAdapter, sessionId: string = randomUUID()): Promise<HostDescriptor> {
+export interface HostProfileHints {
+  /**
+   * MIDI Remote exposes the application name (Cubase/Nuendo), but not the
+   * licensed edition. A release runner may provide an operator-verified
+   * edition; absence must remain fail-closed for a Pro-only manifest.
+   */
+  edition?: string;
+}
+
+function productFromAppName(appName: string | undefined): string {
+  if (/^cubase\b/i.test(appName ?? "")) return "Cubase";
+  if (/^nuendo\b/i.test(appName ?? "")) return "Nuendo";
+  return "Unknown Steinberg Host";
+}
+
+export async function detectHostProfile(
+  adapter: CubaseAdapter,
+  sessionId: string = randomUUID(),
+  hints: HostProfileHints = { edition: process.env.CUBASE_HOST_EDITION }
+): Promise<HostDescriptor> {
   if (adapter.mode === "mock") {
     return {
       product: "Mock Cubase",
@@ -38,10 +57,12 @@ export async function detectHostProfile(adapter: CubaseAdapter, sessionId: strin
   const label = state.cubase.version ?? "Unknown Cubase";
   const version = versionFromLabel(label);
   const hostMajor = major(version);
-  if (hostMajor === 14) {
+  const product = productFromAppName(state.cubase.appName);
+  const edition = /(?:^|\s)pro(?:\s|$)/i.test(state.cubase.appName ?? "") ? "Pro" : hints.edition;
+  if (hostMajor === 14 && product === "Cubase") {
     return {
-      product: "Cubase",
-      edition: /pro/i.test(label) ? "Pro" : undefined,
+      product,
+      edition,
       version,
       midiRemoteApiVersion: state.cubase.midiRemoteApiVersion,
       mcpProtocolVersion: state.cubase.mcpProtocolVersion,
@@ -52,10 +73,10 @@ export async function detectHostProfile(adapter: CubaseAdapter, sessionId: strin
       profile: "safe14"
     };
   }
-  if (hostMajor === 15) {
+  if (hostMajor === 15 && product === "Cubase") {
     return {
-      product: "Cubase",
-      edition: /pro/i.test(label) ? "Pro" : undefined,
+      product,
+      edition,
       version,
       midiRemoteApiVersion: state.cubase.midiRemoteApiVersion,
       mcpProtocolVersion: state.cubase.mcpProtocolVersion,
@@ -67,13 +88,14 @@ export async function detectHostProfile(adapter: CubaseAdapter, sessionId: strin
     };
   }
   return {
-    product: "Cubase",
+    product,
+    edition,
     version,
     midiRemoteApiVersion: state.cubase.midiRemoteApiVersion,
     mcpProtocolVersion: state.cubase.mcpProtocolVersion,
     mcpTransportVersion: state.cubase.mcpTransportVersion,
     sessionId,
-    supportStatus: "unsupported_host_version",
-    profile: `unsupported-${hostMajor || "unknown"}`
+    supportStatus: product === "Unknown Steinberg Host" ? "unsupported_host_version" : "unverified_host_profile",
+    profile: `unsupported-${product.toLowerCase().replaceAll(" ", "-")}-${hostMajor || "unknown"}`
   };
 }

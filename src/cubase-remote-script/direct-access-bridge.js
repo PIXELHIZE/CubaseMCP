@@ -30,6 +30,7 @@ var incomingChunks = {}
 var subscriptions = { objects: false, parameters: {} }
 var lastDirectAccessUpdateAt = 0
 var bridgeState = {
+    appName: midiremote_api.mDefaults.getAppName(),
     appVersion: 'unknown',
     midiRemoteApiVersion: 'unknown_feature_detected',
     projectOpen: true,
@@ -784,6 +785,7 @@ midiInput.mOnSysex = function(activeDevice, message) {
             bridgeState.appVersion = getApiVersion()
             bridgeState.midiRemoteApiVersion = inferMidiRemoteApiVersion()
             success(decoded.id, decoded.command, {
+                appName: bridgeState.appName,
                 appVersion: bridgeState.appVersion,
                 midiRemoteApiVersion: bridgeState.midiRemoteApiVersion,
                 state: bridgeState,
@@ -849,6 +851,7 @@ page.mOnActivate = function(activeDevice, activeMapping) {
     for (var i = 0; i < roots.length; i++) ensureDirectAccess(roots[i])
     bridgeState.midiRemoteApiVersion = inferMidiRemoteApiVersion()
     sendProtocol('hello', undefined, 'hello', true, {
+        appName: bridgeState.appName,
         appVersion: bridgeState.appVersion,
         midiRemoteApiVersion: bridgeState.midiRemoteApiVersion,
         state: bridgeState,

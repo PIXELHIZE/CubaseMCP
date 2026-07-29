@@ -37,8 +37,28 @@ npm run build
 $env:CUBASE_ADAPTER="composite"
 $env:CUBASE_MIDI_INPUT="AI MCP Bridge From Cubase"
 $env:CUBASE_MIDI_OUTPUT="AI MCP Bridge To Cubase"
+$env:CUBASE_HOST_EDITION="Pro"
 node dist/server.js
 ```
+
+MIDI Remote's official
+[`getAppName()` API](https://steinbergmedia.github.io/midiremote_api_doc/codedoc_api_reference/)
+identifies Cubase versus Nuendo, but it does not identify the licensed edition.
+`CUBASE_HOST_EDITION=Pro` is therefore an explicit operator attestation for the
+self-hosted runner, not a value inferred from the version string. Configure the
+same value as the `CUBASE_HOST_EDITION` Actions variable for the private release
+gate. Omitting it keeps a Pro-only certified manifest fail-closed.
+
+Before any integration scenario:
+
+```powershell
+npm run test:real:preflight
+```
+
+This command performs no Cubase mutation and uses no screen automation. It
+writes `reports/v2/safe14-preflight-*.json` and exits non-zero unless all MIDI
+port, bridge, product, edition-attestation, exact patch, release-profile,
+script-build, MCP v2, and transport-v1 checks pass.
 
 The certified capability manifest is supplied with `CUBASE_V2_CAPABILITY_MANIFEST`. Without a certified profile, non-server actions are rejected as unsupported release-profile operations.
 

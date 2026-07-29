@@ -16,6 +16,8 @@ describe("Cubase MIDI Remote script contract", () => {
       expect(source).toContain("version: 2");
       expect(source).toContain("releaseProfile:");
       expect(source).toContain("scriptBuild: '2.0.0-safe14'");
+      expect(source).toContain("midiremote_api.mDefaults.getAppName()");
+      expect(source).toContain("appName:");
     }
   });
 
