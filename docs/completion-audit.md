@@ -21,8 +21,8 @@ This audit separates implementation readiness from release certification.
 | Private Cubase gate | Self-hosted Windows workflow requires real tests and fail-closed capability/evidence audit before packaging | complete |
 | Windows distribution | Bundled Node runtime ZIP/MSI, CycloneDX SBOM, checksums, and MSI install/uninstall smoke are generated successfully | complete |
 | Licensing | Apache-2.0, NOTICE, third-party notices, SBOM, and packaging checks are present | complete |
-| Public GitHub repository | No accessible `origin` is configured and the proposed remote does not exist | blocked on repository destination |
-| Cubase Pro 14.0.41 release certification | A real 14.0.32 probe failed before handshake because the required virtual MIDI ports were absent; no certified manifest/evidence is emitted | pending self-hosted real-hardware gate |
+| Public GitHub repository | `origin` points to the public `PIXELHIZE/CubaseMCP` repository; the v2 branch and draft PR #1 are published | complete |
+| Cubase Pro 14.0.41 release certification | On installed Cubase Pro 14.0.32, loopMIDI ports were recovered but the active legacy bridge timed out on `ping`; no v2 handshake or certified manifest/evidence was produced | pending self-hosted real-hardware gate |
 
 ## Reproducible local verification
 

@@ -9,7 +9,7 @@ Last probe: 2026-07-29, Asia/Seoul.
 - runtime window: Cubase Pro Hub
 - project: not opened
 
-## Read-only connection probe
+## Read-only connection probes
 
 Cubase was launched and a real `CompositeCubaseAdapter` connection was attempted with:
 
@@ -18,22 +18,33 @@ CUBASE_MIDI_INPUT=AI MCP Bridge From Cubase
 CUBASE_MIDI_OUTPUT=AI MCP Bridge To Cubase
 ```
 
-The connection failed before an application handshake:
+The first connection attempt failed before an application handshake because
+loopMIDI was installed but not running:
 
 ```text
 MIDI input port not found: "AI MCP Bridge From Cubase"
 ```
 
-Available MIDI inputs at the time of the probe were:
+After starting loopMIDI, both required ports were enumerated:
 
 ```text
-KL Essential 49 mk3 MCU/HUI
-KL Essential 49 mk3 ALV
-KL Essential 49 mk3 MIDI
-KL Essential 49 mk3 DINTHRU
+AI MCP Bridge To Cubase
+AI MCP Bridge From Cubase
 ```
 
-The installed MIDI Remote directory contains an older active Command Surface script. The v2 DirectAccess and Remote scripts are disabled, so no v2 application handshake has been observed from this machine.
+The second connection attempt opened the MIDI ports but timed out waiting for
+the Cubase bridge:
+
+```text
+MIDI ports opened, but Cubase MIDI Remote bridge did not answer ping.
+cause: MIDI request timed out: ping
+```
+
+The installed MIDI Remote directory contains an older active Command Surface
+script whose content differs from the repository's v2 script and does not
+contain the v2 protocol/profile identifiers. The v2 DirectAccess and Remote
+scripts are disabled. Consequently, no v2 application handshake has been
+observed from this machine.
 
 ## Interpretation
 
@@ -45,9 +56,11 @@ The installed MIDI Remote directory contains an older active Command Surface scr
 ## Requirements before `npm run test:real`
 
 1. Install or update to Cubase Pro 14.0.41 on the self-hosted release runner.
-2. Create the two user-managed virtual MIDI ports named in `setup-windows.md`.
+2. Start loopMIDI and confirm the two user-managed virtual MIDI ports named in
+   `setup-windows.md` are present.
 3. Install and activate the v2 `2.0.0-safe14` MIDI Remote script.
-4. Open a disposable fixture project with a selected test track.
-5. Confirm a v2/transport-v1 handshake with the exact safe14 script build.
-6. Run the private release workflow and retain before/after/restore, crash-dump, audibility, and export-file evidence.
-
+4. Restart Cubase after the ports and script are available.
+5. Open a disposable fixture project with a selected test track.
+6. Confirm a v2/transport-v1 handshake with the exact safe14 script build.
+7. Run the private release workflow and retain before/after/restore, crash-dump,
+   audibility, and export-file evidence.
