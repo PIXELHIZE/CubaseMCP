@@ -49,6 +49,16 @@ self-hosted runner, not a value inferred from the version string. Configure the
 same value as the `CUBASE_HOST_EDITION` Actions variable for the private release
 gate. Omitting it keeps a Pro-only certified manifest fail-closed.
 
+Before enabling destructive command-binding evidence, open a disposable
+fixture project and configure the private Actions variable:
+
+```text
+CUBASE_FIXTURE_ATTESTATION=disposable-safe14-fixture
+```
+
+The real suite refuses `CUBASE_REAL_DESTRUCTIVE=true` without that exact
+operator attestation.
+
 Before any integration scenario:
 
 ```powershell
@@ -60,7 +70,11 @@ writes `reports/v2/safe14-preflight-*.json` and exits non-zero unless all MIDI
 port, bridge, product, edition-attestation, exact patch, release-profile,
 script-build, MCP v2, and transport-v1 checks pass.
 
-The certified capability manifest is supplied with `CUBASE_V2_CAPABILITY_MANIFEST`. Without a certified profile, non-server actions are rejected as unsupported release-profile operations.
+The private gate generates its candidate observations, capability manifest, and
+evidence matrix from the fresh real-Cubase diagnostic run. A production runtime
+loads the resulting certified manifest through
+`CUBASE_V2_CAPABILITY_MANIFEST`. Without a certified profile, non-server
+actions are rejected as unsupported release-profile operations.
 
 Do not enable the experimental plugin bridge. It is excluded from the v2.0 runtime policy.
 

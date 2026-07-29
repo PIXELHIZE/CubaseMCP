@@ -20,11 +20,22 @@
   application name, operator-attested Pro edition, exact patch, v2/transport-v1
   handshake, release profile, and script build before any real test
 - fresh fixture project for each mutating action
+- single-worker, non-parallel real test execution against the shared Cubase host
 - state before, action response, state after, diff, restore, and restore verification
 - crash dump check after each scenario
 - meter/render audibility evidence for `cubase.song.create`
 - output-file existence, size, and checksum for exports
 - clean Windows VM MSI install/uninstall smoke
+
+The gate builds `safe14.observations.json`, `safe14.manifest.json`, and
+`safe14.evidence.json` from the fresh real-Cubase report. It does not accept a
+pre-certified manifest as a repository variable. Missing real-hardware
+candidate observations remain `unsupported_release_profile`, so the subsequent
+release audit fails closed.
+
+The private runner sets `CUBASE_REAL_DESTRUCTIVE=true` only for its disposable
+fixture project. Command-binding mutation candidates must produce an observable
+state diff and a verified Undo restoration; otherwise they remain unresolved.
 
 ## Release invariants
 

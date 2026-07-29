@@ -30,3 +30,21 @@ A project-mutating run must include before/after/diff, the state after restorati
 Blocked actions also need evidence, such as an official API surface analysis, a missing method result, a non-parameterized command, or a reproduced dialog/headless limitation.
 
 `EvidenceMatrix.audit` fails a release on missing actions, host/evidence mismatches, insufficient real-device evidence, incomplete or unrestored mutations, missing export or audibility evidence, unchecked crash dumps, or any `unsupported_release_profile` entry.
+
+## safe14 certification assembly
+
+`safe14-v1` partitions all 198 actions into:
+
+- 4 server-side actions eligible for unit evidence;
+- 53 official-path candidates that require a fresh real-hardware observation;
+- 141 actions with reviewed static API blockers.
+
+The candidate set is deliberately not converted to a blocker merely because a
+test has not run. `npm run v2:assemble-safe14` consumes the newest correlated
+real-Cubase report, records only restored or read-only observations, and leaves
+every unobserved candidate as `unsupported_release_profile`. The release audit
+therefore cannot turn missing evidence into a release claim.
+
+Real report collection also snapshots configured Cubase crash-dump directories
+before and after the scenario bundle. Any new or changed dump prevents
+observations from being assembled.

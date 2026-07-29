@@ -7,6 +7,10 @@ import { v2ToolNames } from "../src/v2/actionSchemas.js";
 import { auditLegacyMapping } from "../src/v2/legacyMapping.js";
 import { v2ActionDocumentation } from "../src/v2/ActionDocumentation.js";
 import { readOnlyActionKeys, unitEligibleRealActionKeys } from "../src/v2/ActionSemantics.js";
+import {
+  assembleSafe14Certification,
+  safe14RealObservationActionKeys
+} from "../src/v2/Safe14Certification.js";
 
 const forbidden = [
   "SendKeys",
@@ -41,6 +45,11 @@ const actionKeys = v2Actions.map((action) => action.key);
 const duplicateActions = actionKeys.filter((key, index) => actionKeys.indexOf(key) !== index);
 const invalidSemanticKeys = [...readOnlyActionKeys, ...unitEligibleRealActionKeys]
   .filter((key) => !actionKeys.includes(key));
+const invalidCertificationKeys = [...safe14RealObservationActionKeys]
+  .filter((key) => !actionKeys.includes(key));
+const overlappingCertificationKeys = [...safe14RealObservationActionKeys]
+  .filter((key) => unitEligibleRealActionKeys.has(key));
+const pendingCertification = assembleSafe14Certification([], new Date(0).toISOString());
 const automationMatches: Array<{ file: string; term: string }> = [];
 for (const file of await sourceFiles(resolve("src"))) {
   const content = await readFile(file, "utf8");
@@ -73,6 +82,10 @@ const checks = {
   actionDocumentation: v2ActionDocumentation.length === v2Actions.length &&
     new Set(v2ActionDocumentation.map((document) => document.key)).size === v2Actions.length,
   actionSemantics: invalidSemanticKeys.length === 0,
+  certificationPolicy: invalidCertificationKeys.length === 0 &&
+    overlappingCertificationKeys.length === 0 &&
+    pendingCertification.manifest.actions.length === v2Actions.length &&
+    pendingCertification.unresolved.length === safe14RealObservationActionKeys.size,
   routeCoverage: router.routeCount() === v2Actions.length - serverActions,
   legacyCoverage: legacy.total === 238 && legacy.mapped === 238 && legacy.removed === 0 && legacy.missing.length === 0,
   noScreenAutomation: automationMatches.length === 0,
@@ -91,10 +104,13 @@ const report = {
     actions: v2Actions.length,
     adapterRoutes: router.routeCount(),
     serverActions,
+    safe14RealCandidates: safe14RealObservationActionKeys.size,
     legacyTools: legacy.total
   },
   duplicateActions,
   invalidSemanticKeys,
+  invalidCertificationKeys,
+  overlappingCertificationKeys,
   automationMatches,
   forbiddenDependencies,
   missingDistributionFiles

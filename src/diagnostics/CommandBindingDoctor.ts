@@ -13,6 +13,7 @@ export type CommandAuditResult = {
   stateBefore?: unknown;
   stateAfter?: unknown;
   stateDiff?: unknown;
+  stateAfterRestore?: unknown;
   requiresSelection?: boolean;
   opensDialog?: boolean;
   result: CommandAuditResultValue;
@@ -169,6 +170,7 @@ export class CommandBindingDoctor {
         this.router.sendControl({ kind: "cc", channel: 0, number: 101, value: 127 });
         await wait(Number(process.env.CUBASE_COMMAND_SETTLE_MS ?? 700));
         const restoredState = await this.snapshot();
+        result.stateAfterRestore = restoredState;
         result.restored = changedPaths(result.stateBefore, restoredState).length === 0;
         result.result = result.restored ? "real" : "partial";
         if (!result.restored) {

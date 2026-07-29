@@ -2,6 +2,7 @@ import { access, readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { beforeAll, describe, expect, it } from "vitest";
 import { runRealCubaseReport, type ReportRunResult, type SmokeTestResult } from "../../scripts/cubase-report.js";
+import { assertRealTestFixtureAuthorization } from "../../src/v2/RealTestSafety.js";
 
 const requireReal = process.env.CUBASE_REQUIRE_REAL === "true" || process.env.npm_lifecycle_event === "test:real";
 const describeReal = requireReal ? describe : describe.skip;
@@ -28,7 +29,11 @@ describeReal("real Cubase evidence report", () => {
   let run: ReportRunResult;
 
   beforeAll(async () => {
-    run = await runRealCubaseReport({ mode: "discover" });
+    assertRealTestFixtureAuthorization(process.env);
+    run = await runRealCubaseReport({
+      mode: "discover",
+      executeDestructive: process.env.CUBASE_REAL_DESTRUCTIVE === "true"
+    });
   }, 180_000);
 
   it("writes the complete evidence bundle from a correlated real handshake", async () => {
@@ -42,6 +47,7 @@ describeReal("real Cubase evidence report", () => {
       "plugin-manager.json",
       "tool-capability-matrix.json",
       "errors.json",
+      "crash-dumps.json",
       "next-actions.md",
       "smoke-tests.json"
     ];
@@ -51,6 +57,17 @@ describeReal("real Cubase evidence report", () => {
     expect(handshake.connected).toBe(true);
     expect(handshake.midiRemoteApiVersion).toBeTypeOf("string");
     expect(handshake.routerDiagnostics).toBeDefined();
+  });
+
+  it("checks for new Cubase crash dumps during the real scenario", async () => {
+    const crashDumps = await json<{
+      checked: boolean;
+      passed: boolean;
+      newOrChangedDumps: unknown[];
+    }>(run.reportDirectory, "crash-dumps.json");
+    expect(crashDumps.checked).toBe(true);
+    expect(crashDumps.passed).toBe(true);
+    expect(crashDumps.newOrChangedDumps).toEqual([]);
   });
 
   it("records DirectAccess roots or an explicit feature-detection blocker", async () => {

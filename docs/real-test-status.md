@@ -93,6 +93,8 @@ evidence and does not prove song creation.
 - No real transport, mixer, track, song, export, or destructive scenario was executed by this probe.
 - Results from unit/mock/protocol tests must not be described as real Cubase evidence.
 - Cubase 14.0.32 cannot certify the exact `safe14` target of Cubase Pro 14.0.41.
+- Local verification currently has 82 passing tests; 15 tests remain explicitly
+  gated on a real Cubase host.
 
 ## Requirements before `npm run test:real`
 

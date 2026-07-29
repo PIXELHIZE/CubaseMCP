@@ -13,6 +13,7 @@ import {
   type RealCubaseReport,
   type ToolCapabilityEvidence
 } from "../src/diagnostics/ReportWriter.js";
+import { CrashDumpMonitor } from "../src/v2/CrashDumpMonitor.js";
 
 export interface ReportRunOptions {
   mode: RealCubaseReport["mode"];
@@ -467,6 +468,8 @@ function nextActions(input: {
 
 export async function runRealCubaseReport(options: ReportRunOptions): Promise<ReportRunResult> {
   const timestamp = new Date().toISOString();
+  const crashDumpMonitor = new CrashDumpMonitor();
+  const crashDumpsBefore = await crashDumpMonitor.snapshot();
   const config = loadCubaseConfig(process.env);
   const connection = new CubaseConnectionDoctor(config.midi);
   const errors: DiagnosticErrorRecord[] = [];
@@ -528,6 +531,16 @@ export async function runRealCubaseReport(options: ReportRunOptions): Promise<Re
   } finally {
     await connection.disconnect().catch((error) => errors.push(errorRecord("connection", "DISCONNECT_FAILED", error)));
   }
+  const crashDumps = crashDumpMonitor.audit(crashDumpsBefore, await crashDumpMonitor.snapshot());
+  if (!crashDumps.passed) {
+    errors.push(errorRecord(
+      "crash-dumps",
+      crashDumps.checked ? "CUBASE_CRASH_DUMP_DETECTED" : "CRASH_DUMP_CHECK_UNAVAILABLE",
+      crashDumps.checked
+        ? `New or changed Cubase crash dumps: ${crashDumps.newOrChangedDumps.map((item) => item.path).join(", ")}`
+        : "No Cubase crash-dump directory could be determined."
+    ));
+  }
 
   const capabilities = classifyCapabilities({ connected, direct: directAudit, commands: commandAudit, plugin: pluginAudit, smoke: smokeTests });
   const report: RealCubaseReport = {
@@ -543,6 +556,7 @@ export async function runRealCubaseReport(options: ReportRunOptions): Promise<Re
     pluginManager: pluginAudit ?? {},
     toolCapabilities: capabilities,
     errors,
+    crashDumps,
     nextActions: nextActions({ connected, handshake, direct: directAudit, commands: commandAudit, plugin: pluginAudit, smoke: smokeTests }),
     smokeTests
   };

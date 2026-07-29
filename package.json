@@ -22,6 +22,7 @@
     "cubase:project-test": "tsx scripts/cubase-project-create-test.ts",
     "cubase:project-report": "tsx scripts/cubase-project-report-finalize.ts",
     "v2:audit": "tsx scripts/v2-static-audit.ts",
+    "v2:assemble-safe14": "tsx scripts/v2-safe14-assemble.ts",
     "v2:pending-profile": "tsx scripts/v2-pending-profile.ts",
     "release:audit": "tsx scripts/v2-release-audit.ts",
     "sbom": "cyclonedx-npm --package-lock-only --omit dev --output-file artifacts/sbom.cdx.json --spec-version 1.6 --validate",
@@ -32,7 +33,7 @@
     "dev": "tsx src/server.ts",
     "test": "vitest run",
     "test:real:preflight": "tsx scripts/v2-real-preflight.ts",
-    "test:real": "vitest run tests/integration --run",
+    "test:real": "vitest run tests/integration --run --no-file-parallelism --maxWorkers=1",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
