@@ -22,7 +22,7 @@ This audit separates implementation readiness from release certification.
 | Windows distribution | Bundled Node runtime ZIP/MSI, CycloneDX SBOM, checksums, and MSI install/uninstall smoke are generated successfully | complete |
 | Licensing | Apache-2.0, NOTICE, third-party notices, SBOM, and packaging checks are present | complete |
 | Public GitHub repository | No accessible `origin` is configured and the proposed remote does not exist | blocked on repository destination |
-| Cubase Pro 14.0.41 release certification | Local host is not the exact target; no certified manifest/evidence is emitted | pending self-hosted real-hardware gate |
+| Cubase Pro 14.0.41 release certification | A real 14.0.32 probe failed before handshake because the required virtual MIDI ports were absent; no certified manifest/evidence is emitted | pending self-hosted real-hardware gate |
 
 ## Reproducible local verification
 
@@ -37,4 +37,3 @@ npm pack --dry-run
 ```
 
 `npm run release:audit` intentionally fails unless both `CUBASE_V2_CAPABILITY_MANIFEST` and `CUBASE_V2_EVIDENCE` identify a complete certified evidence set.
-
