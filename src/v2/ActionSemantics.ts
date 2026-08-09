@@ -3,6 +3,7 @@ export const readOnlyActionKeys = new Set([
   "cubase.system.capabilities",
   "cubase.system.diagnose",
   "cubase.project.get",
+  "cubase.song.program_catalog",
   "cubase.song.plan",
   "cubase.song.validate",
   "cubase.song.describe",
@@ -38,6 +39,7 @@ export const readOnlyActionKeys = new Set([
 
 export const unitEligibleRealActionKeys = new Set([
   "cubase.system.capabilities",
+  "cubase.song.program_catalog",
   "cubase.song.plan",
   "cubase.batch.preview",
   "cubase.batch.validate"
@@ -62,4 +64,3 @@ export function requiresRestoreEvidence(actionKey: string): boolean {
 export function requiresOutputArtifact(actionKey: string): boolean {
   return actionKey.startsWith("cubase.export_run.");
 }
-

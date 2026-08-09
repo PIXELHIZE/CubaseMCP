@@ -80,6 +80,7 @@ export class MidiRemoteAdapter implements CubaseAdapter {
       { operation: "transportPlay", status: "supported", adapter: this.name },
       { operation: "transportStop", status: "supported", adapter: this.name },
       { operation: "transportRecord", status: "supported", adapter: this.name },
+      { operation: "automation14PlayMidi", status: "supported", adapter: this.name, notes: "Opt-in interactive automation14 MIDI performance recording." },
       { operation: "setTrackVolume", status: "partial", adapter: this.name, notes: "Selected track only; exact dB mapping is normalized MIDI Remote host value." },
       { operation: "setTrackPan", status: "partial", adapter: this.name, notes: "Selected track only." },
       { operation: "setTrackMute", status: "partial", adapter: this.name, notes: "Selected track only." },
@@ -174,6 +175,8 @@ export class MidiRemoteAdapter implements CubaseAdapter {
         return this.sendMapped("transport.rewind", { action: "rewind" }) as OperationResult<T>;
       case "transportForward":
         return this.sendMapped("transport.forward", { action: "forward" }) as OperationResult<T>;
+      case "automation14PlayMidi":
+        return this.playMidiPerformance(input) as Promise<OperationResult<T>>;
       case "setCycle":
         return this.sendMapped("transport.cycle", { enabled: Boolean(input.enabled) }, boolToMidiValue(Boolean(input.enabled))) as OperationResult<T>;
       case "setMetronome":
@@ -236,6 +239,31 @@ export class MidiRemoteAdapter implements CubaseAdapter {
         ...data
       },
       warnings: ["Result verification depends on the next MIDI Remote state event from Cubase."]
+    };
+  }
+
+  private async playMidiPerformance(input: Record<string, unknown>): Promise<OperationResult> {
+    const events = Array.isArray(input.events) ? input.events : [];
+    const normalized = events.map((candidate, index) => {
+      if (typeof candidate !== "object" || candidate === null) throw new Error(`Invalid MIDI event at index ${index}.`);
+      const record = candidate as { atMs?: unknown; message?: unknown };
+      const atMs = Number(record.atMs);
+      const message = Array.isArray(record.message) ? record.message.map(Number) : [];
+      if (!Number.isFinite(atMs) || atMs < 0 || message.length !== 3 || message.some((value) => !Number.isInteger(value) || value < 0 || value > 255)) {
+        throw new Error(`Invalid MIDI event at index ${index}.`);
+      }
+      return { atMs, message };
+    }).sort((left, right) => left.atMs - right.atMs);
+    const started = performance.now();
+    for (const event of normalized) {
+      const remaining = event.atMs - (performance.now() - started);
+      if (remaining > 1) await new Promise((resolve) => setTimeout(resolve, remaining));
+      this.portManager.send(event.message);
+    }
+    return {
+      changed: normalized.length > 0,
+      adapter: this.name,
+      data: { eventCount: normalized.length, durationMs: Math.ceil(normalized.at(-1)?.atMs ?? 0) }
     };
   }
 

@@ -32,4 +32,4 @@ Each MCP tool takes one discriminated `action`. Action schemas remain small and 
 
 Before any action, query `cubase.system` action `capabilities`. A blocked action returns its `blockerReason` and is never forwarded to Cubase.
 
-The `cubase://v2/actions` resource exposes all 198 action summaries, schema-validated examples, and capability claims for the active host. `cubase://v2/capabilities` provides the compact capability-only view.
+The `cubase://v2/actions` resource exposes all 199 action summaries, schema-validated examples, and capability claims for the active host. `cubase://v2/capabilities` provides the compact capability-only view.

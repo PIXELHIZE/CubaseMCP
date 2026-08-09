@@ -29,6 +29,7 @@ const midiRemoteOperations = new Set([
   "transportRecord",
   "transportRewind",
   "transportForward",
+  "automation14PlayMidi",
   "setCycle",
   "setMetronome",
   "setTrackVolume",

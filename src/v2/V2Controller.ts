@@ -1,8 +1,9 @@
 import { randomUUID } from "node:crypto";
 import { z } from "zod/v4";
 import type { CubaseAdapter, OperationResult } from "../adapters/CubaseAdapter.js";
-import type { SongPlan, SongPlanRequest } from "../song/models.js";
+import type { SongPlan, SongPlanRequest, SongRole } from "../song/models.js";
 import { SongProjectService } from "../song/SongProjectService.js";
+import type { SongProjectExecutor } from "../song/SongProjectExecutor.js";
 import { ActionRouter } from "./ActionRouter.js";
 import type { V2ToolName } from "./actionSchemas.js";
 import { v2ActionSchemas } from "./actionSchemas.js";
@@ -28,10 +29,11 @@ export class V2Controller {
   constructor(
     private readonly adapter: CubaseAdapter,
     private host: HostDescriptor,
-    private readonly capabilities = new CapabilityRegistry()
+    private readonly capabilities = new CapabilityRegistry(),
+    songExecutor?: Pick<SongProjectExecutor, "execute">
   ) {
     this.router = new ActionRouter(adapter);
-    this.songs = new SongProjectService(adapter);
+    this.songs = new SongProjectService(adapter, undefined, undefined, undefined, undefined, undefined, undefined, songExecutor);
     if (capabilities.isCertifiedHost(host) && host.supportStatus === "unverified_host_profile") {
       this.host = { ...host, supportStatus: "supported_release_profile" };
     }
@@ -211,6 +213,12 @@ export class V2Controller {
     input: Record<string, unknown>,
     meta: { requestId: string; correlationId: string; dryRun: boolean }
   ): Promise<OperationResult> {
+    if (action === "program_catalog") {
+      return {
+        changed: false,
+        data: this.songs.programCatalog(input.query as string | undefined, input.role as SongRole | undefined)
+      };
+    }
     if (action === "plan") return { changed: false, data: this.songs.plan(input as unknown as SongPlanRequest) };
     if (action === "create") {
       if (meta.dryRun) {

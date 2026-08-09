@@ -72,7 +72,7 @@ export type Position = z.infer<typeof PositionSchema>;
 export const V2BaseInputShape = {
   requestId: z.string().min(1).max(256).optional(),
   correlationId: z.string().min(1).max(256).optional(),
-  timeoutMs: z.number().int().min(100).max(600_000).default(30_000).optional(),
+  timeoutMs: z.number().int().min(100).max(3_600_000).default(30_000).optional(),
   dryRun: z.boolean().default(false).optional(),
   confirm: z.boolean().default(false).optional()
 };

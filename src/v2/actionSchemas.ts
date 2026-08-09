@@ -74,6 +74,7 @@ const SongTrackIntentSchema = z.object({
   sourceKind: SongSourceKindSchema.optional(),
   trackType: TrackTypeSchema.optional(),
   instrument: z.string().min(1).optional(),
+  program: z.string().min(1).optional(),
   required: z.boolean().default(true).optional(),
   noteDensity: z.enum(["sparse", "medium", "dense"]).default("medium").optional(),
   routeToRole: SongRoleSchema.optional()
@@ -173,6 +174,10 @@ export const v2ActionSchemas = {
     }
   }),
   "cubase.song": actionUnion({
+    program_catalog: {
+      query: z.string().min(1).optional(),
+      role: SongRoleSchema.optional()
+    },
     plan: {
       prompt: z.string().min(1),
       genre: z.string().min(1).optional(),

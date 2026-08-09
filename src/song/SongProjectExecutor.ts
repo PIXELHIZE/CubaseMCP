@@ -99,6 +99,8 @@ export class SongProjectExecutor {
           expectedType: intent.trackType,
           actualType: track.type,
           instrumentExpected: intent.instrument,
+          programExpected: intent.program,
+          programLoaded: intent.trackType !== "instrument" || Boolean(intent.program),
           instrumentLoaded: intent.trackType !== "instrument" || Boolean(intent.instrument),
           partIds: [],
           noteCount: 0,

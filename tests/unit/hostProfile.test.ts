@@ -50,6 +50,19 @@ describe("host profile detection", () => {
     });
   });
 
+  it("activates automation14 only for the exact tested 14.0.32 host", async () => {
+    await expect(detectHostProfile(
+      hostAdapter("Cubase", "14.0.32"),
+      "automation14-session",
+      { edition: "Pro", automation14: true }
+    )).resolves.toMatchObject({ profile: "automation14", version: "14.0.32" });
+    await expect(detectHostProfile(
+      hostAdapter("Cubase", "14.0.41"),
+      "other-patch-session",
+      { edition: "Pro", automation14: true }
+    )).resolves.toMatchObject({ profile: "safe14", version: "14.0.41" });
+  });
+
   it("fails closed when a legacy bridge reports only a version string", async () => {
     const host = await detectHostProfile(
       hostAdapter(undefined, "14.0.41"),

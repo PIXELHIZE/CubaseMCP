@@ -97,6 +97,9 @@ export class SongProjectValidator {
     if (binding.expectedType === "instrument" && track.inserts.length === 0 && !instrumentName) {
       issues.push(issue(binding, "INSTRUMENT_NOT_LOADED", `${binding.role} Instrument Track has no loaded instrument.`, binding.instrumentExpected));
     }
+    if (binding.expectedType === "instrument" && binding.programExpected && !binding.programLoaded) {
+      issues.push(issue(binding, "INSTRUMENT_NOT_LOADED", `${binding.role} Instrument Track did not load program ${binding.programExpected}.`, binding.programExpected));
+    }
     if (["instrument", "midi"].includes(binding.expectedType) && track.parts.length === 0) {
       issues.push(issue(binding, "MIDI_PART_MISSING", `${binding.role} has no MIDI part.`));
     } else if (

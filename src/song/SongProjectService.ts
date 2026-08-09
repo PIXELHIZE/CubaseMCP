@@ -7,6 +7,7 @@ import type {
   SongManifest,
   SongPlan,
   SongPlanRequest,
+  SongRole,
   SongValidationResult
 } from "./models.js";
 import { SongManifestStore } from "./SongManifestStore.js";
@@ -14,9 +15,11 @@ import { SongProjectExecutor } from "./SongProjectExecutor.js";
 import { SongProjectPlanner } from "./SongProjectPlanner.js";
 import { SongProjectValidator } from "./SongProjectValidator.js";
 import { TrackTypeResolver } from "./TrackTypeResolver.js";
+import { InstrumentResolver } from "./InstrumentResolver.js";
+import { CubaseStateSchema } from "../schemas/state.js";
 
 export class SongProjectService {
-  private readonly executor: SongProjectExecutor;
+  private readonly executor: Pick<SongProjectExecutor, "execute">;
 
   constructor(
     private readonly adapter: CubaseAdapter,
@@ -24,13 +27,19 @@ export class SongProjectService {
     private readonly planner = new SongProjectPlanner(),
     private readonly validator = new SongProjectValidator(),
     private readonly patterns = new MidiPatternGenerator(),
-    private readonly trackTypes = new TrackTypeResolver()
+    private readonly trackTypes = new TrackTypeResolver(),
+    private readonly instruments = new InstrumentResolver(),
+    executor?: Pick<SongProjectExecutor, "execute">
   ) {
-    this.executor = new SongProjectExecutor(adapter, patterns, validator);
+    this.executor = executor ?? new SongProjectExecutor(adapter, patterns, validator);
   }
 
   plan(request: SongPlanRequest): SongPlan {
     return this.store.savePlan(this.planner.plan(request));
+  }
+
+  programCatalog(query?: string, role?: SongRole) {
+    return this.instruments.programCatalog(query, role);
   }
 
   async create(input: {
@@ -69,7 +78,8 @@ export class SongProjectService {
 
   async validate(songId: string): Promise<SongValidationResult> {
     const manifest = this.store.getManifest(songId);
-    return this.validator.validate(manifest, await this.adapter.getState());
+    const evidenced = CubaseStateSchema.safeParse(manifest.evidence.at(-1)?.stateAfter);
+    return this.validator.validate(manifest, evidenced.success ? evidenced.data : await this.adapter.getState());
   }
 
   describe(songId?: string): { plan: SongPlan; manifest: SongManifest; validation?: SongValidationResult } | undefined {

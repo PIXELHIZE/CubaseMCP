@@ -40,7 +40,7 @@ state diff and a verified Undo restoration; otherwise they remain unresolved.
 ## Release invariants
 
 - exactly 25 MCP tools;
-- all 198 declared actions covered by schemas, validated examples, routes/handlers, capabilities, and evidence;
+- all 199 declared actions covered by schemas, validated examples, routes/handlers, capabilities, and evidence;
 - certified capability claims apply only to the exact product and patch version named by the manifest;
 - all 238 legacy tools have a migration disposition;
 - certified status contains no partial, unknown, mock-only, or unsupported-profile entries;

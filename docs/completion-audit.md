@@ -5,17 +5,18 @@ This audit separates implementation readiness from release certification.
 | Requirement | Authoritative evidence | State |
 |---|---|---|
 | Preserve the former implementation | Git tag `v0.1.0-legacy` points to the 238-tool baseline | complete |
-| Action-based public MCP surface | MCP SDK integration test lists exactly 25 tools; `src/v2/actionManifest.ts` declares 198 unique actions | complete |
+| Action-based public MCP surface | MCP SDK integration test lists exactly 25 tools; `src/v2/actionManifest.ts` declares 199 unique actions | complete |
 | Action-specific contracts and examples | Every action has a strict Zod variant and a generated example that is parsed by the same schema; exposed at `cubase://v2/actions` | complete |
 | Legacy migration coverage | `auditLegacyMapping()` accounts for all 238 legacy tools with no missing or removed entry | complete |
 | Song planning policy | Resolver tests prove software roles use Instrument Tracks and hardware/rack roles use MIDI Tracks | complete |
 | Song execution and validation | Mock end-to-end test proves track creation, instruments, MIDI parts/notes, routing, tempo/signature, and explicitly test-only audibility | complete |
-| Real song audibility safety | Cubase Pro 14.0.32 played an 8-bar loop and the complete 120-bar render; section and six-stem meters, audio statistics, bridge Play/Stop, and final stopped state are committed under `reports/real-cubase/` | development evidence complete; exact safe14 evidence pending |
+| Real Instrument song creation | Opt-in automation14 created a separate 120-bar Cubase project with 6 Instrument Tracks, 6 MIDI Parts, 5,536 notes, 2 Group Tracks, 2 FX Tracks, a Marker Track, exact HALion programs, and corrected routing | development evidence complete; non-release profile |
+| Real song audibility safety | Cubase Pro 14.0.32 passed MixConsole probes at bars 1, 33, and 97; the 3:28.70 final WAV passed duration/format/hash/RMS/LUFS/true-peak/silence analysis | development evidence complete; exact safe14 evidence pending |
 | Capability status policy | v2 schema permits only `real`, two blocked statuses, or pre-release `unsupported_release_profile`; non-real claims require blocker reasons | complete |
 | Host binding | Certified claims require the official Cubase application name, explicit Pro-edition attestation, exact patch, script build, MCP v2, transport v1, and a supported live-host state | complete |
-| Evidence release gate | A fresh real report is assembled into observations, a 198-action manifest, and evidence; audit checks exact host/build/protocol, outcome, real-hardware method, mutation before/after/diff/restore, crash dumps, song audibility, and export file size/SHA-256 | complete |
+| Evidence release gate | A fresh real report is assembled into observations, a 199-action manifest, and evidence; audit checks exact host/build/protocol, outcome, real-hardware method, mutation before/after/diff/restore, crash dumps, song audibility, and export file size/SHA-256 | complete |
 | Cubase 15 wording | safe15 resolves to `unverified_host_profile` / `unsupported_release_profile`, not a technical unsupported-host claim | complete |
-| UI automation prohibition | Static audit and regression test scan runtime source for prohibited screen/keyboard/mouse automation | complete |
+| UI automation isolation | Static audit and regression test scan release runtime source for prohibited automation; the only allowlisted code is the explicit `src/automation14` non-release profile | complete |
 | VST3/named-pipe exclusion | Experimental research is under `experimental/`, excluded from TypeScript and package files; static audit rejects forbidden runtime dependencies | complete |
 | Public CI | Windows workflow runs install, audit, typecheck, tests, build, package dry run, SBOM, ZIP, MSI, and checksums | complete |
 | Private Cubase gate | Self-hosted Windows workflow requires a non-mutating nine-check safe14 preflight, serial real tests, fresh evidence assembly, and fail-closed release audit before packaging | complete |

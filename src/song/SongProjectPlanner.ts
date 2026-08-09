@@ -47,6 +47,9 @@ export class SongProjectPlanner {
         instrument: resolved.sourceKind === "software_instrument"
           ? this.instruments.preferred(requested.role, requested.instrument)
           : requested.instrument,
+        program: resolved.sourceKind === "software_instrument"
+          ? this.instruments.preferredProgram(requested.role, requested.program)
+          : requested.program,
         required: requested.required ?? true,
         noteDensity: requested.noteDensity ?? "medium",
         routeToRole: requested.routeToRole ?? this.defaultRoute(requested.role),
@@ -108,6 +111,8 @@ export class SongProjectPlanner {
   private defaultRoute(role: SongRole): SongRole | undefined {
     if (role === "drums") return "drum_bus";
     if (["bass", "chords", "lead", "pad", "arp", "vocal", "guitar", "audio_loop", "stem"].includes(role)) return "music_bus";
+    if (role === "drum_bus") return "delay";
+    if (role === "music_bus") return "reverb";
     return undefined;
   }
 

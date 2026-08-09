@@ -49,9 +49,10 @@ Instrument Track intents for all software roles and a ten-section structure.
 A deterministic development renderer produced a 48 kHz stereo master and six
 stems.
 
-Test-only UI bootstrap imported the results into disposable projects; UI
-automation is not included in the public runtime. Playback and Stop used the
-same MIDI Remote adapter as the MCP server.
+Test-only UI bootstrap imported the earlier audio-render baseline into
+disposable projects. Desktop automation is not included in the public release
+runtime; it is now isolated as the explicit `automation14` profile. Playback
+MIDI still travels through the same real MIDI bridge used by the MCP server.
 
 - loop: 15.913 seconds; all six stems non-silent;
 - full song: 210.696 seconds (about 3:31), 120 bars at 138 BPM;
@@ -65,21 +66,51 @@ same MIDI Remote adapter as the MCP server.
 - audition: active meters captured at multiple full-song sections and on all
   six stem channels; final bridge state verified `stopped`.
 
+## Instrument-track automation14 run
+
+The corrected run used a separate empty project named
+`Neon_Summer_JPOP_Full_120bars`; no user-authored track or earlier audio-stem
+project was reused. A real MCP client called `cubase.song.plan` and
+`cubase.song.create`, producing:
+
+- 120 bars at 138 BPM, 3:28.70 rendered duration, and ten named song sections;
+- six actual Instrument Tracks with six recorded MIDI Parts and 5,536 notes;
+- HALion Sonic programs `SR Studio A Kit`, `SR Smooth Bass`,
+  `[GM 001] Acoustic Grand Piano`, `Butterfly Lead`, `Alaska Sweep`, and
+  `Easy Saw Comp`;
+- two actual Group Tracks, RoomWorks SE and StereoDelay FX Tracks, and one
+  Marker Track;
+- `JPOP Drums -> Drum Bus -> Delay FX -> Stereo Out` and the other five
+  instruments `-> Music Bus -> Reverb FX -> Stereo Out`;
+- MixConsole probes at bars 1, 33, and 97, all verified with 1,164–1,510
+  changing meter pixels and 1,361–2,361 active meter pixels;
+- validator result: 11/11 tracks, 6 Instrument Tracks, 6 MIDI Parts, 5,536
+  notes, 0 Audio Events, audible true, no issues.
+
+The Cubase mix was lowered by 12 dB at both FX outputs after a float render
+revealed excessive peak level. The safe Cubase render measured -3.1 dBFS true
+peak. The final listening derivative is 48 kHz/24-bit stereo, 208.695646
+seconds, -18.78 dB RMS, -16.1 LUFS integrated, -1.0 dBFS true peak, with no
+detected 0.5-second silence intervals. Its SHA-256 is
+`240F5676678BC009AD6ACD0926C0837538153F0D2E370CEC2B192BDBBCE73D59`.
+
 Committed evidence is indexed at
-`reports/real-cubase/2026-08-10-jpop-audition.md`.
+`reports/real-cubase/2026-08-10-jpop-audition.md` and
+`reports/real-cubase/2026-08-10-automation14-instrument-song.md`.
 
 ## Current release interpretation
 
 - Real Cubase v2 connection and transport tests now pass on 14.0.32.
 - The local run does not certify 14.0.41 and is not represented as doing so.
 - Parameterized Instrument Track creation, instrument loading, routing, MIDI
-  content insertion, and complete validation are still blocked on the stable
-  Cubase 14 official headless path. The MCP reports the blocker rather than
-  returning partial success.
+  content insertion, and complete validation remain blocked on the stable
+  Cubase 14 official headless path. They are implemented only in the explicit
+  automation14 profile, which reports `releaseCertified: false`.
 - Public runtime UI automation remains prohibited; the direct UI steps above
   are explicit development-test evidence only.
-- Source verification passes 85 automated tests plus three separate real-host
-  smoke tests. Production and development npm audits report zero
+- Source verification passes 94 automated tests plus the separate real-host
+  smoke and automation14 runs. Fifteen opt-in integration cases remain skipped
+  in the default test command. Production and development npm audits report zero
   vulnerabilities.
 
 ## Remaining release gate

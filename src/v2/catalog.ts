@@ -12,7 +12,7 @@ export interface V2ToolDefinition {
 const metadata: Record<V2ToolName, Omit<V2ToolDefinition, "name" | "inputSchema">> = {
   "cubase.system": { title: "Cubase System", description: "Inspect connection, release profile, action capabilities, and diagnostics." },
   "cubase.project": { title: "Cubase Project", description: "Read or manage the current Cubase project using an explicit action." },
-  "cubase.song": { title: "Cubase Song", description: "Plan, create, validate, repair, or describe a playable song. Software roles always resolve to Instrument Tracks, never MIDI Tracks." },
+  "cubase.song": { title: "Cubase Song", description: "List HALion programs, plan, create, validate, repair, or describe a playable song. Software roles always resolve to Instrument Tracks, never MIDI Tracks." },
   "cubase.track": { title: "Cubase Track", description: "List, create, select, update, organize, freeze, or delete tracks with action-specific contracts." },
   "cubase.transport": { title: "Cubase Transport", description: "Read and control transport, positions, locators, cycle, metronome, punch, and roll settings." },
   "cubase.mixer_channel": { title: "Cubase Mixer Channel", description: "Read or change channel values, meters, EQ, strip modules, and VCA membership." },
@@ -48,4 +48,3 @@ export function getV2ToolDefinition(name: string): V2ToolDefinition {
   if (!definition) throw new Error(`Unknown Cubase MCP v2 tool: ${name}`);
   return definition;
 }
-

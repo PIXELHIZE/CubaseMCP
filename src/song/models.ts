@@ -45,6 +45,7 @@ export interface SongTrackIntent {
   sourceKind: SongSourceKind;
   trackType: TrackType;
   instrument?: string;
+  program?: string;
   required: boolean;
   noteDensity: "sparse" | "medium" | "dense";
   routeToRole?: SongRole;
@@ -83,6 +84,8 @@ export interface SongTrackBinding {
   expectedType: TrackType;
   actualType?: TrackType;
   instrumentExpected?: string;
+  programExpected?: string;
+  programLoaded?: boolean;
   instrumentLoaded?: boolean;
   partIds: string[];
   noteCount: number;
@@ -175,9 +178,9 @@ export interface SongPlanRequest {
     sourceKind?: SongSourceKind;
     trackType?: TrackType;
     instrument?: string;
+    program?: string;
     required?: boolean;
     noteDensity?: "sparse" | "medium" | "dense";
     routeToRole?: SongRole;
   }>;
 }
-

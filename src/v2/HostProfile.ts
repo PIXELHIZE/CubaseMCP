@@ -27,6 +27,7 @@ export interface HostProfileHints {
    * edition; absence must remain fail-closed for a Pro-only manifest.
    */
   edition?: string;
+  automation14?: boolean;
 }
 
 function productFromAppName(appName: string | undefined): string {
@@ -38,7 +39,10 @@ function productFromAppName(appName: string | undefined): string {
 export async function detectHostProfile(
   adapter: CubaseAdapter,
   sessionId: string = randomUUID(),
-  hints: HostProfileHints = { edition: process.env.CUBASE_HOST_EDITION }
+  hints: HostProfileHints = {
+    edition: process.env.CUBASE_HOST_EDITION,
+    automation14: process.env.CUBASE_AUTOMATION14 === "1" || process.env.CUBASE_AUTOMATION14 === "true"
+  }
 ): Promise<HostDescriptor> {
   if (adapter.mode === "mock") {
     return {
@@ -59,6 +63,20 @@ export async function detectHostProfile(
   const hostMajor = major(version);
   const product = productFromAppName(state.cubase.appName);
   const edition = /(?:^|\s)pro(?:\s|$)/i.test(state.cubase.appName ?? "") ? "Pro" : hints.edition;
+  if (version === "14.0.32" && product === "Cubase" && hints.automation14) {
+    return {
+      product,
+      edition,
+      version,
+      midiRemoteApiVersion: state.cubase.midiRemoteApiVersion,
+      mcpProtocolVersion: state.cubase.mcpProtocolVersion,
+      mcpTransportVersion: state.cubase.mcpTransportVersion,
+      scriptBuild: state.cubase.scriptBuild,
+      sessionId,
+      supportStatus: "unverified_host_profile",
+      profile: "automation14"
+    };
+  }
   if (hostMajor === 14 && product === "Cubase") {
     return {
       product,

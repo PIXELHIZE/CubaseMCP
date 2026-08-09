@@ -60,7 +60,7 @@ describe("MCP catalog", () => {
     const actionContent = actions.contents[0];
     expect(actionContent && "text" in actionContent).toBe(true);
     const catalog = JSON.parse(actionContent && "text" in actionContent ? actionContent.text : "{}");
-    expect(catalog.count).toBe(198);
+    expect(catalog.count).toBe(199);
     expect(catalog.actions[0]).toMatchObject({
       key: expect.any(String),
       inputSchema: expect.any(Object),

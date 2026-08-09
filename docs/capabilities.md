@@ -33,7 +33,7 @@ Blocked actions also need evidence, such as an official API surface analysis, a 
 
 ## safe14 certification assembly
 
-`safe14-v1` partitions all 198 actions into:
+`safe14-v1` partitions all 199 actions into:
 
 - 4 server-side actions eligible for unit evidence;
 - 53 official-path candidates that require a fresh real-hardware observation;

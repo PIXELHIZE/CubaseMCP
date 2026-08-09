@@ -3,7 +3,7 @@ import type { V2ToolName } from "./actionSchemas.js";
 export const v2ActionNames: Record<V2ToolName, readonly string[]> = {
   "cubase.system": ["status", "capabilities", "diagnose"],
   "cubase.project": ["get", "create", "open", "save", "save_as", "close", "backup", "apply_template", "configure"],
-  "cubase.song": ["plan", "create", "validate", "repair", "describe"],
+  "cubase.song": ["program_catalog", "plan", "create", "validate", "repair", "describe"],
   "cubase.track": [
     "list", "get", "create_default_audio", "create_default_midi", "create_default_instrument",
     "create_default_group", "create_default_fx", "create_default_folder", "create_default_marker",
@@ -83,4 +83,3 @@ export function actionKey(tool: string, action: string): string {
 export function hasV2Action(tool: string, action: string): boolean {
   return v2Actions.some((candidate) => candidate.tool === tool && candidate.action === action);
 }
-

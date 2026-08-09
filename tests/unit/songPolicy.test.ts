@@ -4,9 +4,24 @@ import { SongProjectPlanner } from "../../src/song/SongProjectPlanner.js";
 import { SongProjectService } from "../../src/song/SongProjectService.js";
 import { SongProjectValidator } from "../../src/song/SongProjectValidator.js";
 import { TrackTypeResolver } from "../../src/song/TrackTypeResolver.js";
+import { InstrumentResolver } from "../../src/song/InstrumentResolver.js";
 import type { SongManifest } from "../../src/song/models.js";
 
 describe("Song Creation Policy", () => {
+  it("exposes verified HALion programs while accepting an exact installed MediaBay program name", () => {
+    const catalog = new InstrumentResolver().programCatalog();
+    expect(catalog.plugin).toBe("HALion Sonic");
+    expect(catalog.acceptsInstalledProgramName).toBe(true);
+    expect(catalog.verifiedPrograms.map((program) => program.name)).toEqual(expect.arrayContaining([
+      "SR Studio A Kit",
+      "SR Smooth Bass",
+      "[GM 001] Acoustic Grand Piano",
+      "Butterfly Lead",
+      "Alaska Sweep",
+      "Easy Saw Comp"
+    ]));
+  });
+
   it("resolves musical software roles to Instrument Tracks", () => {
     const resolver = new TrackTypeResolver();
     for (const role of ["drums", "bass", "chords", "lead", "pad", "arp"] as const) {

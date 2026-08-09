@@ -1,6 +1,6 @@
 # Cubase MCP
 
-Cubase MCP v2 is a Windows MCP server for Cubase that exposes 25 action-based domain tools instead of hundreds of flat verbs. It uses Cubase MIDI Remote, DirectAccess, and Command Binding paths and does not use screen, keyboard, mouse, dialog, OCR, or coordinate automation.
+Cubase MCP v2 is a Windows MCP server for Cubase that exposes 25 action-based domain tools instead of hundreds of flat verbs. The release path uses Cubase MIDI Remote, DirectAccess, and Command Binding. An isolated, explicit `automation14` development profile adds deterministic desktop automation for hosts such as the locally installed Cubase Pro 14.0.32; it is not release-certified and is never enabled implicitly.
 
 The v2 design is evidence-first:
 
@@ -12,7 +12,7 @@ The v2 design is evidence-first:
 
 ## Song creation
 
-`cubase.song` implements `plan`, `create`, `validate`, `repair`, and `describe`.
+`cubase.song` implements `program_catalog`, `plan`, `create`, `validate`, `repair`, and `describe`.
 
 Software drums, bass, chords, lead, pad, and arp always resolve to Instrument Tracks. External hardware and rack multi-timbral channels resolve to MIDI Tracks. A song does not pass validation if a required software role becomes a MIDI Track, an instrument is not loaded, MIDI content was not imported, routing is invalid, or audibility has no meter/render evidence.
 
@@ -24,6 +24,21 @@ Software drums, bass, chords, lead, pad, and arp always resolve to Instrument Tr
 ```
 
 Use the returned `planId` with `cubase.song` action `create` only when `cubase.system` action `capabilities` reports `cubase.song.create` as `real`.
+
+Every software role accepts an exact HALion Sonic MediaBay program name through `tracks[].program`. `program_catalog` returns programs verified on the current automation14 host while `acceptsInstalledProgramName: true` documents that any installed exact program name can be selected.
+
+## Cubase Pro 14.0.32 automation profile
+
+The opt-in automation14 engine creates real Instrument, Group, FX, and Marker Tracks, loads HALion programs, records generated MIDI through the virtual bridge port, applies routing, saves the project, and verifies playback in MixConsole. It requires the interactive desktop and exact layout recorded by preflight.
+
+```powershell
+$env:CUBASE_AUTOMATION14="true"
+npm run cubase:automation14:song -- --bars 120 --output artifacts/automation14-jpop-full
+npm run cubase:automation14:finalize -- --output artifacts/automation14-jpop-full
+npm run cubase:automation14:audio-evidence -- --output artifacts/automation14-jpop-full
+```
+
+See [docs/automation14.md](docs/automation14.md) for prerequisites, supported program selection, and safety boundaries.
 
 For a development-only deterministic J-pop render driven by an MCP `song.plan`
 call against a connected host:
@@ -68,13 +83,13 @@ Real Cubase setup requires two user-created virtual MIDI ports. No third-party M
 
 The source implementation and mock/protocol contracts are testable now. A public `safe14` release manifest is intentionally not certified until the self-hosted Windows runner has Cubase Pro 14.0.41, captures before/after/restore evidence for every real action, records evidence for every blocked action, checks crash dumps, and passes the clean-VM MSI smoke test.
 
-The currently detected local host is older than the 14.0.41 release target, so it cannot close that gate. The server will reject unverified real-host actions instead of overstating support.
+The currently detected local host is older than the 14.0.41 release target, so it cannot close that gate. Official `safe14` actions continue to fail closed. The separate automation14 profile reports its implemented song actions as real with `releaseCertified: false`, `nonOfficialControlPath: true`, and exact host/display constraints.
 
 See [docs/release-gates.md](docs/release-gates.md).
 
 ## Runtime exclusions
 
-- UI automation is forbidden.
+- UI automation is forbidden in the public release runtime. Non-official automation is isolated under `src/automation14`, opt-in, and excluded from release certification.
 - The v2.0 public runtime disables the legacy named-pipe/plugin bridge.
 - No VST3 SDK or binary is included.
 - Experimental VST3 research is isolated under `experimental/` and excluded from the build.

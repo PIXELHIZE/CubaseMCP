@@ -24,6 +24,56 @@ const runtimeDiagnosticActionKeys = new Set([
   "cubase.system.diagnose"
 ]);
 
+const automation14RealActionKeys = new Set([
+  "cubase.system.status",
+  "cubase.system.capabilities",
+  "cubase.system.diagnose",
+  "cubase.song.program_catalog",
+  "cubase.song.plan",
+  "cubase.song.create",
+  "cubase.song.validate",
+  "cubase.song.describe"
+]);
+
+function automation14Capability(host: HostDescriptor, key: string): ActionCapability {
+  if (automation14RealActionKeys.has(key)) {
+    return {
+      key,
+      profile: "automation14",
+      status: "real",
+      constraints: {
+        nonOfficialControlPath: true,
+        requiresInteractiveDesktop: true,
+        releaseCertified: false,
+        testedHostVersion: "14.0.32",
+        requiredPrimaryDisplay: "2560x1080",
+        ...(key === "cubase.song.create" ? {
+          requiresEmptySavedProject: true,
+          requiresRollbackOnFailureFalse: true,
+          instrumentPlugin: "HALion Sonic"
+        } : {}),
+        observedHostVersion: host.version
+      },
+      evidenceId: key === "cubase.song.create"
+        ? "real:automation14:instrument-midi-recording:2026-08-10"
+        : "runtime:automation14-profile",
+      verifiedAt: new Date().toISOString()
+    };
+  }
+  return {
+    key,
+    profile: "automation14",
+    status: "blocked_by_no_headless_api",
+    blockerReason: "dialog_required",
+    constraints: {
+      nonOfficialControlPath: true,
+      actionNotImplementedByAutomation14: true,
+      releaseCertified: false
+    },
+    evidenceId: `blocked:automation14:${key}`
+  };
+}
+
 function runtimeDiagnosticCapability(host: HostDescriptor, key: string): ActionCapability | undefined {
   if (
     !runtimeDiagnosticActionKeys.has(key) ||
@@ -155,6 +205,7 @@ export class CapabilityRegistry {
         verifiedAt: new Date(0).toISOString()
       };
     }
+    if (host.profile === "automation14") return automation14Capability(host, key);
     const diagnostic = runtimeDiagnosticCapability(host, key);
     if (diagnostic) return diagnostic;
     const manifest = this.manifests.get(host.profile);

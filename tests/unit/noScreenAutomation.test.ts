@@ -27,12 +27,18 @@ function files(dir: string): string[] {
 }
 
 describe("screen automation exclusion", () => {
-  it("does not contain forbidden automation adapters in src", () => {
-    const matches = files("src").flatMap((file) => {
+  it("keeps forbidden automation out of the official safe14 runtime", () => {
+    const matches = files("src").filter((file) => !file.includes(join("src", "automation14"))).flatMap((file) => {
       const content = readFileSync(file, "utf8");
       return forbidden.filter((term) => content.includes(term)).map((term) => ({ file, term }));
     });
 
     expect(matches).toEqual([]);
+  });
+
+  it("isolates the explicitly opt-in non-official driver", () => {
+    const automationFiles = files(join("src", "automation14"));
+    expect(automationFiles.some((file) => readFileSync(file, "utf8").includes("SetForegroundWindow"))).toBe(true);
+    expect(readFileSync(join("src", "server.ts"), "utf8")).toContain('host.profile === "automation14"');
   });
 });
