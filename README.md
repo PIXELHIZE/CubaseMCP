@@ -25,6 +25,17 @@ Software drums, bass, chords, lead, pad, and arp always resolve to Instrument Tr
 
 Use the returned `planId` with `cubase.song` action `create` only when `cubase.system` action `capabilities` reports `cubase.song.create` as `real`.
 
+For a development-only deterministic J-pop render driven by an MCP `song.plan`
+call against a connected host:
+
+```powershell
+$env:CUBASE_HOST_EDITION="Pro"
+npm run cubase:jpop-demo -- --full --output artifacts/jpop-full
+```
+
+This renderer produces a master and six stems; it does not bypass the
+capability gate or claim that Cubase imported/configured Instrument Tracks.
+
 ## Public MCP surface
 
 The server exposes 23 public domain tools and 2 diagnostic tools:

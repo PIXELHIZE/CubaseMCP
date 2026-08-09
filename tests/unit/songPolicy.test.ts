@@ -26,6 +26,27 @@ describe("Song Creation Policy", () => {
     expect(plan.tracks.find((track) => track.role === "reverb")?.trackType).toBe("fx");
   });
 
+  it("plans a full J-pop arrangement with Instrument Tracks for every software role", () => {
+    const plan = new SongProjectPlanner().plan({
+      prompt: "완성된 J-pop 느낌의 노래",
+      bars: 120,
+      key: "D major"
+    });
+    expect(plan.genre).toBe("jpop");
+    expect(plan.tempo).toBe(138);
+    expect(plan.sections.map((section) => section.name)).toEqual([
+      "Intro", "Verse 1", "Pre-Chorus 1", "Chorus 1", "Verse 2",
+      "Pre-Chorus 2", "Chorus 2", "Bridge", "Final Chorus", "Outro"
+    ]);
+    expect(plan.sections.reduce((sum, section) => sum + section.bars, 0)).toBe(120);
+    expect(plan.tracks.filter((track) => track.sourceKind === "software_instrument")
+      .every((track) => track.trackType === "instrument")).toBe(true);
+    expect(plan.tracks.some((track) => track.role === "arp")).toBe(true);
+    const roles = new Set(plan.tracks.map((track) => track.role));
+    expect(plan.tracks.every((track) => !track.routeToRole || roles.has(track.routeToRole))).toBe(true);
+    expect(plan.tracks.find((track) => track.role === "drum_bus")?.trackType).toBe("group");
+  });
+
   it("creates playable Instrument Tracks, imported MIDI parts, routing, and audible mock evidence", async () => {
     const adapter = new MockCubaseAdapter();
     await adapter.connect();

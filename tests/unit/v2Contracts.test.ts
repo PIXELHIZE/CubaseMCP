@@ -127,6 +127,36 @@ describe("v2 contracts", () => {
     expect(capability.constraints).toMatchObject({ hostSupportStatus: "unverified_host_profile" });
   });
 
+  it("allows live bootstrap diagnostics after a verified v2 bridge handshake without certifying other actions", async () => {
+    const adapter = new MockCubaseAdapter();
+    await adapter.connect();
+    const host = {
+      product: "Cubase",
+      edition: "Pro",
+      version: "14.0.32",
+      mcpProtocolVersion: 2,
+      mcpTransportVersion: 1,
+      scriptBuild: "2.0.0-safe14",
+      sessionId: "live-bootstrap",
+      supportStatus: "unsupported_host_version" as const,
+      profile: "safe14"
+    };
+    const controller = new V2Controller(adapter, host);
+    const status = await controller.invoke("cubase.system", { action: "status" });
+    const diagnose = await controller.invoke("cubase.system", { action: "diagnose" });
+    const trackList = await controller.invoke("cubase.track", { action: "list" });
+    expect(status).toMatchObject({
+      ok: true,
+      capability: {
+        status: "real",
+        constraints: { bootstrapDiagnostic: true, releaseCertified: false, observedHostVersion: "14.0.32" }
+      }
+    });
+    expect(diagnose).toMatchObject({ ok: true, capability: { status: "real" } });
+    expect(trackList).toMatchObject({ ok: false, error: { code: "UNSUPPORTED_RELEASE_PROFILE" } });
+    await adapter.disconnect();
+  });
+
   it("does not apply certified claims to a different product or patch version", () => {
     const capturedAt = new Date().toISOString();
     const manifest: CapabilityManifest = {

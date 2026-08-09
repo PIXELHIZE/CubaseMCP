@@ -21,6 +21,7 @@
     "cubase:call": "tsx scripts/cubase-call.ts",
     "cubase:project-test": "tsx scripts/cubase-project-create-test.ts",
     "cubase:project-report": "tsx scripts/cubase-project-report-finalize.ts",
+    "cubase:jpop-demo": "tsx scripts/cubase-jpop-demo.ts",
     "v2:audit": "tsx scripts/v2-static-audit.ts",
     "v2:assemble-safe14": "tsx scripts/v2-safe14-assemble.ts",
     "v2:pending-profile": "tsx scripts/v2-pending-profile.ts",

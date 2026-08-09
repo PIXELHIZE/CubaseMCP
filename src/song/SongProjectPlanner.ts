@@ -64,7 +64,7 @@ export class SongProjectPlanner {
       timeSignature: request.timeSignature ?? "4/4",
       key: request.key ?? "C major",
       bars,
-      sections: this.arrangements.generate(bars),
+      sections: this.arrangements.generate(bars, genre),
       tracks,
       createdAt: new Date().toISOString(),
       policyVersion: 2,
@@ -79,6 +79,18 @@ export class SongProjectPlanner {
       { role: "chords" },
       { role: "lead" }
     ];
+    if (/j\s*-?\s*pop|jpop/i.test(genre)) {
+      return [
+        ...core,
+        { role: "pad", required: false },
+        { role: "arp", required: false },
+        { role: "drum_bus" },
+        { role: "music_bus" },
+        { role: "reverb" },
+        { role: "delay", required: false },
+        { role: "markers" }
+      ];
+    }
     if (/house|dance|edm|electro|techno/i.test(genre)) {
       return [
         ...core,
@@ -90,7 +102,7 @@ export class SongProjectPlanner {
         { role: "markers" }
       ];
     }
-    return [...core, { role: "music_bus" }, { role: "reverb" }, { role: "markers" }];
+    return [...core, { role: "drum_bus" }, { role: "music_bus" }, { role: "reverb" }, { role: "markers" }];
   }
 
   private defaultRoute(role: SongRole): SongRole | undefined {
@@ -127,6 +139,7 @@ export class SongProjectPlanner {
 
   private genreFromPrompt(prompt: string): string {
     const normalized = prompt.toLowerCase();
+    if (/j\s*-?\s*pop|제이팝/.test(normalized)) return "jpop";
     for (const genre of ["house", "techno", "edm", "dance", "rock", "pop", "hip hop", "ambient"]) {
       if (normalized.includes(genre)) return genre;
     }
@@ -139,12 +152,13 @@ export class SongProjectPlanner {
   }
 
   private tempoForGenre(genre: string): number {
-    if (/house|dance/.test(genre)) return 124;
-    if (/techno/.test(genre)) return 130;
-    if (/edm/.test(genre)) return 128;
-    if (/hip hop/.test(genre)) return 92;
-    if (/ambient/.test(genre)) return 80;
-    if (/rock/.test(genre)) return 120;
+    if (/j\s*-?\s*pop|jpop/i.test(genre)) return 138;
+    if (/house|dance/i.test(genre)) return 124;
+    if (/techno/i.test(genre)) return 130;
+    if (/edm/i.test(genre)) return 128;
+    if (/hip hop/i.test(genre)) return 92;
+    if (/ambient/i.test(genre)) return 80;
+    if (/rock/i.test(genre)) return 120;
     return 110;
   }
 }

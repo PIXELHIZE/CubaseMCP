@@ -19,6 +19,33 @@ export const CapabilityManifestSchema = z.object({
 
 export type CapabilityManifest = z.infer<typeof CapabilityManifestSchema>;
 
+const runtimeDiagnosticActionKeys = new Set([
+  "cubase.system.status",
+  "cubase.system.diagnose"
+]);
+
+function runtimeDiagnosticCapability(host: HostDescriptor, key: string): ActionCapability | undefined {
+  if (
+    !runtimeDiagnosticActionKeys.has(key) ||
+    host.product !== "Cubase" ||
+    host.mcpProtocolVersion !== 2 ||
+    host.mcpTransportVersion !== 1 ||
+    host.scriptBuild !== "2.0.0-safe14"
+  ) return undefined;
+  return {
+    key,
+    profile: host.profile,
+    status: "real",
+    constraints: {
+      bootstrapDiagnostic: true,
+      releaseCertified: false,
+      observedHostVersion: host.version
+    },
+    evidenceId: `runtime:host-handshake:${host.sessionId}`,
+    verifiedAt: new Date().toISOString()
+  };
+}
+
 function blockerFor(key: string): BlockerReason {
   if (key === "cubase.song.create" || key === "cubase.song.repair" || key.includes("create_from_template")) {
     return "requires_track_template";
@@ -128,6 +155,8 @@ export class CapabilityRegistry {
         verifiedAt: new Date(0).toISOString()
       };
     }
+    const diagnostic = runtimeDiagnosticCapability(host, key);
+    if (diagnostic) return diagnostic;
     const manifest = this.manifests.get(host.profile);
     if (manifest?.releaseCertified && this.isCertifiedHost(host)) {
       const capability = manifest.actions.find((candidate) => candidate.key === key);
