@@ -1,6 +1,6 @@
 # Implementation Audit
 
-Generated: 2026-07-10T07:58:53.944Z
+Generated: 2026-08-10T08:02:09.190Z
 Registered tools: 238
 Missing tool contracts: 0
 Forbidden executable implementation findings: 0
@@ -105,11 +105,11 @@ Forbidden executable implementation findings: 0
 | Docs | docs/README.md | PRESENT |  |
 | Docs | docs/architecture.md | PRESENT |  |
 | Docs | docs/tools.md | PRESENT |  |
-| Docs | docs/real-test-guide.md | PRESENT |  |
-| VST3 companion | src/vst3-companion-bridge/protocol.md | PRESENT |  |
-| VST3 companion | src/vst3-companion-bridge/README.md | PRESENT |  |
-| VST3 companion binary | src/vst3-companion-bridge/stub/named-pipe-server.ts | PLACEHOLDER_ONLY | Protocol simulator only; no production C++/VST3 Cubase-side binary is present. |
-| VST3 companion binary | src/vst3-companion-bridge/stub/PluginBridgeStub.md | PLACEHOLDER_ONLY | Implementation plan/documentation only. |
+| Docs | docs/real-test-status.md | PRESENT |  |
+| Experimental VST3 companion | experimental/vst3-companion-bridge/protocol.md | PRESENT_PARTIAL | Research only; excluded from the v2.0 runtime and package. |
+| Experimental VST3 companion | experimental/vst3-companion-bridge/README.md | PRESENT_PARTIAL | Research only; excluded from the v2.0 runtime and package. |
+| Experimental VST3 companion binary | experimental/vst3-companion-bridge/stub/named-pipe-server.ts | PLACEHOLDER_ONLY | Protocol simulator only; excluded from the v2.0 runtime and package. |
+| Experimental VST3 companion binary | experimental/vst3-companion-bridge/stub/PluginBridgeStub.md | PLACEHOLDER_ONLY | Implementation plan only; excluded from the v2.0 runtime and package. |
 
 ## Tool Coverage
 

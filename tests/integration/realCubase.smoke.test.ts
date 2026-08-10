@@ -18,9 +18,15 @@ describeReal("real Cubase MIDI Remote bridge smoke", () => {
     const adapter = new CompositeCubaseAdapter(loadCubaseConfig(process.env));
     await adapter.connect();
     const play = await adapter.execute("transportPlay", {}, { requestId: "real-play", toolName: "cubase.transport_play", dryRun: false });
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    const playing = await adapter.getState();
     const stop = await adapter.execute("transportStop", {}, { requestId: "real-stop", toolName: "cubase.transport_stop", dryRun: false });
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    const stopped = await adapter.getState();
     expect(play.changed).toBe(true);
+    expect(playing.transport.state).toBe("playing");
     expect(stop.changed).toBe(true);
+    expect(stopped.transport.state).toBe("stopped");
     await adapter.disconnect();
   }, 10000);
 

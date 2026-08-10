@@ -16,6 +16,7 @@ import { EuConOrMackieAdapter } from "./EuConOrMackieAdapter.js";
 import { JobManager, type JobType } from "../jobs/JobManager.js";
 import { z } from "zod/v4";
 import { toolDefinitions } from "../tools/index.js";
+import { loadPluginBridgeConfig } from "../config/pluginBridgeConfig.js";
 
 const midiRemoteOperations = new Set([
   "getStatus",
@@ -28,6 +29,7 @@ const midiRemoteOperations = new Set([
   "transportRecord",
   "transportRewind",
   "transportForward",
+  "automation14PlayMidi",
   "setCycle",
   "setMetronome",
   "setTrackVolume",
@@ -158,7 +160,12 @@ export class CompositeCubaseAdapter implements CubaseAdapter {
   constructor(private readonly config: CubaseRuntimeConfig) {
     this.midiRemote = new MidiRemoteAdapter(config.midi, this.stateStore);
     this.commandSurface = new MidiCommandSurfaceAdapter(this.midiRemote.getRouter(), config.commandMappings);
-    this.pluginBridge = new PluginBridgeAdapter(new PluginBridgeClient(this.midiRemote.getRouter()));
+    const experimentalBridge = loadPluginBridgeConfig();
+    this.pluginBridge = new PluginBridgeAdapter(new PluginBridgeClient(this.midiRemote.getRouter(), {
+      ...experimentalBridge,
+      enabled: false,
+      fallbackToMidiRemote: false
+    }));
     this.projectState = new ProjectStateAdapter(this.stateStore, this.jobs);
     this.directAccess = new DirectAccessAdapter(this.midiRemote.getRouter());
     this.osc = new OscAdapter();

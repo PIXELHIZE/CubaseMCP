@@ -1,0 +1,66 @@
+name: public-ci
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm audit --omit=dev
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run v2:audit
+      - run: npm run build
+      - run: npm pack --dry-run
+      - run: npm run sbom
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: artifacts/sbom.cdx.json
+
+  package-windows:
+    runs-on: windows-latest
+    needs: verify
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Download redistributable Node runtime
+        shell: pwsh
+        run: |
+          $version = "22.19.0"
+          Invoke-WebRequest "https://nodejs.org/dist/v$version/node-v$version-win-x64.zip" -OutFile node.zip
+          Expand-Archive node.zip -DestinationPath node-runtime
+          $nodeRuntimeDir = (Resolve-Path "node-runtime\node-v$version-win-x64").Path
+          "CUBASE_MCP_NODE_RUNTIME_DIR=$nodeRuntimeDir" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+      - name: Install WiX
+        run: dotnet tool install --global wix --version 6.0.2
+      - run: npm run package:runtime
+      - run: npm run package:zip -- -SkipRuntime
+      - run: npm run package:msi -- -SkipRuntime
+      - run: npm run sbom
+      - run: npm run package:checksums
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cubase-mcp-windows-candidate
+          path: |
+            artifacts/*.zip
+            artifacts/*.msi
+            artifacts/*.json
+            artifacts/SHA256SUMS.txt

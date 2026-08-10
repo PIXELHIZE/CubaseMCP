@@ -15,6 +15,7 @@ deviceDriver.makeDetectionUnit().detectPortPair(midiInput, midiOutput)
 var MAGIC = 'AIMCP1:'
 var MANUFACTURER = 0x7d
 var state = {
+    appName: midiremote_api.mDefaults.getAppName(),
     appVersion: midiremote_api.mDefaults.mAppVersion.getVersionString(),
     projectOpen: true,
     transport: {
@@ -27,6 +28,14 @@ var state = {
     },
     selectedQuickControls: [],
     focusedQuickControls: []
+}
+
+function getHostProfile() {
+    var majorMatch = String(state.appVersion).match(/\d+/)
+    var major = majorMatch ? Number(majorMatch[0]) : 0
+    if (major === 14) return 'safe14'
+    if (major === 15) return 'safe15'
+    return 'unsupported-' + String(major || 'unknown')
 }
 
 function asciiBytes(text) {
@@ -75,7 +84,12 @@ midiInput.mOnSysex = function(activeDevice, message) {
         request = decodeRequest(message)
         if (!request) return
         if (request.command === 'ping' || request.command === 'get_state') {
-            sendProtocol(activeDevice, 'response', request.id, request.command, true, state, undefined)
+            sendProtocol(activeDevice, 'response', request.id, request.command, true, {
+                state: state,
+                appName: state.appName,
+                appVersion: state.appVersion,
+                mcpProtocol: { version: 2, transportVersion: 1, releaseProfile: getHostProfile(), scriptBuild: '2.0.0-safe14' }
+            }, undefined)
             sendState(activeDevice)
             return
         }

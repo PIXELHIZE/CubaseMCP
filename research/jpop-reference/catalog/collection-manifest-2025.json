@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "collectedAt": "2026-08-10T07:07:15.509Z",
+  "files": [
+    {
+      "path": "billboard-japan-hot-100-2025.json",
+      "records": 100,
+      "sha256": "e7a55e65edcda35dae60e0995a2c8be33ac1c37d0de8e2dbc463b22abec49fbb",
+      "sourceUrl": "https://www.billboard-japan.com/charts/detail?a=hot100_year&year=2025"
+    }
+  ]
+}

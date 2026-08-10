@@ -1,6 +1,6 @@
 # Full Capability Audit
 
-Generated: 2026-07-10T07:59:11.806Z
+Generated: 2026-08-10T08:01:29.421Z
 Registered tools: 238
 
 ## Status Summary

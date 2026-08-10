@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "scope": "Generalized harmonic and form vocabulary, not transcriptions of named songs.",
+  "progressions": [
+    {
+      "id": "royal-road-core",
+      "romanNumerals": ["IVmaj7", "V7", "iii7", "vi7"],
+      "function": ["predominant", "dominant", "tonic-substitute", "tonic-substitute"],
+      "recommendedUse": ["pre_chorus", "chorus"],
+      "variationPolicy": "Continue through ii7-V7-I or alter bass/inversion before repeating.",
+      "source": "The Royal Road Progression in Japanese Popular Music; related Japanese-pop corpus studies"
+    },
+    {
+      "id": "extended-royal-road-cadence",
+      "romanNumerals": ["IVmaj7", "V7", "iii7", "vi7", "ii7", "V7", "Imaj7"],
+      "function": ["predominant", "dominant", "tonic-substitute", "tonic-substitute", "predominant", "dominant", "tonic"],
+      "recommendedUse": ["chorus", "outro"],
+      "variationPolicy": "Reserve the full tonic cadence for a section boundary; avoid resolving every four bars."
+    },
+    {
+      "id": "pop-axis",
+      "romanNumerals": ["I", "V", "vi", "IV"],
+      "function": ["tonic", "dominant", "tonic-substitute", "predominant"],
+      "recommendedUse": ["intro", "verse"],
+      "variationPolicy": "Use inversions and rhythmic displacement; do not use as the only progression in all sections."
+    },
+    {
+      "id": "minor-verse-lift",
+      "romanNumerals": ["vi7", "IVmaj7", "Iadd9", "V7sus4"],
+      "function": ["tonic-substitute", "predominant", "tonic", "dominant"],
+      "recommendedUse": ["verse"],
+      "variationPolicy": "Keep upper voices stepwise and let the bass define inversions."
+    },
+    {
+      "id": "prechorus-circle-lift",
+      "romanNumerals": ["ii7", "iii7", "IVmaj7", "V7"],
+      "function": ["predominant", "tonic-substitute", "predominant", "dominant"],
+      "recommendedUse": ["pre_chorus"],
+      "variationPolicy": "Increase register and rhythmic activity toward V; withhold the chorus tonic until the downbeat."
+    }
+  ],
+  "formVocabulary": [
+    "intro",
+    "verse_a",
+    "verse_b",
+    "pre_chorus",
+    "chorus_a",
+    "chorus_b",
+    "post_chorus",
+    "instrumental_break",
+    "bridge",
+    "final_chorus",
+    "outro"
+  ],
+  "arrangementConstraint": "A complete form does not imply all roles play continuously. Role activation and rhythmic density must change at section boundaries."
+}

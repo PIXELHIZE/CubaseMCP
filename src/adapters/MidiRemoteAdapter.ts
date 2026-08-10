@@ -6,6 +6,7 @@ import { defaultCommandMappings, quickControlMapping } from "../config/commandMa
 import { MidiPortManager } from "../bridge/midi/MidiPortManager.js";
 import { RequestResponseRouter } from "../bridge/midi/RequestResponseRouter.js";
 import { CubaseMcpError, ErrorCode } from "../safety/ErrorCodes.js";
+import { parseHostHandshake } from "../v2/HostHandshake.js";
 
 function dbToMidiValue(db: number): number {
   const normalized = (Math.max(-60, Math.min(12, db)) + 60) / 72;
@@ -49,6 +50,10 @@ export class MidiRemoteAdapter implements CubaseAdapter {
     this.stateStore.markConnected("Cubase via MIDI Remote");
     try {
       const response = await this.router.request("ping", { client: "cubase-mcp" }, this.config.timeoutMs);
+      const handshake = parseHostHandshake(response.payload);
+      if (!handshake) {
+        throw new Error("Cubase MIDI Remote script did not provide the required MCP v2 host handshake.");
+      }
       this.applyBridgeState(response.payload);
       this.startPolling();
     } catch (error) {
@@ -75,6 +80,7 @@ export class MidiRemoteAdapter implements CubaseAdapter {
       { operation: "transportPlay", status: "supported", adapter: this.name },
       { operation: "transportStop", status: "supported", adapter: this.name },
       { operation: "transportRecord", status: "supported", adapter: this.name },
+      { operation: "automation14PlayMidi", status: "supported", adapter: this.name, notes: "Opt-in interactive automation14 MIDI performance recording." },
       { operation: "setTrackVolume", status: "partial", adapter: this.name, notes: "Selected track only; exact dB mapping is normalized MIDI Remote host value." },
       { operation: "setTrackPan", status: "partial", adapter: this.name, notes: "Selected track only." },
       { operation: "setTrackMute", status: "partial", adapter: this.name, notes: "Selected track only." },
@@ -169,6 +175,8 @@ export class MidiRemoteAdapter implements CubaseAdapter {
         return this.sendMapped("transport.rewind", { action: "rewind" }) as OperationResult<T>;
       case "transportForward":
         return this.sendMapped("transport.forward", { action: "forward" }) as OperationResult<T>;
+      case "automation14PlayMidi":
+        return this.playMidiPerformance(input) as Promise<OperationResult<T>>;
       case "setCycle":
         return this.sendMapped("transport.cycle", { enabled: Boolean(input.enabled) }, boolToMidiValue(Boolean(input.enabled))) as OperationResult<T>;
       case "setMetronome":
@@ -234,6 +242,31 @@ export class MidiRemoteAdapter implements CubaseAdapter {
     };
   }
 
+  private async playMidiPerformance(input: Record<string, unknown>): Promise<OperationResult> {
+    const events = Array.isArray(input.events) ? input.events : [];
+    const normalized = events.map((candidate, index) => {
+      if (typeof candidate !== "object" || candidate === null) throw new Error(`Invalid MIDI event at index ${index}.`);
+      const record = candidate as { atMs?: unknown; message?: unknown };
+      const atMs = Number(record.atMs);
+      const message = Array.isArray(record.message) ? record.message.map(Number) : [];
+      if (!Number.isFinite(atMs) || atMs < 0 || message.length !== 3 || message.some((value) => !Number.isInteger(value) || value < 0 || value > 255)) {
+        throw new Error(`Invalid MIDI event at index ${index}.`);
+      }
+      return { atMs, message };
+    }).sort((left, right) => left.atMs - right.atMs);
+    const started = performance.now();
+    for (const event of normalized) {
+      const remaining = event.atMs - (performance.now() - started);
+      if (remaining > 1) await new Promise((resolve) => setTimeout(resolve, remaining));
+      this.portManager.send(event.message);
+    }
+    return {
+      changed: normalized.length > 0,
+      adapter: this.name,
+      data: { eventCount: normalized.length, durationMs: Math.ceil(normalized.at(-1)?.atMs ?? 0) }
+    };
+  }
+
   private setQuickControl(input: Record<string, unknown>): OperationResult {
     const parameterId = String(input.parameterId ?? "");
     const match = parameterId.match(/^(focusedQuickControl|selectedQuickControl|quickControl):(\d)$/);
@@ -288,9 +321,11 @@ export class MidiRemoteAdapter implements CubaseAdapter {
     const envelope = payload as { state?: unknown };
     const nestedState = envelope.state && typeof envelope.state === "object" ? envelope.state as Record<string, unknown> : {};
     const state = { ...(payload as Record<string, unknown>), ...nestedState } as {
+      appName?: string;
       appVersion?: string;
       midiRemoteApiVersion?: string;
       directAccess?: { makeDirectAccess?: boolean; active?: boolean };
+      mcpProtocol?: { version?: number; transportVersion?: number; releaseProfile?: string; scriptBuild?: string };
       transport?: Partial<CubaseState["transport"]>;
       project?: Partial<CubaseState["project"]>;
       projectOpen?: boolean;
@@ -311,12 +346,17 @@ export class MidiRemoteAdapter implements CubaseAdapter {
       };
     };
     const partial: Partial<CubaseState> = {};
-    if (state.appVersion || state.midiRemoteApiVersion || state.directAccess) {
+    if (state.appName || state.appVersion || state.midiRemoteApiVersion || state.directAccess) {
       partial.cubase = {
         ...this.stateStore.snapshot().cubase,
         connected: true,
+        appName: state.appName ?? this.stateStore.snapshot().cubase.appName,
         version: state.appVersion ?? this.stateStore.snapshot().cubase.version,
         midiRemoteApiVersion: state.midiRemoteApiVersion ?? this.stateStore.snapshot().cubase.midiRemoteApiVersion,
+        mcpProtocolVersion: state.mcpProtocol?.version ?? this.stateStore.snapshot().cubase.mcpProtocolVersion,
+        mcpTransportVersion: state.mcpProtocol?.transportVersion ?? this.stateStore.snapshot().cubase.mcpTransportVersion,
+        hostProfile: state.mcpProtocol?.releaseProfile ?? this.stateStore.snapshot().cubase.hostProfile,
+        scriptBuild: state.mcpProtocol?.scriptBuild ?? this.stateStore.snapshot().cubase.scriptBuild,
         directAccessAvailable: state.directAccess?.makeDirectAccess ?? this.stateStore.snapshot().cubase.directAccessAvailable,
         projectOpen: state.projectOpen ?? true
       };

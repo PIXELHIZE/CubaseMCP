@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "billboard-japan-hot100-2025",
+      "title": "Billboard Japan Hot 100 Year End 2025",
+      "url": "https://www.billboard-japan.com/charts/detail?a=hot100_year&year=2025",
+      "publisher": "Billboard Japan / Hanshin Contents Link",
+      "kind": "major-song metadata index",
+      "runtimeUse": "metadata_only",
+      "notes": "Ranks, titles, and artists only; no audio, lyrics, MIDI, or transcription is copied."
+    },
+    {
+      "id": "songle-docs",
+      "title": "Songle music-understanding service documentation",
+      "url": "https://docs.songle.jp/",
+      "publisher": "AIST Songle Project",
+      "kind": "automatic chord, beat, melody, and repeated-section analysis",
+      "runtimeUse": "human_reference_only",
+      "notes": "Songle states that information is for personal use and automatic estimates can be wrong. Do not ingest or redistribute full analyses in the product."
+    },
+    {
+      "id": "rwc-2-annotations",
+      "title": "RWC 2.0 Annotations",
+      "url": "https://github.com/rwc-music/rwc-annotations",
+      "publisher": "RWC Music Database contributors",
+      "license": "CC BY-NC 4.0",
+      "kind": "100 popular-style songs with aligned MIDI, beats, chords, and metadata",
+      "runtimeUse": "research_only_not_shipped",
+      "notes": "Non-commercial restriction is incompatible with an unrestricted Apache-2.0 runtime."
+    },
+    {
+      "id": "idolsongsjp",
+      "title": "IdolSongsJp Corpus",
+      "url": "https://huggingface.co/datasets/imprt/idol-songs-jp",
+      "publisher": "AIST",
+      "license": "Custom gated license",
+      "kind": "15 professionally composed Japanese idol-style songs with chords and stems",
+      "runtimeUse": "catalog_only_permission_required",
+      "notes": "Instrumental signals may not train music-generation models; commercial product use requires permission."
+    },
+    {
+      "id": "jpop-chord-visualization-2016",
+      "title": "Japanese Pop Music Visualization Focused on Chord Progression Patterns",
+      "url": "https://doi.org/10.3756/artsci.15.177",
+      "publisher": "The Society for Art and Science",
+      "kind": "peer-reviewed chord-pattern study covering 20 Japanese pop musicians",
+      "runtimeUse": "bibliographic_and_aggregate_findings"
+    },
+    {
+      "id": "oricon-top10-analysis-2015",
+      "title": "Analysis of Japanese pop music ranked the Top 10 in Oricon chart",
+      "url": "https://cir.nii.ac.jp/crid/1571135652869949056",
+      "publisher": "Information Processing Society of Japan",
+      "kind": "1980-2007 hit-song chorus, chord, syncopation, and motive analysis",
+      "runtimeUse": "bibliographic_and_aggregate_findings"
+    },
+    {
+      "id": "japan-hit-clusters-2023",
+      "title": "Clustering Japanese Historical Popular Music from HIT Charts and Musical Score Data",
+      "url": "https://doi.org/10.11517/jsaisigtwo.2023.BI-022_24",
+      "publisher": "Japanese Society for Artificial Intelligence",
+      "kind": "1970-2022 Japanese hit-song BPM, key, modulation, and note-count clustering",
+      "runtimeUse": "bibliographic_and_aggregate_findings"
+    },
+    {
+      "id": "steinberg-arrangement-guides",
+      "title": "Cubase video guides and arrangement tutorials",
+      "url": "https://www.steinberg.net/ja/cubase/learn/videos/",
+      "publisher": "Steinberg",
+      "kind": "official Cubase production guidance",
+      "runtimeUse": "workflow_reference"
+    },
+    {
+      "id": "steinberg-mix-tips",
+      "title": "Five essential tips to get a better mix",
+      "url": "https://www.steinberg.net/ja/cubase/learn/5-essential-tips-to-get-a-better-mix/",
+      "publisher": "Steinberg",
+      "kind": "official balance, panning, EQ, and ambience guidance",
+      "runtimeUse": "workflow_reference"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "generatedAt": "2026-08-10T07:56:01.483Z",
+  "profile": "automation14",
+  "testedHost": "Cubase Pro 14.0.32",
+  "project": "MCP_JPOP_Reference_Density_v2",
+  "mcpActionChain": [
+    "cubase.project.create",
+    "cubase.song.plan",
+    "cubase.song.create",
+    "cubase.export_run.perform_current_settings"
+  ],
+  "arrangement": {
+    "bars": 120,
+    "tempo": 138,
+    "key": "D major",
+    "tracks": 11,
+    "instrumentTracks": 6,
+    "midiParts": 6,
+    "notes": 3924,
+    "validationIssues": 0,
+    "audibleMeterVerified": true
+  },
+  "render": {
+    "durationSeconds": 208.695646,
+    "bytes": 80141248,
+    "sha256": "8C8C2FAD2D7E0322572B0DC70CA31247F0D596AA048580709B71ECED6328F832",
+    "sampleRate": 48000,
+    "channels": 2,
+    "peakDbfs": -1.866097,
+    "truePeakDbfs": -1.8,
+    "rmsDb": -21.137898,
+    "integratedLufs": -18.4,
+    "warnings": []
+  },
+  "sectionDynamics": [
+    { "section": "Intro", "startBar": 1, "bars": 8, "integratedLufs": -20.5, "meanDb": -23.7, "maxDb": -3.8 },
+    { "section": "Verse 1", "startBar": 9, "bars": 16, "integratedLufs": -19.3, "meanDb": -21.5, "maxDb": -3.0 },
+    { "section": "Pre-Chorus 1", "startBar": 25, "bars": 8, "integratedLufs": -17.8, "meanDb": -20.6, "maxDb": -3.0 },
+    { "section": "Chorus 1", "startBar": 33, "bars": 16, "integratedLufs": -17.7, "meanDb": -20.4, "maxDb": -2.8 },
+    { "section": "Verse 2", "startBar": 49, "bars": 16, "integratedLufs": -19.1, "meanDb": -21.3, "maxDb": -3.0 },
+    { "section": "Pre-Chorus 2", "startBar": 65, "bars": 8, "integratedLufs": -17.7, "meanDb": -20.5, "maxDb": -3.1 },
+    { "section": "Chorus 2", "startBar": 73, "bars": 16, "integratedLufs": -17.8, "meanDb": -20.5, "maxDb": -2.2 },
+    { "section": "Bridge", "startBar": 89, "bars": 8, "integratedLufs": -18.7, "meanDb": -21.7, "maxDb": -1.9 },
+    { "section": "Final Chorus", "startBar": 97, "bars": 16, "integratedLufs": -17.7, "meanDb": -20.4, "maxDb": -3.0 },
+    { "section": "Outro", "startBar": 113, "bars": 8, "integratedLufs": -20.7, "meanDb": -24.5, "maxDb": -3.9 }
+  ],
+  "interpretation": {
+    "verseToChorusLufsIncreaseDb": 1.6,
+    "introToChorusLufsIncreaseDb": 2.8,
+    "chorusToOutroLufsDecreaseDb": 3.0,
+    "padArpBarOverlap": 0,
+    "noteCountReductionFromBaselinePercent": 45.92
+  }
+}

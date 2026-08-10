@@ -30,6 +30,7 @@ var incomingChunks = {}
 var subscriptions = { objects: false, parameters: {} }
 var lastDirectAccessUpdateAt = 0
 var bridgeState = {
+    appName: midiremote_api.mDefaults.getAppName(),
     appVersion: 'unknown',
     midiRemoteApiVersion: 'unknown_feature_detected',
     projectOpen: true,
@@ -224,6 +225,15 @@ function getApiVersion() {
     } catch (e) {
         return 'unknown'
     }
+}
+
+function getHostProfile() {
+    var version = getApiVersion()
+    var majorMatch = String(version).match(/\d+/)
+    var major = majorMatch ? Number(majorMatch[0]) : 0
+    if (major === 14) return 'safe14'
+    if (major === 15) return 'safe15'
+    return 'unsupported-' + String(major || 'unknown')
 }
 
 function inferMidiRemoteApiVersion() {
@@ -775,6 +785,7 @@ midiInput.mOnSysex = function(activeDevice, message) {
             bridgeState.appVersion = getApiVersion()
             bridgeState.midiRemoteApiVersion = inferMidiRemoteApiVersion()
             success(decoded.id, decoded.command, {
+                appName: bridgeState.appName,
                 appVersion: bridgeState.appVersion,
                 midiRemoteApiVersion: bridgeState.midiRemoteApiVersion,
                 state: bridgeState,
@@ -783,6 +794,12 @@ midiInput.mOnSysex = function(activeDevice, message) {
                     makeDirectAccess: !!(page.mHostAccess && page.mHostAccess.makeDirectAccess)
                 },
                 commandBindings: inspectCommands(),
+                mcpProtocol: {
+                    version: 2,
+                    transportVersion: 1,
+                    releaseProfile: getHostProfile(),
+                    scriptBuild: '2.0.0-safe14'
+                },
                 protocol: {
                     framing: ['AIMCP1', 'AIMCP1C'],
                     maximumFrameBytes: MAX_SYSEX_FRAME_BYTES,
@@ -834,6 +851,7 @@ page.mOnActivate = function(activeDevice, activeMapping) {
     for (var i = 0; i < roots.length; i++) ensureDirectAccess(roots[i])
     bridgeState.midiRemoteApiVersion = inferMidiRemoteApiVersion()
     sendProtocol('hello', undefined, 'hello', true, {
+        appName: bridgeState.appName,
         appVersion: bridgeState.appVersion,
         midiRemoteApiVersion: bridgeState.midiRemoteApiVersion,
         state: bridgeState,

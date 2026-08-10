@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "baseline": {
+    "project": "MCP_JPOP_Harmony_Full_120bars",
+    "bars": 120,
+    "notes": {
+      "drums": 2341,
+      "bass": 896,
+      "chords": 1600,
+      "lead": 499,
+      "pad": 464,
+      "arp": 1456,
+      "total": 7256
+    },
+    "render": {
+      "durationSeconds": 208.695646,
+      "integratedLufs": -16.8,
+      "truePeakDbfs": -1.7
+    },
+    "diagnosis": "Technically audible but musically crowded: bass, piano, lead, pad, and arp remain active together for most of the form."
+  },
+  "revisedGenerator": {
+    "notes": {
+      "drums": 1692,
+      "bass": 426,
+      "chords": 896,
+      "lead": 350,
+      "pad": 176,
+      "arp": 384,
+      "total": 3924
+    },
+    "activeBars": {
+      "drums": 117,
+      "bass": 113,
+      "chords": 120,
+      "lead": 78,
+      "pad": 44,
+      "arp": 44
+    },
+    "constraints": [
+      "Pad and arp may not be active in the same bar.",
+      "Verse and chorus melodies include phrase-ending rest bars.",
+      "Bass averages fewer than four notes per bar and rests during opening/closing space.",
+      "Piano uses one or two chord attacks per bar with voice leading.",
+      "Full six-role density is not used as the default section texture."
+    ]
+  }
+}

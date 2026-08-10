@@ -1,28 +1,14 @@
-# Cubase MCP Documentation
+# Cubase MCP v2 documentation
 
-This directory documents the headless-only Cubase MCP implementation. A source
-path is not real-Cubase evidence. Only a timestamped discovery report or a
-forced integration test can set `testedWithRealCubase` to `true`.
+- [Architecture](architecture.md)
+- [25 tools and actions](tools.md)
+- [Song Creation Policy](song-policy.md)
+- [Capability and evidence model](capabilities.md)
+- [v0.1 to v2 migration](migration-v2.md)
+- [Windows and Cubase setup](setup-windows.md)
+- [Release gates](release-gates.md)
+- [Completion audit](completion-audit.md)
+- [Real Cubase test status](real-test-status.md)
+- [Security and distribution policy](security.md)
 
-## Start here
-
-1. [Architecture](architecture.md)
-2. [Tool contract](tools.md)
-3. [Windows setup](setup-windows.md)
-4. [Virtual MIDI setup](setup-virtual-midi.md)
-5. [Cubase MIDI Remote setup](setup-cubase-midi-remote.md)
-6. [Command surface setup](setup-command-surface.md)
-7. [Real test guide](real-test-guide.md)
-
-## Capability and bridge references
-
-- [Full static capability audit](full-capability-audit.md)
-- [DirectAccess capability notes](direct-access-capability.md)
-- [VST3 companion bridge](vst3-companion-bridge.md)
-- [Unsupported headless features](unsupported-headless-features.md)
-- [Real report schema](real-test-report-schema.md)
-- [Troubleshooting](troubleshooting.md)
-
-Run `npm run cubase:audit` after changing the tool registry or capability
-classifier. Run `npm run cubase:discover` on the Cubase PC to replace static
-assumptions with host-specific evidence.
+The `v0.1.0-legacy` Git tag preserves the former 238-tool implementation and its reports.

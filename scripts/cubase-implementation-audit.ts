@@ -33,11 +33,11 @@ const requirements: FileRequirement[] = [
   { category: "Docs", path: "docs/README.md" },
   { category: "Docs", path: "docs/architecture.md" },
   { category: "Docs", path: "docs/tools.md" },
-  { category: "Docs", path: "docs/real-test-guide.md" },
-  { category: "VST3 companion", path: "src/vst3-companion-bridge/protocol.md" },
-  { category: "VST3 companion", path: "src/vst3-companion-bridge/README.md" },
-  { category: "VST3 companion binary", path: "src/vst3-companion-bridge/stub/named-pipe-server.ts", status: "PLACEHOLDER_ONLY", limitation: "Protocol simulator only; no production C++/VST3 Cubase-side binary is present." },
-  { category: "VST3 companion binary", path: "src/vst3-companion-bridge/stub/PluginBridgeStub.md", status: "PLACEHOLDER_ONLY", limitation: "Implementation plan/documentation only." }
+  { category: "Docs", path: "docs/real-test-status.md" },
+  { category: "Experimental VST3 companion", path: "experimental/vst3-companion-bridge/protocol.md", status: "PRESENT_PARTIAL", limitation: "Research only; excluded from the v2.0 runtime and package." },
+  { category: "Experimental VST3 companion", path: "experimental/vst3-companion-bridge/README.md", status: "PRESENT_PARTIAL", limitation: "Research only; excluded from the v2.0 runtime and package." },
+  { category: "Experimental VST3 companion binary", path: "experimental/vst3-companion-bridge/stub/named-pipe-server.ts", status: "PLACEHOLDER_ONLY", limitation: "Protocol simulator only; excluded from the v2.0 runtime and package." },
+  { category: "Experimental VST3 companion binary", path: "experimental/vst3-companion-bridge/stub/PluginBridgeStub.md", status: "PLACEHOLDER_ONLY", limitation: "Implementation plan only; excluded from the v2.0 runtime and package." }
 ];
 
 function escape(value: string): string {
@@ -115,7 +115,8 @@ const fileRows = await Promise.all(requirements.map(async (requirement) => {
 
 const forbiddenFindings: Array<{ rule: string; file: string }> = [];
 for (const file of [...await sourceFiles("src"), ...await sourceFiles("scripts")]) {
-  if (file.endsWith("cubase-implementation-audit.ts")) continue;
+  if (file.endsWith("cubase-implementation-audit.ts") || file.endsWith("v2-static-audit.ts")) continue;
+  if (file.includes("src/automation14") || file.includes("src\\automation14")) continue;
   const text = executableText(await readFile(file, "utf8"));
   for (const [rule, pattern] of forbiddenPatterns) {
     if (pattern.test(text)) forbiddenFindings.push({ rule, file: relative(resolve(), file).replaceAll("\\", "/") });

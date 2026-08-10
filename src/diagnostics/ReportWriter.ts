@@ -45,6 +45,7 @@ export interface RealCubaseReport {
   pluginManager: unknown;
   toolCapabilities: ToolCapabilityEvidence[];
   errors: DiagnosticErrorRecord[];
+  crashDumps: unknown;
   nextActions: string[];
   smokeTests?: unknown;
 }
@@ -75,6 +76,7 @@ export class ReportWriter {
       this.writeJson(directory, "plugin-manager.json", report.pluginManager),
       this.writeJson(directory, "tool-capability-matrix.json", report.toolCapabilities),
       this.writeJson(directory, "errors.json", report.errors),
+      this.writeJson(directory, "crash-dumps.json", report.crashDumps),
       writeFile(resolve(directory, "summary.md"), this.summary(report), "utf8"),
       writeFile(resolve(directory, "next-actions.md"), this.nextActions(report), "utf8"),
       ...(report.smokeTests === undefined ? [] : [this.writeJson(directory, "smoke-tests.json", report.smokeTests)])

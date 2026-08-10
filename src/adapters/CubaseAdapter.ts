@@ -30,6 +30,7 @@ export interface OperationResult<T = unknown> {
     stateAfter?: unknown;
     stateDiff?: unknown;
     reportFile?: string;
+    outputFiles?: Array<string | { path: string; bytes?: number; sha256?: string }>;
   };
   job?: Pick<Job, "id" | "type" | "status" | "progress">;
 }

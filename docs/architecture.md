@@ -1,73 +1,45 @@
 # Architecture
 
-## Boundary
-
-The server controls Cubase only through explicit headless transports. It does
-not contain AutoHotkey, SendKeys, Windows UI Automation, OCR, screenshots,
-mouse coordinates, keyboard injection, or dialog automation.
-
 ```mermaid
 flowchart LR
-  Client["MCP client"] --> Server["MCP server"]
-  Server --> Pipeline["validation / permission / safety / result"]
-  Pipeline --> Composite["CompositeCubaseAdapter"]
-  Composite --> State["ProjectStateAdapter"]
-  Composite --> MIDI["MidiRemoteAdapter"]
-  Composite --> DA["DirectAccessAdapter"]
-  Composite --> Command["MidiCommandSurfaceAdapter"]
-  Composite --> Plugin["PluginBridgeAdapter"]
-  MIDI --> Router["correlated chunked SysEx router"]
-  DA --> Router
-  Command --> Router
-  Router --> Ports["two virtual MIDI ports"]
-  Ports --> Script["Cubase MIDI Remote bridge script"]
-  Plugin --> Pipe["versioned Windows named pipe"]
-  Pipe --> Companion["optional Cubase-side VST3 companion"]
-  State --> Registries["track / event / plugin / marker registries"]
-  Composite --> Jobs["export / render / scan job manager"]
+  Client["MCP client"] --> Server["25-tool v2 MCP server"]
+  Server --> Preflight["Schema + host profile + action capability preflight"]
+  Preflight --> Song["Song planner / executor / validator"]
+  Preflight --> Router["Action router"]
+  Song --> Router
+  Song --> A14["Opt-in automation14 engine"]
+  Router --> Adapter["Official-path composite adapter"]
+  Adapter --> MR["MIDI Remote state/control"]
+  Adapter --> CB["Command Binding"]
+  Adapter --> DA["DirectAccess"]
+  MR --> Cubase["Cubase Pro"]
+  CB --> Cubase
+  DA --> Cubase
+  A14 --> UI["Interactive Cubase desktop + MIDI performance bridge"]
+  UI --> Cubase
+  Preflight --> Evidence["Before/after/diff/restore evidence"]
 ```
 
-## Execution pipeline
+## Boundaries
 
-Every MCP call follows the same ordered path:
+`src/v2` owns the public action schemas, routing, host profiles, capability claims, evidence audit, resources, and MCP registration.
 
-1. Zod input validation, including common options.
-2. Permission policy evaluation.
-3. capability lookup with no static real-Cubase claims.
-4. dry-run planning and affected-object preview.
-5. confirmation guard for destructive and overwrite operations.
-6. adapter routing and timeout enforcement.
-7. state/evidence capture where the host exposes it.
-8. structured success or machine-readable error formatting.
+`src/song` owns musical intent. The planner resolves roles to Cubase track types before the executor is allowed to create anything. The executor creates tracks, instruments/content, and routing, then the validator checks the resulting project. Repair operates only on manifest-owned targets.
 
-## Transport ownership
+`src/automation14` is a separate non-official execution engine for the tested Cubase Pro 14.0.32 desktop. It performs exact-layout preflight, HALion program selection, real-time MIDI recording, MixConsole routing/meter verification, and render analysis. Capabilities always declare `releaseCertified: false`; the official safe14 audit excludes this directory while verifying that no desktop automation leaks into the public runtime.
 
-`MidiRemoteAdapter` owns port connection, handshake, selected-channel host
-values, transport values, status polling, and state-event ingestion.
+The existing low-level adapters remain implementation plumbing and legacy migration references. They do not determine public support. `CapabilityRegistry` denies an action before adapter execution unless a certified profile marks it `real`.
 
-`DirectAccessAdapter` owns feature-detected MIDI Remote API object traversal,
-parameter discovery/read/write, subscriptions, and plugin manager requests.
+## Protocol versions
 
-`MidiCommandSurfaceAdapter` owns command registry validation, `canPerform`,
-execution, and pre/post state diffs. Command bindings cannot supply arbitrary
-dialog parameters.
+The MIDI SysEx transport remains framing version 1 (`AIMCP1`/`AIMCP1C`) for compatibility. The application handshake is version 2 and reports `releaseProfile` and `scriptBuild`. Transport version and application contract version are intentionally separate.
 
-`PluginBridgeAdapter` first uses supported DirectAccess/Quick Control routes,
-then the versioned named-pipe protocol. The TypeScript pipe stub is a protocol
-test utility and is never evidence of a real Cubase-side binary.
+## Stable targets
 
-`ProjectStateAdapter` owns structured cached state, stable server IDs, stale
-detection, state diffs, jobs, and filesystem export verification. It does not
-mutate `.cpr` files.
+Public actions use `TargetRef`:
 
-`OscAdapter` is opt-in and requires an explicit external Cubase-side OSC
-endpoint. `EuConOrMackieAdapter` documents MCU transport capability; EuCon is
-proprietary and is not claimed as implemented.
+- `uniqueId` for a stable project object;
+- `objectId` plus `sessionId` for DirectAccess runtime objects;
+- `selected` only for explicitly selection-dependent actions.
 
-## Long operations
-
-Export, render, scan, hitpoint, silence detection, backup, and large analysis
-operations return a job ID. `JobManager` serializes state transitions and
-records result/evidence or a machine-readable failure. Export completion is
-real only when the Cubase command was observed and expected output files were
-verified.
+Song manifests store stable unique track IDs and reject stale or ambiguous bindings.

@@ -1,0 +1,97 @@
+{
+  "generatedAt": "2026-08-09T19:34:25.759Z",
+  "host": {
+    "connected": true,
+    "version": "14.0.32",
+    "midiRemoteApiVersion": "1.x_feature_detected",
+    "directAccessAvailable": false,
+    "projectOpen": true,
+    "appName": "Cubase",
+    "mcpProtocolVersion": 2,
+    "mcpTransportVersion": 1,
+    "hostProfile": "safe14",
+    "scriptBuild": "2.0.0-safe14"
+  },
+  "before": {
+    "state": "stopped",
+    "position": {
+      "barsBeats": "1.1.1.0",
+      "seconds": 0,
+      "timecode": "00:00:00:00"
+    },
+    "cycleEnabled": false,
+    "leftLocator": "1.1.1.0",
+    "rightLocator": "1.1.1.0",
+    "metronomeEnabled": false,
+    "countInEnabled": false,
+    "preRollBars": 0,
+    "postRollBars": 0
+  },
+  "play": {
+    "changed": true,
+    "adapter": "MIDI Remote Adapter",
+    "data": {
+      "adapter": "MIDI Remote Adapter",
+      "mapping": {
+        "name": "transport.play",
+        "kind": "cc",
+        "channel": 0,
+        "number": 20,
+        "value": 127
+      },
+      "transportState": "playing"
+    },
+    "warnings": [
+      "Result verification depends on the next MIDI Remote state event from Cubase."
+    ]
+  },
+  "during": {
+    "state": "playing",
+    "position": {
+      "barsBeats": "1.1.1.0",
+      "seconds": 0,
+      "timecode": "00:00:00:00"
+    },
+    "cycleEnabled": false,
+    "leftLocator": "1.1.1.0",
+    "rightLocator": "1.1.1.0",
+    "metronomeEnabled": false,
+    "countInEnabled": false,
+    "preRollBars": 0,
+    "postRollBars": 0
+  },
+  "stop": {
+    "changed": true,
+    "adapter": "MIDI Remote Adapter",
+    "data": {
+      "adapter": "MIDI Remote Adapter",
+      "mapping": {
+        "name": "transport.stop",
+        "kind": "cc",
+        "channel": 0,
+        "number": 21,
+        "value": 127
+      },
+      "transportState": "stopped"
+    },
+    "warnings": [
+      "Result verification depends on the next MIDI Remote state event from Cubase."
+    ]
+  },
+  "after": {
+    "state": "stopped",
+    "position": {
+      "barsBeats": "1.1.1.0",
+      "seconds": 0,
+      "timecode": "00:00:00:00"
+    },
+    "cycleEnabled": false,
+    "leftLocator": "1.1.1.0",
+    "rightLocator": "1.1.1.0",
+    "metronomeEnabled": false,
+    "countInEnabled": false,
+    "preRollBars": 0,
+    "postRollBars": 0
+  },
+  "requestedPlaybackMs": 11700
+}

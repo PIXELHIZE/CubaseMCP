@@ -1,9 +1,10 @@
 {
   "name": "cubase-mcp",
-  "version": "0.1.0",
-  "private": true,
+  "version": "2.0.0",
+  "private": false,
   "type": "module",
-  "description": "Headless Cubase MCP bridge with real-PC capability discovery and evidence reports.",
+  "description": "Evidence-first, action-based MCP server for Cubase MIDI Remote, DirectAccess, Command Binding, and safe song creation.",
+  "license": "Apache-2.0",
   "main": "dist/server.js",
   "bin": {
     "cubase-mcp": "dist/server.js"
@@ -20,18 +21,40 @@
     "cubase:call": "tsx scripts/cubase-call.ts",
     "cubase:project-test": "tsx scripts/cubase-project-create-test.ts",
     "cubase:project-report": "tsx scripts/cubase-project-report-finalize.ts",
+    "cubase:jpop-demo": "tsx scripts/cubase-jpop-demo.ts",
+    "cubase:automation14:selected": "tsx scripts/cubase-automation14-selected-track.ts",
+    "cubase:automation14:project": "tsx scripts/cubase-automation14-project.ts",
+    "cubase:automation14:song": "tsx scripts/cubase-automation14-song.ts",
+    "cubase:automation14:render": "tsx scripts/cubase-automation14-render.ts",
+    "cubase:automation14:finalize": "tsx scripts/cubase-automation14-finalize.ts",
+    "cubase:automation14:audio-evidence": "tsx scripts/cubase-automation14-audio-evidence.ts",
+    "research:jpop:collect": "tsx scripts/collect-jpop-reference.ts",
+    "v2:audit": "tsx scripts/v2-static-audit.ts",
+    "v2:assemble-safe14": "tsx scripts/v2-safe14-assemble.ts",
+    "v2:pending-profile": "tsx scripts/v2-pending-profile.ts",
+    "release:audit": "tsx scripts/v2-release-audit.ts",
+    "sbom": "cyclonedx-npm --package-lock-only --omit dev --output-file artifacts/sbom.cdx.json --spec-version 1.6 --validate",
+    "package:runtime": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/package-runtime.ps1",
+    "package:zip": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/package-zip.ps1",
+    "package:msi": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/package-msi.ps1",
+    "package:checksums": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/package-checksums.ps1",
     "dev": "tsx src/server.ts",
     "test": "vitest run",
-    "test:real": "vitest run tests/integration --run",
+    "test:real:preflight": "tsx scripts/v2-real-preflight.ts",
+    "test:real": "vitest run tests/integration --run --no-file-parallelism --maxWorkers=1",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@julusian/midi": "^3.6.1",
-    "@modelcontextprotocol/sdk": "^1.29.0",
-    "zod": "^3.25.76"
+    "@julusian/midi": "^3.8.0",
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@cyclonedx/cyclonedx-npm": "6.0.0",
     "@types/node": "^22.13.14",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "ajv-formats-draft2019": "1.6.1",
     "cross-env": "^7.0.3",
     "tsx": "^4.19.3",
     "typescript": "^5.8.2",
@@ -39,5 +62,17 @@
   },
   "engines": {
     "node": ">=22"
+  },
+  "files": [
+    "dist/",
+    "src/cubase-remote-script/",
+    "docs/",
+    "LICENSE",
+    "NOTICE",
+    "THIRD_PARTY_LICENSES.md",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
   }
 }

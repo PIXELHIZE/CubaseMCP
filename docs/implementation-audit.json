@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-10T07:58:53.944Z",
+  "generatedAt": "2026-08-10T08:02:09.190Z",
   "fileRows": [
     {
       "category": "MCP server",
@@ -484,30 +484,32 @@
     },
     {
       "category": "Docs",
-      "path": "docs/real-test-guide.md",
+      "path": "docs/real-test-status.md",
       "status": "PRESENT"
     },
     {
-      "category": "VST3 companion",
-      "path": "src/vst3-companion-bridge/protocol.md",
-      "status": "PRESENT"
+      "category": "Experimental VST3 companion",
+      "path": "experimental/vst3-companion-bridge/protocol.md",
+      "status": "PRESENT_PARTIAL",
+      "limitation": "Research only; excluded from the v2.0 runtime and package."
     },
     {
-      "category": "VST3 companion",
-      "path": "src/vst3-companion-bridge/README.md",
-      "status": "PRESENT"
+      "category": "Experimental VST3 companion",
+      "path": "experimental/vst3-companion-bridge/README.md",
+      "status": "PRESENT_PARTIAL",
+      "limitation": "Research only; excluded from the v2.0 runtime and package."
     },
     {
-      "category": "VST3 companion binary",
-      "path": "src/vst3-companion-bridge/stub/named-pipe-server.ts",
+      "category": "Experimental VST3 companion binary",
+      "path": "experimental/vst3-companion-bridge/stub/named-pipe-server.ts",
       "status": "PLACEHOLDER_ONLY",
-      "limitation": "Protocol simulator only; no production C++/VST3 Cubase-side binary is present."
+      "limitation": "Protocol simulator only; excluded from the v2.0 runtime and package."
     },
     {
-      "category": "VST3 companion binary",
-      "path": "src/vst3-companion-bridge/stub/PluginBridgeStub.md",
+      "category": "Experimental VST3 companion binary",
+      "path": "experimental/vst3-companion-bridge/stub/PluginBridgeStub.md",
       "status": "PLACEHOLDER_ONLY",
-      "limitation": "Implementation plan/documentation only."
+      "limitation": "Implementation plan only; excluded from the v2.0 runtime and package."
     }
   ],
   "toolRows": [

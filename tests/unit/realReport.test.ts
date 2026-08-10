@@ -14,6 +14,11 @@ describe("real Cubase report invariants", () => {
       commandBindings: [],
       pluginManager: {},
       errors: [],
+      crashDumps: {
+        checked: true,
+        passed: true,
+        newOrChangedDumps: []
+      },
       nextActions: [],
       toolCapabilities: [
         {

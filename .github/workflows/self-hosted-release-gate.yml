@@ -1,0 +1,73 @@
+name: self-hosted-safe14-release-gate
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  safe14:
+    runs-on: [self-hosted, Windows, cubase-safe14]
+    timeout-minutes: 180
+    env:
+      CUBASE_ADAPTER: composite
+      CUBASE_V2_CAPABILITY_MANIFEST: ${{ github.workspace }}\reports\v2\safe14.manifest.json
+      CUBASE_V2_EVIDENCE: ${{ github.workspace }}\reports\v2\safe14.evidence.json
+      CUBASE_V2_OBSERVATIONS: ${{ github.workspace }}\reports\v2\safe14.observations.json
+      CUBASE_MIDI_INPUT: AI MCP Bridge From Cubase
+      CUBASE_MIDI_OUTPUT: AI MCP Bridge To Cubase
+      CUBASE_HOST_EDITION: ${{ vars.CUBASE_HOST_EDITION }}
+      CUBASE_REAL_DESTRUCTIVE: "true"
+      CUBASE_FIXTURE_ATTESTATION: ${{ vars.CUBASE_FIXTURE_ATTESTATION }}
+      CUBASE_MCP_NODE_RUNTIME_DIR: ${{ github.workspace }}\artifacts\tooling\node-v22.19.0-win-x64
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run v2:audit
+      - run: npm run test:real:preflight
+      - run: npm run test:real
+      - run: npm run v2:assemble-safe14
+      - run: npm run release:audit
+      - run: npm run build
+      - name: Download pinned redistributable Node runtime
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force artifacts\tooling | Out-Null
+          Invoke-WebRequest `
+            -Uri https://nodejs.org/dist/v22.19.0/node-v22.19.0-win-x64.zip `
+            -OutFile artifacts\tooling\node-v22.19.0-win-x64.zip
+          Expand-Archive `
+            -Path artifacts\tooling\node-v22.19.0-win-x64.zip `
+            -DestinationPath artifacts\tooling `
+            -Force
+          if (-not (Test-Path "$env:CUBASE_MCP_NODE_RUNTIME_DIR\node.exe")) {
+            throw "Pinned Node runtime was not extracted."
+          }
+      - run: npm run package:runtime
+      - run: npm run package:zip -- -SkipRuntime
+      - run: npm run package:msi -- -SkipRuntime
+      - run: npm run sbom
+      - run: npm run package:checksums
+      - name: Clean-VM installer smoke
+        shell: pwsh
+        run: |
+          $msi = Get-ChildItem artifacts\*.msi | Select-Object -First 1
+          & scripts\installer-smoke.ps1 -MsiPath $msi.FullName
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cubase-mcp-safe14-release
+          path: |
+            artifacts/*.zip
+            artifacts/*.msi
+            artifacts/*.json
+            reports/real-cubase/**/*
+            reports/v2/*.json
+            artifacts/SHA256SUMS.txt

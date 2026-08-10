@@ -20,6 +20,7 @@ var CHUNK_FRAGMENT_CHARS = 640
 var MAX_LOGICAL_PAYLOAD_CHARS = 4 * 1024 * 1024
 var registry = {}
 var bridgeState = {
+    appName: midiremote_api.mDefaults.getAppName(),
     appVersion: 'unknown',
     midiRemoteApiVersion: '1.x_feature_detected',
     projectOpen: true,
@@ -27,6 +28,15 @@ var bridgeState = {
     selectedTrack: { name: 'Selected Track' },
     selectedQuickControls: [],
     focusedQuickControls: []
+}
+
+function getHostProfile() {
+    var version = midiremote_api.mDefaults.mAppVersion.getVersionString()
+    var majorMatch = String(version).match(/\d+/)
+    var major = majorMatch ? Number(majorMatch[0]) : 0
+    if (major === 14) return 'safe14'
+    if (major === 15) return 'safe15'
+    return 'unsupported-' + String(major || 'unknown')
 }
 
 var commands = [
@@ -273,7 +283,14 @@ midiInput.mOnSysex = function(activeDevice, message) {
     if (!request) return
     if (request.command === 'ping' || request.command === 'get_state') {
         bridgeState.appVersion = midiremote_api.mDefaults.mAppVersion.getVersionString()
-        send(request.id, request.command, { appVersion: bridgeState.appVersion, midiRemoteApiVersion: bridgeState.midiRemoteApiVersion, state: bridgeState, directAccess: { active: false, makeDirectAccess: false } })
+        send(request.id, request.command, {
+            appName: bridgeState.appName,
+            appVersion: bridgeState.appVersion,
+            midiRemoteApiVersion: bridgeState.midiRemoteApiVersion,
+            state: bridgeState,
+            directAccess: { active: false, makeDirectAccess: false },
+            mcpProtocol: { version: 2, transportVersion: 1, releaseProfile: getHostProfile(), scriptBuild: '2.0.0-safe14' }
+        })
         return
     }
     if (request.command === 'command_binding') {
@@ -298,7 +315,7 @@ midiInput.mOnSysex = function(activeDevice, message) {
 page.mOnActivate = function(activeDevice, activeMapping) {
     activeDeviceRef = activeDevice
     activeMappingRef = activeMapping
-    sendWithType('hello', undefined, 'hello', { appVersion: midiremote_api.mDefaults.mAppVersion.getVersionString(), commandBindings: inspect() })
+    sendWithType('hello', undefined, 'hello', { appName: bridgeState.appName, appVersion: midiremote_api.mDefaults.mAppVersion.getVersionString(), commandBindings: inspect() })
     sendState()
 }
 
