@@ -111,8 +111,9 @@ export class SongProjectPlanner {
   private defaultRoute(role: SongRole): SongRole | undefined {
     if (role === "drums") return "drum_bus";
     if (["bass", "chords", "lead", "pad", "arp", "vocal", "guitar", "audio_loop", "stem"].includes(role)) return "music_bus";
-    if (role === "drum_bus") return "delay";
-    if (role === "music_bus") return "reverb";
+    // Group channels must terminate at the main output. Reverb and delay are
+    // independent FX returns (send targets), never serial output destinations.
+    if (role === "drum_bus" || role === "music_bus") return undefined;
     return undefined;
   }
 

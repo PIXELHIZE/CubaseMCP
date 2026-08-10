@@ -14,6 +14,8 @@ import { registerV2Tools } from "./v2/registerV2Tools.js";
 import { registerV2Resources } from "./v2/resources.js";
 import { registerV2Prompts } from "./v2/prompts.js";
 import { Automation14SongExecutor } from "./automation14/Automation14SongExecutor.js";
+import { Automation14ExportExecutor } from "./automation14/Automation14ExportExecutor.js";
+import { Automation14ProjectExecutor } from "./automation14/Automation14ProjectExecutor.js";
 
 export function createAdapterFromEnv(env: NodeJS.ProcessEnv = process.env): CubaseAdapter {
   const config = loadCubaseConfig(env);
@@ -52,7 +54,9 @@ export async function createCubaseMcpRuntime(
   const manifestPath = options.capabilityManifestPath ?? process.env.CUBASE_V2_CAPABILITY_MANIFEST;
   if (manifestPath) await capabilities.loadManifest(manifestPath);
   const automation14Executor = host.profile === "automation14" ? new Automation14SongExecutor(adapter) : undefined;
-  const controller = new V2Controller(adapter, host, capabilities, automation14Executor);
+  const automation14ExportExecutor = host.profile === "automation14" ? new Automation14ExportExecutor() : undefined;
+  const automation14ProjectExecutor = host.profile === "automation14" ? new Automation14ProjectExecutor() : undefined;
+  const controller = new V2Controller(adapter, host, capabilities, automation14Executor, automation14ExportExecutor, automation14ProjectExecutor);
 
   const server = new McpServer(
     {

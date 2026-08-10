@@ -111,6 +111,7 @@ export class Automation14SongExecutor {
 
     await this.ui.stopTransport();
     await this.ui.setTempo(captureTempo);
+    await this.ui.setProjectRange(plan.bars);
 
     const structuralIntents = plan.tracks
       .filter((track) => track.trackType === "group" || track.trackType === "fx" || track.trackType === "marker")
@@ -120,7 +121,9 @@ export class Automation14SongExecutor {
       );
     for (const intent of structuralIntents) {
       const id = `automation14:${plan.songId}:${intent.role}`;
-      const output = intent.routeToRole ? roleNames.get(intent.routeToRole) : undefined;
+      const output = intent.trackType === "group"
+        ? "Stereo Out"
+        : intent.routeToRole ? roleNames.get(intent.routeToRole) : undefined;
       const effect = intent.trackType === "fx" ? (intent.role === "reverb" ? "RoomWorks SE" : "StereoDelay") : undefined;
       if (intent.trackType === "group") await this.ui.addGroupTrack(intent.name, output);
       if (intent.trackType === "fx") await this.ui.addFxTrack(intent.name, effect, "Stereo Out");
@@ -154,7 +157,10 @@ export class Automation14SongExecutor {
         outputBus
       };
       await this.ui.addInstrumentTrack(recipe.name, recipe.program.plugin, this.midiPort, outputBus);
-      await this.ui.loadHalionProgram(recipe.program.program);
+      const programLoad = await this.ui.loadHalionProgram(recipe.program.program);
+      if (!programLoad.loaded || !programLoad.slotOccupied) {
+        throw new Error(`HALion program verification failed for ${intent.role}: ${recipe.program.program}`);
+      }
       await this.ui.locateStart();
       const events = this.encoder.encode(notes, captureTempo);
       await this.ui.startRecording();
@@ -163,13 +169,21 @@ export class Automation14SongExecutor {
       } finally {
         await this.ui.stopTransport();
       }
+      const firstNote = notes[0];
+      if (!firstNote) throw new Error(`No playback probe position exists for ${intent.role}.`);
+      const trackProbe = await this.ui.playSelectedTrackFromPosition(positionToCubaseString(firstNote.start), 2_800);
+      if (!trackProbe.verified) {
+        throw new Error(`Isolated playback verification failed for ${intent.role}: ${JSON.stringify(trackProbe)}`);
+      }
       const id = `automation14:${plan.songId}:${intent.role}`;
       const track = virtualTrack(plan, id, index++, recipe);
       virtualTracks.push(track);
       bindings.push({
         intentId: intent.id, role: intent.role, name: intent.name, target: { kind: "uniqueId", uniqueId: id },
         expectedType: "instrument", actualType: "instrument", instrumentExpected: recipe.program.plugin,
-        programExpected: recipe.program.program, instrumentLoaded: true, programLoaded: true,
+        programExpected: recipe.program.program, instrumentLoaded: true, programLoaded: programLoad.loaded,
+        programEvidence: programLoad,
+        audibleEvidence: { verified: trackProbe.verified, method: "meter", details: trackProbe },
         partIds: track.parts.map((part) => part.id), noteCount: notes.length, audioEventIds: [], routeToRole: intent.routeToRole,
         routeValid: !intent.routeToRole || Boolean(outputBus), ownedByPlanner: true
       });

@@ -15,7 +15,7 @@ describe("Song Creation Policy", () => {
     expect(catalog.verifiedPrograms.map((program) => program.name)).toEqual(expect.arrayContaining([
       "SR Studio A Kit",
       "SR Smooth Bass",
-      "[GM 001] Acoustic Grand Piano",
+      "[GM 002] Bright Acoustic Piano",
       "Butterfly Lead",
       "Alaska Sweep",
       "Easy Saw Comp"

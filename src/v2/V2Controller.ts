@@ -1,6 +1,8 @@
 import { randomUUID } from "node:crypto";
 import { z } from "zod/v4";
 import type { CubaseAdapter, OperationResult } from "../adapters/CubaseAdapter.js";
+import type { Automation14ExportExecutor } from "../automation14/Automation14ExportExecutor.js";
+import type { Automation14ProjectExecutor } from "../automation14/Automation14ProjectExecutor.js";
 import type { SongPlan, SongPlanRequest, SongRole } from "../song/models.js";
 import { SongProjectService } from "../song/SongProjectService.js";
 import type { SongProjectExecutor } from "../song/SongProjectExecutor.js";
@@ -30,7 +32,9 @@ export class V2Controller {
     private readonly adapter: CubaseAdapter,
     private host: HostDescriptor,
     private readonly capabilities = new CapabilityRegistry(),
-    songExecutor?: Pick<SongProjectExecutor, "execute">
+    songExecutor?: Pick<SongProjectExecutor, "execute">,
+    private readonly automation14ExportExecutor?: Pick<Automation14ExportExecutor, "execute">,
+    private readonly automation14ProjectExecutor?: Pick<Automation14ProjectExecutor, "create">
   ) {
     this.router = new ActionRouter(adapter);
     this.songs = new SongProjectService(adapter, undefined, undefined, undefined, undefined, undefined, undefined, songExecutor);
@@ -137,6 +141,10 @@ export class V2Controller {
             stateBefore: before,
             stateAfter: after,
             stateDiff: operationResult.evidence?.stateDiff,
+            outputFiles: operationResult.evidence?.outputFiles?.map((file) =>
+              typeof file === "string" ? { path: file } : file
+            ),
+            reportFile: operationResult.evidence?.reportFile,
             evidenceId: capability.evidenceId
           },
           warnings: operationResult.warnings ?? []
@@ -166,6 +174,20 @@ export class V2Controller {
     if (tool === "cubase.system") return this.executeSystem(action, input);
     if (tool === "cubase.song") return this.executeSong(action, input, meta);
     if (tool === "cubase.batch") return this.executeBatch(action, input);
+    if (tool === "cubase.project" && action === "create" && this.automation14ProjectExecutor) {
+      return this.automation14ProjectExecutor.create(input, {
+        ...meta,
+        toolName: tool,
+        timeoutMs: Number(input.timeoutMs ?? 30_000)
+      });
+    }
+    if (tool === "cubase.export_run" && action === "perform_current_settings" && this.automation14ExportExecutor) {
+      return this.automation14ExportExecutor.execute(input, {
+        ...meta,
+        toolName: tool,
+        timeoutMs: Number(input.timeoutMs ?? 30_000)
+      });
+    }
     return this.router.execute(tool, action, input, {
       ...meta,
       toolName: tool,

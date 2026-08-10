@@ -29,14 +29,16 @@ Every software role accepts an exact HALion Sonic MediaBay program name through 
 
 ## Cubase Pro 14.0.32 automation profile
 
-The opt-in automation14 engine creates real Instrument, Group, FX, and Marker Tracks, loads HALion programs, records generated MIDI through the virtual bridge port, applies routing, saves the project, and verifies playback in MixConsole. It requires the interactive desktop and exact layout recorded by preflight.
+The opt-in automation14 engine creates an empty project, creates real Instrument, Group, FX, and Marker Tracks, loads HALion programs, records generated MIDI through the virtual bridge port, applies routing, saves the project, verifies playback in MixConsole, and performs a real-time WAV export with hash/audio evidence. It requires the interactive desktop and exact layout recorded by preflight.
 
 ```powershell
 $env:CUBASE_AUTOMATION14="true"
-npm run cubase:automation14:song -- --bars 120 --output artifacts/automation14-jpop-full
-npm run cubase:automation14:finalize -- --output artifacts/automation14-jpop-full
-npm run cubase:automation14:audio-evidence -- --output artifacts/automation14-jpop-full
+npm run cubase:automation14:project -- --current-project-title Existing_Project --name MCP_JPOP_Reference_Density_v2
+npm run cubase:automation14:song -- --project-title MCP_JPOP_Reference_Density_v2 --bars 120 --output artifacts/automation14-jpop-reference-v2
+npm run cubase:automation14:render -- --project-title MCP_JPOP_Reference_Density_v2 --expected-file "$env:USERPROFILE\Documents\Cubase Projects\MCP_JPOP_Reference_Density_v2\Mixdown\MCP_JPOP_Reference_Density_v2.wav" --evidence-directory artifacts/automation14-jpop-reference-v2
 ```
+
+The generalized J-pop metadata index, harmonic archetypes, density policy, source/license decisions, and the final real-Cubase validation record are stored under [`research/jpop-reference`](research/jpop-reference/README.md). No commercial audio, lyrics, stems, or complete song transcription is bundled.
 
 See [docs/automation14.md](docs/automation14.md) for prerequisites, supported program selection, and safety boundaries.
 

@@ -90,11 +90,16 @@ export class FfmpegAudioRenderAnalyzer {
     const channels = Number(stream.channels ?? 0);
     const warnings: string[] = [];
     if (values.truePeakDbfs !== undefined && values.truePeakDbfs > 0) warnings.push("true_peak_above_0_dbfs");
+    if (
+      (values.peakDbfs !== undefined && values.peakDbfs <= -80) ||
+      (values.rmsDb !== undefined && values.rmsDb <= -70)
+    ) warnings.push("render_effectively_silent");
     if (values.integratedLufs !== undefined && values.integratedLufs < -24) warnings.push("integrated_loudness_below_-24_lufs");
     if (values.integratedLufs !== undefined && values.integratedLufs > -8) warnings.push("integrated_loudness_above_-8_lufs");
     const verified = durationSeconds > 0 && sampleRate > 0 && channels > 0 &&
-      values.peakDbfs !== undefined && values.truePeakDbfs !== undefined &&
-      values.truePeakDbfs <= 0 && values.integratedLufs !== undefined;
+      values.peakDbfs !== undefined && values.peakDbfs > -80 &&
+      values.truePeakDbfs !== undefined && values.truePeakDbfs <= 0 &&
+      values.rmsDb !== undefined && values.rmsDb > -70 && values.integratedLufs !== undefined;
     return {
       verified,
       path,

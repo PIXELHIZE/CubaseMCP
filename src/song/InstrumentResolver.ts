@@ -12,7 +12,7 @@ const defaultInstruments: Partial<Record<SongRole, string>> = {
 const defaultPrograms: Partial<Record<SongRole, string>> = {
   drums: "SR Studio A Kit",
   bass: "SR Smooth Bass",
-  chords: "[GM 001] Acoustic Grand Piano",
+  chords: "[GM 002] Bright Acoustic Piano",
   lead: "Butterfly Lead",
   pad: "Alaska Sweep",
   arp: "Easy Saw Comp"
@@ -34,7 +34,7 @@ export interface HalionProgramEntry {
 const validatedHalionPrograms: readonly HalionProgramEntry[] = [
   { name: "SR Studio A Kit", category: "drums", roles: ["drums"], verifiedHostVersion: "14.0.32" },
   { name: "SR Smooth Bass", category: "bass", roles: ["bass"], verifiedHostVersion: "14.0.32" },
-  { name: "[GM 001] Acoustic Grand Piano", category: "keys", roles: ["chords", "lead"], verifiedHostVersion: "14.0.32" },
+  { name: "[GM 002] Bright Acoustic Piano", category: "keys", roles: ["chords", "lead"], verifiedHostVersion: "14.0.32" },
   { name: "Butterfly Lead", category: "lead", roles: ["lead"], verifiedHostVersion: "14.0.32" },
   { name: "Alaska Sweep", category: "pad", roles: ["pad"], verifiedHostVersion: "14.0.32" },
   { name: "Easy Saw Comp", category: "arp", roles: ["arp", "chords"], verifiedHostVersion: "14.0.32" }

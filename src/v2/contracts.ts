@@ -128,6 +128,7 @@ export interface V2Evidence {
   stateDiff?: unknown;
   restored?: boolean;
   outputFiles?: Array<{ path: string; bytes?: number; sha256?: string }>;
+  reportFile?: string;
   evidenceId?: string;
 }
 

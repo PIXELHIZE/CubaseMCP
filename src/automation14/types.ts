@@ -7,6 +7,7 @@ export interface Automation14Preflight {
   ok: boolean;
   processId?: number;
   hostVersion?: string;
+  projectTitle?: string;
   display: { width: number; height: number };
   mainWindow?: { left: number; top: number; right: number; bottom: number };
   midiPort: string;
@@ -41,14 +42,50 @@ export interface Automation14PlaybackProbe {
   activeMeterPixels?: number;
   mixConsoleTitle?: string;
   screenshotPath?: string;
+  soloSelected?: boolean;
+}
+
+export interface Automation14ProgramLoadResult {
+  requestedProgram: string;
+  loaded: boolean;
+  slotOccupied: boolean;
+  slotTextPixels: number;
+  screenshotPath?: string;
+}
+
+export interface Automation14MixerGainResult {
+  requestedDb: number;
+  observedDb?: number;
+  applied: boolean;
+  screenshotPath?: string;
+}
+
+export interface Automation14ExportUiResult {
+  expectedFile: string;
+  realtime: boolean;
+  exportWindowObserved: boolean;
+  completed: boolean;
+  bytes: number;
+  screenshotPath?: string;
+}
+
+export interface Automation14ProjectCreateResult {
+  name: string;
+  directory: string;
+  projectPath: string;
+  created: boolean;
+  projectWindowTitle: string;
+  screenshotPath?: string;
 }
 
 export interface Automation14UiDriver {
   preflight(): Promise<Automation14Preflight>;
+  createEmptyProject(name: string, directory: string): Promise<Automation14ProjectCreateResult>;
   setTempo(bpm: number): Promise<void>;
+  setProjectRange(bars: number): Promise<void>;
   locateStart(): Promise<void>;
   addInstrumentTrack(name: string, plugin: string, midiInput?: string, output?: string): Promise<void>;
-  loadHalionProgram(program: string): Promise<void>;
+  loadHalionProgram(program: string): Promise<Automation14ProgramLoadResult>;
   setSelectedMidiInput(port: string): Promise<void>;
   setSelectedOutput(destination: string): Promise<void>;
   startRecording(): Promise<void>;
@@ -58,8 +95,11 @@ export interface Automation14UiDriver {
   addMarkerTrack(name: string): Promise<void>;
   commitRename(name: string): Promise<void>;
   saveProject(): Promise<void>;
+  setStereoOutGain(db: number): Promise<Automation14MixerGainResult>;
+  exportAudioMixdown(expectedFile: string, realtime: boolean, timeoutMs: number): Promise<Automation14ExportUiResult>;
   playFromStart(durationMs: number): Promise<Automation14PlaybackProbe>;
   playFromPosition(position: string, durationMs: number): Promise<Automation14PlaybackProbe>;
+  playSelectedTrackFromPosition(position: string, durationMs: number): Promise<Automation14PlaybackProbe>;
 }
 
 export interface Automation14SongRun {

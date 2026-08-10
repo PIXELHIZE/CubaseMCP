@@ -100,6 +100,16 @@ export class SongProjectValidator {
     if (binding.expectedType === "instrument" && binding.programExpected && !binding.programLoaded) {
       issues.push(issue(binding, "INSTRUMENT_NOT_LOADED", `${binding.role} Instrument Track did not load program ${binding.programExpected}.`, binding.programExpected));
     }
+    if (binding.expectedType === "instrument" && binding.programEvidence && !binding.audibleEvidence?.verified) {
+      issues.push(issue(
+        binding,
+        "TRACK_AUDIBILITY_NOT_VERIFIED",
+        `${binding.role} has no isolated playback evidence proving that its loaded program produces audio.`,
+        true,
+        binding.audibleEvidence?.verified ?? false,
+        false
+      ));
+    }
     if (["instrument", "midi"].includes(binding.expectedType) && track.parts.length === 0) {
       issues.push(issue(binding, "MIDI_PART_MISSING", `${binding.role} has no MIDI part.`));
     } else if (

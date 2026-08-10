@@ -439,7 +439,11 @@ export const v2ActionSchemas = {
     set_realtime: { enabled: z.boolean() }
   }),
   "cubase.export_run": actionUnion({
-    perform_current_settings: { expectedFiles: z.array(z.string().min(1)).optional() },
+    perform_current_settings: {
+      expectedFiles: z.array(z.string().min(1)).max(1).optional(),
+      masterGainDb: z.number().min(-24).max(0).default(-3.2).optional(),
+      realtime: z.boolean().default(true).optional()
+    },
     mixdown_explicit: {
       path: z.string().min(1),
       format: z.enum(["wav", "aiff", "flac", "mp3"]),

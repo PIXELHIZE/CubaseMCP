@@ -28,11 +28,13 @@ const automation14RealActionKeys = new Set([
   "cubase.system.status",
   "cubase.system.capabilities",
   "cubase.system.diagnose",
+  "cubase.project.create",
   "cubase.song.program_catalog",
   "cubase.song.plan",
   "cubase.song.create",
   "cubase.song.validate",
-  "cubase.song.describe"
+  "cubase.song.describe",
+  "cubase.export_run.perform_current_settings"
 ]);
 
 function automation14Capability(host: HostDescriptor, key: string): ActionCapability {
@@ -51,12 +53,26 @@ function automation14Capability(host: HostDescriptor, key: string): ActionCapabi
           requiresEmptySavedProject: true,
           requiresRollbackOnFailureFalse: true,
           instrumentPlugin: "HALion Sonic"
+        } : key === "cubase.project.create" ? {
+          emptyTemplateOnly: true,
+          refusesOverwrite: true,
+          defaultDirectory: "Documents/Cubase Projects"
+        } : key === "cubase.export_run.perform_current_settings" ? {
+          requiresExactlyOneExpectedWav: true,
+          configuresExportDialog: true,
+          realtimeExportDefault: true,
+          masterGainDbDefault: -3.2,
+          requiresGenerated11TrackRecipe: true
         } : {}),
         observedHostVersion: host.version
       },
       evidenceId: key === "cubase.song.create"
         ? "real:automation14:instrument-midi-recording:2026-08-10"
-        : "runtime:automation14-profile",
+        : key === "cubase.project.create"
+          ? "real:automation14:empty-project-create:2026-08-10"
+          : key === "cubase.export_run.perform_current_settings"
+            ? "real:automation14:realtime-wav-export:2026-08-10"
+            : "runtime:automation14-profile",
       verifiedAt: new Date().toISOString()
     };
   }

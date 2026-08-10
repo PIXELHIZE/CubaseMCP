@@ -15,10 +15,15 @@ const outputDirectory = resolve(outputIndex >= 0 && args[outputIndex + 1]
   ? args[outputIndex + 1]
   : "artifacts/automation14-jpop");
 if (!Number.isInteger(bars) || bars < 1 || bars > 512) throw new Error(`Invalid --bars value: ${bars}`);
+const projectTitleIndex = args.indexOf("--project-title");
+const projectTitle = projectTitleIndex >= 0 && args[projectTitleIndex + 1]
+  ? args[projectTitleIndex + 1]!
+  : "MCP_JPOP_Harmony_Verified";
 
 process.env.CUBASE_ADAPTER = "composite";
 process.env.CUBASE_REQUIRE_REAL = "true";
 process.env.CUBASE_AUTOMATION14 = "true";
+process.env.CUBASE_AUTOMATION14_PROJECT_TITLE = projectTitle;
 
 const adapter = new CompositeCubaseAdapter(loadCubaseConfig(process.env));
 const runtime = await createCubaseMcpRuntime(adapter);
@@ -40,7 +45,7 @@ try {
       tracks: [
         { role: "drums", name: "JPOP Drums", program: "SR Studio A Kit" },
         { role: "bass", name: "JPOP Bass", program: "SR Smooth Bass" },
-        { role: "chords", name: "JPOP Piano", program: "[GM 001] Acoustic Grand Piano" },
+        { role: "chords", name: "JPOP Piano", program: "[GM 002] Bright Acoustic Piano" },
         { role: "lead", name: "JPOP Lead", program: "Butterfly Lead" },
         { role: "pad", name: "JPOP Pad", program: "Alaska Sweep" },
         { role: "arp", name: "JPOP Arp", program: "Easy Saw Comp" },
@@ -80,7 +85,7 @@ try {
     profile: "automation14",
     bars,
     songId: planned.data.songId,
-    projectTitle: "Neon_Summer_JPOP_Full_120bars",
+    projectTitle,
     trackBindings: created.data.manifest.trackBindings.map((binding) => ({
       role: binding.role,
       name: binding.name,

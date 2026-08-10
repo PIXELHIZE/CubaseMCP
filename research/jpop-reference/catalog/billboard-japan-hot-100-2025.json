@@ -1,0 +1,510 @@
+{
+  "schemaVersion": 1,
+  "chart": "Billboard Japan Hot 100 Year End",
+  "year": 2025,
+  "sourceUrl": "https://www.billboard-japan.com/charts/detail?a=hot100_year&year=2025",
+  "collectedAt": "2026-08-10T07:07:15.509Z",
+  "usePolicy": "Metadata/reference index only. Do not treat ranking data as a license to copy recordings, lyrics, MIDI, or complete transcriptions.",
+  "entries": [
+    {
+      "rank": 1,
+      "title": "ライラック",
+      "artist": "Mrs.GREEN APPLE"
+    },
+    {
+      "rank": 2,
+      "title": "ダーリン",
+      "artist": "Mrs.GREEN APPLE"
+    },
+    {
+      "rank": 3,
+      "title": "APT.",
+      "artist": "ロゼ & ブルーノ・マーズ"
+    },
+    {
+      "rank": 4,
+      "title": "IRIS OUT",
+      "artist": "米津玄師"
+    },
+    {
+      "rank": 5,
+      "title": "クスシキ",
+      "artist": "Mrs.GREEN APPLE"
+    },
+    {
+      "rank": 6,
+      "title": "ROSE",
+      "artist": "HANA"
+    },
+    {
+      "rank": 7,
+      "title": "怪獣",
+      "artist": "サカナクション"
+    },
+    {
+      "rank": 8,
+      "title": "ケセラセラ",
+      "artist": "Mrs.GREEN APPLE"
+    },
+    {
+      "rank": 9,
+      "title": "ビターバカンス",
+      "artist": "Mrs.GREEN APPLE"
+    },
+    {
+      "rank": 10,
+      "title": "Plazma",
+      "artist": "米津玄師"
+    },
+    {
+      "rank": 11,
+      "title": "Soranji",
+      "artist": "Mrs.GREEN APPLE"
+    },
+    {
+      "rank": 12,
+      "title": "かわいいだけじゃだめですか?",
+      "artist": "CUTIE STREET"
+    },
+    {
+      "rank": 13,
+      "title": "Blue Jeans",
+      "artist": "HANA"
+    },
+    {
+      "rank": 14,
+      "title": "青と夏",
+      "artist": "Mrs.GREEN APPLE"
+    },
+    {
+      "rank": 15,
+      "title": "怪獣の花唄",
+      "artist": "Vaundy"
+    },
+    {
+      "rank": 16,
+      "title": "オトノケ",
+      "artist": "Creepy Nuts"
+    },
+    {
+      "rank": 17,
+      "title": "点描の唄 feat.井上苑子",
+      "artist": "Mrs.GREEN APPLE"
+    },
+    {
+      "rank": 18,
+      "title": "幾億光年",
+      "artist": "Omoinotake"
+    },
+    {
+      "rank": 19,
+      "title": "Bling-Bang-Bang-Born",
+      "artist": "Creepy Nuts"
+    },
+    {
+      "rank": 20,
+      "title": "晩餐歌",
+      "artist": "tuki."
+    },
+    {
+      "rank": 21,
+      "title": "僕のこと",
+      "artist": "Mrs.GREEN APPLE"
+    },
+    {
+      "rank": 22,
+      "title": "Bunny Girl",
+      "artist": "AKASAKI"
+    },
+    {
+      "rank": 23,
+      "title": "BOW AND ARROW",
+      "artist": "米津玄師"
+    },
+    {
+      "rank": 24,
+      "title": "familie",
+      "artist": "Mrs.GREEN APPLE"
+    },
+    {
+      "rank": 25,
+      "title": "ダンスホール",
+      "artist": "Mrs.GREEN APPLE"
+    },
+    {
+      "rank": 26,
+      "title": "Drop",
+      "artist": "HANA"
+    },
+    {
+      "rank": 27,
+      "title": "breakfast",
+      "artist": "Mrs.GREEN APPLE"
+    },
+    {
+      "rank": 28,
+      "title": "夢中",
+      "artist": "BE:FIRST"
+    },
+    {
+      "rank": 29,
+      "title": "ブルーアンバー",
+      "artist": "back number"
+    },
+    {
+      "rank": 30,
+      "title": "Whiplash",
+      "artist": "aespa"
+    },
+    {
+      "rank": 31,
+      "title": "UNDEAD",
+      "artist": "YOASOBI"
+    },
+    {
+      "rank": 32,
+      "title": "風神",
+      "artist": "Vaundy"
+    },
+    {
+      "rank": 33,
+      "title": "GOD_i",
+      "artist": "Number_i"
+    },
+    {
+      "rank": 34,
+      "title": "高嶺の花子さん",
+      "artist": "back number"
+    },
+    {
+      "rank": 35,
+      "title": "革命道中",
+      "artist": "アイナ・ジ・エンド"
+    },
+    {
+      "rank": 36,
+      "title": "はいよろこんで",
+      "artist": "こっちのけんと"
+    },
+    {
+      "rank": 37,
+      "title": "I wonder",
+      "artist": "Da-iCE"
+    },
+    {
+      "rank": 38,
+      "title": "水平線",
+      "artist": "back number"
+    },
+    {
+      "rank": 39,
+      "title": "インフェルノ",
+      "artist": "Mrs.GREEN APPLE"
+    },
+    {
+      "rank": 40,
+      "title": "PUZZLE",
+      "artist": "清水翔太"
+    },
+    {
+      "rank": 41,
+      "title": "Magic",
+      "artist": "Mrs.GREEN APPLE"
+    },
+    {
+      "rank": 42,
+      "title": "アイドル",
+      "artist": "YOASOBI"
+    },
+    {
+      "rank": 43,
+      "title": "JANE DOE",
+      "artist": "米津玄師, 宇多田ヒカル"
+    },
+    {
+      "rank": 44,
+      "title": "SAD SONG",
+      "artist": "ちゃんみな"
+    },
+    {
+      "rank": 45,
+      "title": "天国",
+      "artist": "Mrs.GREEN APPLE"
+    },
+    {
+      "rank": 46,
+      "title": "Burning Flower",
+      "artist": "HANA"
+    },
+    {
+      "rank": 47,
+      "title": "さよーならまたいつか！",
+      "artist": "米津玄師"
+    },
+    {
+      "rank": 48,
+      "title": "コロンブス",
+      "artist": "Mrs.GREEN APPLE"
+    },
+    {
+      "rank": 49,
+      "title": "倍倍FIGHT!",
+      "artist": "CANDY TUNE"
+    },
+    {
+      "rank": 50,
+      "title": "StaRt",
+      "artist": "Mrs.GREEN APPLE"
+    },
+    {
+      "rank": 51,
+      "title": "Tiger",
+      "artist": "HANA"
+    },
+    {
+      "rank": 52,
+      "title": "マリーゴールド",
+      "artist": "あいみょん"
+    },
+    {
+      "rank": 53,
+      "title": "TWILIGHT!!!",
+      "artist": "King Gnu"
+    },
+    {
+      "rank": 54,
+      "title": "わたしの一番かわいいところ",
+      "artist": "FRUITS ZIPPER"
+    },
+    {
+      "rank": 55,
+      "title": "とくべチュ、して",
+      "artist": "=LOVE"
+    },
+    {
+      "rank": 56,
+      "title": "恋風",
+      "artist": "幾田りら"
+    },
+    {
+      "rank": 57,
+      "title": "ハレンチ",
+      "artist": "ちゃんみな"
+    },
+    {
+      "rank": 58,
+      "title": "ドライフラワー",
+      "artist": "優里"
+    },
+    {
+      "rank": 59,
+      "title": "花束",
+      "artist": "back number"
+    },
+    {
+      "rank": 60,
+      "title": "満ちてゆく",
+      "artist": "藤井風"
+    },
+    {
+      "rank": 61,
+      "title": "Pretender",
+      "artist": "Official髭男dism"
+    },
+    {
+      "rank": 62,
+      "title": "Same Blue",
+      "artist": "Official髭男dism"
+    },
+    {
+      "rank": 63,
+      "title": "DRIP",
+      "artist": "BABYMONSTER"
+    },
+    {
+      "rank": 64,
+      "title": "ANTENNA",
+      "artist": "Mrs.GREEN APPLE"
+    },
+    {
+      "rank": 65,
+      "title": "Lemon",
+      "artist": "米津玄師"
+    },
+    {
+      "rank": 66,
+      "title": "新しい恋人達に",
+      "artist": "back number"
+    },
+    {
+      "rank": 67,
+      "title": "ロマンチシズム",
+      "artist": "Mrs.GREEN APPLE"
+    },
+    {
+      "rank": 68,
+      "title": "Subtitle",
+      "artist": "Official髭男dism"
+    },
+    {
+      "rank": 69,
+      "title": "サウダージ",
+      "artist": "ポルノグラフィティ"
+    },
+    {
+      "rank": 70,
+      "title": "百花繚乱",
+      "artist": "幾田りら"
+    },
+    {
+      "rank": 71,
+      "title": "ハッピーエンド",
+      "artist": "back number"
+    },
+    {
+      "rank": 72,
+      "title": "ねっこ",
+      "artist": "King Gnu"
+    },
+    {
+      "rank": 73,
+      "title": "Who",
+      "artist": "JIMIN"
+    },
+    {
+      "rank": 74,
+      "title": "クリスマスソング",
+      "artist": "back number"
+    },
+    {
+      "rank": 75,
+      "title": "踊り子",
+      "artist": "Vaundy"
+    },
+    {
+      "rank": 76,
+      "title": "Carrying Happiness",
+      "artist": "Mrs.GREEN APPLE"
+    },
+    {
+      "rank": 77,
+      "title": "Almond Chocolate",
+      "artist": "ILLIT"
+    },
+    {
+      "rank": 78,
+      "title": "チャンカパーナ",
+      "artist": "NEWS"
+    },
+    {
+      "rank": 79,
+      "title": "イケナイ太陽",
+      "artist": "ORANGE RANGE"
+    },
+    {
+      "rank": 80,
+      "title": "カリスマックス",
+      "artist": "Snow Man"
+    },
+    {
+      "rank": 81,
+      "title": "Golden",
+      "artist": "HUNTR/X"
+    },
+    {
+      "rank": 82,
+      "title": "ヒロイン",
+      "artist": "back number"
+    },
+    {
+      "rank": 83,
+      "title": "チェリー",
+      "artist": "スピッツ"
+    },
+    {
+      "rank": 84,
+      "title": "Dear",
+      "artist": "Mrs.GREEN APPLE"
+    },
+    {
+      "rank": 85,
+      "title": "残酷な夜に輝け",
+      "artist": "LiSA"
+    },
+    {
+      "rank": 86,
+      "title": "花",
+      "artist": "藤井風"
+    },
+    {
+      "rank": 87,
+      "title": "唱",
+      "artist": "Ado"
+    },
+    {
+      "rank": 88,
+      "title": "カーテンコール",
+      "artist": "優里"
+    },
+    {
+      "rank": 89,
+      "title": "BON",
+      "artist": "Number_i"
+    },
+    {
+      "rank": 90,
+      "title": "doppelganger",
+      "artist": "Creepy Nuts"
+    },
+    {
+      "rank": 91,
+      "title": "Magnetic",
+      "artist": "ILLIT"
+    },
+    {
+      "rank": 92,
+      "title": "Rock this Party",
+      "artist": "timelesz"
+    },
+    {
+      "rank": 93,
+      "title": "奏(かなで)",
+      "artist": "スキマスイッチ"
+    },
+    {
+      "rank": 94,
+      "title": "きらり",
+      "artist": "藤井風"
+    },
+    {
+      "rank": 95,
+      "title": "小さな恋のうた",
+      "artist": "MONGOL800"
+    },
+    {
+      "rank": 96,
+      "title": "B級",
+      "artist": "ちゃんみな"
+    },
+    {
+      "rank": 97,
+      "title": "IS THIS LOVE",
+      "artist": "XG"
+    },
+    {
+      "rank": 98,
+      "title": "晴る",
+      "artist": "ヨルシカ"
+    },
+    {
+      "rank": 99,
+      "title": "夏の影",
+      "artist": "Mrs.GREEN APPLE"
+    },
+    {
+      "rank": 100,
+      "title": "TSUNAMI",
+      "artist": "サザンオールスターズ"
+    }
+  ]
+}

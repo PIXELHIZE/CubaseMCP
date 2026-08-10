@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "scannedAt": "2026-08-10T07:13:21.7605569Z",
+  "roots": [
+    "C:\\ProgramData\\Steinberg",
+    "C:\\Program Files\\Steinberg",
+    "C:\\Users\\Public\\Documents\\Steinberg",
+    "C:\\Users\\pixelhize\\Documents\\Steinberg"
+  ],
+  "findings": {
+    "cubaseProjects": [],
+    "midiFiles": [],
+    "contentPackages": [
+      {
+        "path": "C:\\ProgramData\\Steinberg\\Content\\VST Sound\\FCP_SMT_153_GASE_Rock_Pop_Toolbox_Drums.vstsound",
+        "bytes": 897967013
+      },
+      {
+        "path": "C:\\ProgramData\\Steinberg\\Content\\VST Sound\\FCP_SMT_154_Rock_Pop_Toolbox_01.vstsound",
+        "bytes": 1287359425
+      },
+      {
+        "path": "C:\\ProgramData\\Steinberg\\Content\\VST Sound\\FCP_SMT_157_Rock_Pop_Toolbox_02.vstsound",
+        "bytes": 1363662426
+      }
+    ]
+  },
+  "decision": "No installed J-pop Cubase demo CPR or MIDI reference was found. Rock/Pop Toolbox VST Sound packages are licensed local content and remain in place; they are not copied into the repository or treated as symbolic training data."
+}

@@ -98,6 +98,23 @@ Committed evidence is indexed at
 `reports/real-cubase/2026-08-10-jpop-audition.md` and
 `reports/real-cubase/2026-08-10-automation14-instrument-song.md`.
 
+## Reduced-density end-to-end MCP run
+
+A later run used only the registered automation14 MCP actions for project
+creation, song planning/creation, and real-time export. The new project
+`MCP_JPOP_Reference_Density_v2` contains 11 tracks, six Instrument Tracks, six
+MIDI Parts, and 3,924 notes. Every HALion load, every isolated Instrument Track
+meter probe, the final mix meter, and the song validator passed.
+
+The final 48 kHz stereo float WAV is 208.695646 seconds and 80,141,248 bytes.
+It measured -21.137898 dB RMS, -18.4 LUFS integrated, and -1.8 dBFS true peak
+with no analyzer warnings. SHA-256 is
+`8C8C2FAD2D7E0322572B0DC70CA31247F0D596AA048580709B71ECED6328F832`.
+Section analysis measured Intro -20.5 LUFS, Verse 1 -19.3 LUFS, Chorus 1
+-17.7 LUFS, and Outro -20.7 LUFS, confirming intentional section contrast.
+The reproducible metadata record is
+`research/jpop-reference/validation/automation14-density-v2.json`.
+
 ## Current release interpretation
 
 - Real Cubase v2 connection and transport tests now pass on 14.0.32.
@@ -108,7 +125,7 @@ Committed evidence is indexed at
   automation14 profile, which reports `releaseCertified: false`.
 - Public runtime UI automation remains prohibited; the direct UI steps above
   are explicit development-test evidence only.
-- Source verification passes 94 automated tests plus the separate real-host
+- Source verification passes 99 automated tests plus the separate real-host
   smoke and automation14 runs. Fifteen opt-in integration cases remain skipped
   in the default test command. Production and development npm audits report zero
   vulnerabilities.

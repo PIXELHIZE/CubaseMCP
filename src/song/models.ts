@@ -86,7 +86,9 @@ export interface SongTrackBinding {
   instrumentExpected?: string;
   programExpected?: string;
   programLoaded?: boolean;
+  programEvidence?: unknown;
   instrumentLoaded?: boolean;
+  audibleEvidence?: AudibleEvidence;
   partIds: string[];
   noteCount: number;
   audioEventIds: string[];
@@ -121,6 +123,7 @@ export type SongIssueCode =
   | "MIDI_NOTES_MISSING"
   | "AUDIO_EVENT_MISSING"
   | "ROUTING_INVALID"
+  | "TRACK_AUDIBILITY_NOT_VERIFIED"
   | "AUDIBILITY_NOT_VERIFIED"
   | "STALE_SONG_MANIFEST";
 
